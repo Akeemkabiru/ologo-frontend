@@ -29,7 +29,6 @@ export interface IInputField {
   readOnly?: boolean;
   icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  [key: string]: any; // Allow other HTML attributes
 }
 
 export interface IToggle {

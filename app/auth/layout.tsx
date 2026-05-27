@@ -3,5 +3,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <body className="min-h-full flex flex-col">{children}</body>;
+  return (
+    <body className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100">
+      {children}
+    </body>
+  );
 }
