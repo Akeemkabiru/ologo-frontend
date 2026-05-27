@@ -47,125 +47,125 @@ export default function Login() {
         {/* Form */}
         <form onSubmit={formik.handleSubmit} className="grid gap-4">
           <div className="grid gap-4">
-          {/* Email Input */}
-          <InputField
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && !!formik.errors.email}
-            errorMessage={
-              formik.touched.email ? formik.errors.email : undefined
-            }
-            icon={
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-            }
-            containerClassName=""
-            className="placeholder-gray-400 text-gray-700 border-2 border-blue-500"
-          />
-
-          {/* Password Input */}
-          <InputField
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && !!formik.errors.password}
-            errorMessage={
-              formik.touched.password ? formik.errors.password : undefined
-            }
-            icon={
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            }
-            rightIcon={
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer"
-              >
-                {showPassword ? (
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z"
-                      clipRule="evenodd"
-                    />
-                    <path d="M15.171 13.576l1.813 1.813A6 6 0 0018.98 10c-.79-3.707-4.13-6.5-8.08-6.5-1.712 0-3.357.39-4.82 1.07l2.05 2.05a4 4 0 015.81 5.956z" />
-                  </svg>
-                )}
-              </button>
-            }
-            className="placeholder-gray-400 text-gray-700 border-2 border-blue-500"
-          />
-
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between">
-            <Toggle
-              checked={rememberMe}
-              onChange={setRememberMe}
-              label="Remember Me"
+            {/* Email Input */}
+            <InputField
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && !!formik.errors.email}
+              errorMessage={
+                formik.touched.email ? formik.errors.email : undefined
+              }
+              icon={
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              }
+              containerClassName=""
+              className="placeholder-gray-400 text-gray-700 border-2 border-blue-500"
             />
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-500 hover:text-blue-600"
-            >
-              Forgot Password?
-            </a>
-          </div>
 
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            disabled={formik.isSubmitting}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-full hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 transition-all"
-          >
-            {formik.isSubmitting ? "Signing in..." : "Sign in with Email"}
-          </button>
+            {/* Password Input */}
+            <InputField
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && !!formik.errors.password}
+              errorMessage={
+                formik.touched.password ? formik.errors.password : undefined
+              }
+              icon={
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              }
+              rightIcon={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="cursor-pointer"
+                >
+                  {showPassword ? (
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z"
+                        clipRule="evenodd"
+                      />
+                      <path d="M15.171 13.576l1.813 1.813A6 6 0 0018.98 10c-.79-3.707-4.13-6.5-8.08-6.5-1.712 0-3.357.39-4.82 1.07l2.05 2.05a4 4 0 015.81 5.956z" />
+                    </svg>
+                  )}
+                </button>
+              }
+              className="placeholder-gray-400 text-gray-700 border-2 border-blue-500"
+            />
+
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between">
+              <Toggle
+                checked={rememberMe}
+                onChange={setRememberMe}
+                label="Remember Me"
+              />
+              <a
+                href="#"
+                className="text-sm font-medium text-blue-500 hover:text-blue-600"
+              >
+                Forgot Password?
+              </a>
+            </div>
+
+            {/* Sign In Button */}
+            <button
+              type="submit"
+              disabled={formik.isSubmitting}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-full hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 transition-all"
+            >
+              {formik.isSubmitting ? "Signing in..." : "Sign in with Email"}
+            </button>
           </div>
         </form>
 
@@ -205,7 +205,7 @@ export default function Login() {
         {/* Sign Up Link */}
         <div className="text-center">
           <span className="text-gray-700 text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a
               href="/auth/register"
               className="font-semibold text-blue-500 hover:text-blue-600"
