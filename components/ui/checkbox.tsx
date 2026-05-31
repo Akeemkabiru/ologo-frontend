@@ -32,14 +32,14 @@ export default function Checkbox({
             htmlFor={id}
             className={`text-sm font-medium ${
               disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-            } ${error ? "text-red-500" : "text-gray-700"}`}
+            } ${error ? "text-gray-700" : "text-gray-700"}`}
           >
             {label}
           </label>
         )}
       </div>
       {error && errorMessage && (
-        <p className="text-sm text-red-500">{errorMessage}</p>
+        <p className="text-sm text-gray-700">{errorMessage}</p>
       )}
     </div>
   );

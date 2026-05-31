@@ -5,6 +5,7 @@ import Checkbox from "@/components/ui/checkbox";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
 
 // Validation schema
 const RegisterValidationSchema = Yup.object().shape({
@@ -34,6 +35,7 @@ const RegisterValidationSchema = Yup.object().shape({
 });
 
 export default function Register() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -51,6 +53,8 @@ export default function Register() {
       try {
         console.log("Form submitted:", values);
         // Add your register API call here
+        // After successful registration, redirect to KYC verification
+        router.push("/kyc");
       } catch (error) {
         console.error("Register error:", error);
       }

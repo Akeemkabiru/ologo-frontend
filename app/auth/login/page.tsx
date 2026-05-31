@@ -5,6 +5,8 @@ import Toggle from "@/components/ui/toggle";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Validation schema
 const LoginValidationSchema = Yup.object().shape({
@@ -17,6 +19,7 @@ const LoginValidationSchema = Yup.object().shape({
 });
 
 export default function Login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -30,6 +33,8 @@ export default function Login() {
       try {
         console.log("Form submitted:", { ...values, rememberMe });
         // Add your login API call here
+        // On successful login, redirect to dashboard
+        router.push("/dashboard");
       } catch (error) {
         console.error("Login error:", error);
       }
@@ -43,7 +48,7 @@ export default function Login() {
         <div className="bg-white rounded-2xl shadow-lg p-8 backdrop-blur-sm transition-all duration-300 hover:shadow-xl">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-1">
+            <h1 className="text-lg font-bold text-gray-900 mb-1">
               Welcome back
             </h1>
             <p className="text-gray-500 text-sm">Sign in to your account</p>
@@ -155,12 +160,12 @@ export default function Login() {
                   onChange={setRememberMe}
                   label="Remember Me"
                 />
-                <a
-                  href="#"
+                <Link
+                  href="/auth/forgot-password"
                   className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
 
               {/* Sign In Button */}

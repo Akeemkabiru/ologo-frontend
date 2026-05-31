@@ -1,11 +1,16 @@
+"use client";
+
+import VantaClouds from "@/components/ui/vantaClouds";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <body className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100">
-      {children}
+    <body className="min-h-screen relative">
+      <VantaClouds />
+      <div className="relative z-10">{children}</div>
     </body>
   );
 }

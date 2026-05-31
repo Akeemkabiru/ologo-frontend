@@ -27,19 +27,23 @@ export default function InputField({
   const inputId = id || name || placeholder;
 
   return (
-    <div className={`flex flex-col gap-2 ${containerClassName}`}>
+    <div className={`flex flex-col gap-2.5 ${containerClassName}`}>
       {label && (
         <label
           htmlFor={inputId}
-          className={`text-sm font-medium ${
-            required ? "after:content-['*'] after:ml-1 after:text-red-500" : ""
-          } ${error ? "text-red-500" : "text-gray-700"}`}
+          className={`text-sm font-600 ${
+            required ? "after:content-['*'] after:ml-1 after:text-gray-700" : ""
+          } ${error ? "text-gray-700" : "text-gray-800"}`}
         >
           {label}
         </label>
       )}
       <div className="relative flex items-center">
-        {icon && <div className="absolute left-3 text-gray-400">{icon}</div>}
+        {icon && (
+          <div className="absolute left-4 text-gray-400 flex items-center">
+            {icon}
+          </div>
+        )}
         <input
           id={inputId}
           type={type}
@@ -55,27 +59,27 @@ export default function InputField({
           minLength={minLength}
           pattern={pattern}
           readOnly={readOnly}
-          className={`w-full px-3 py-2 border rounded-full transition-colors ${
-            icon ? "pl-10" : ""
-          } ${rightIcon ? "pr-10" : ""} ${
+          className={`w-full px-4 py-3 border rounded-lg text-base font-500 transition-all ${
+            icon ? "pl-11" : ""
+          } ${rightIcon ? "pr-11" : ""} ${
             error
-              ? "border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-              : "border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ? "border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 text-gray-900 placeholder:text-gray-400"
+              : "border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500"
           } ${
             disabled
-              ? "bg-gray-100 cursor-not-allowed text-gray-500"
+              ? "bg-gray-100 cursor-not-allowed text-gray-500 placeholder:text-gray-400"
               : "bg-white"
           } ${className}`}
           {...rest}
         />
         {rightIcon && (
-          <div className="absolute right-3 text-gray-400 cursor-pointer">
+          <div className="absolute right-4 text-gray-400 cursor-pointer flex items-center">
             {rightIcon}
           </div>
         )}
       </div>
       {error && errorMessage && (
-        <p className="text-sm text-red-500 mt-1">{errorMessage}</p>
+        <p className="text-sm font-500 text-gray-700 mt-1">{errorMessage}</p>
       )}
     </div>
   );
