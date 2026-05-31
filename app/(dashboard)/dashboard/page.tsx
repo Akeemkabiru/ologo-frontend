@@ -222,8 +222,8 @@ export default function UserDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="bg-blue-600 w-fit rounded-2xl text-white p-8 shadow-lg">
-          <p className="text-blue-100 text-sm font-medium mb-2">
+        <div className="bg-violet-600 w-fit rounded-2xl text-white p-8 shadow-lg">
+          <p className="text-violet-100 text-sm font-medium mb-2">
             Wallet Balance
           </p>
           <div className="flex items-end justify-between">
@@ -231,7 +231,7 @@ export default function UserDashboard() {
               <h2 className="text-3xl font-bold mb-1">
                 ${walletBalance.toFixed(2)}
               </h2>
-              <p className="text-blue-100">{walletCurrency}</p>
+              <p className="text-violet-100">{walletCurrency}</p>
             </div>
             <Link href="/wallet/topup" className="ml-6">
               <button className="bg-white/20 hover:bg-white/30 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
@@ -259,7 +259,7 @@ export default function UserDashboard() {
                 onClick={() => setViewMode("list")}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   viewMode === "list"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-violet-600 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
@@ -269,7 +269,7 @@ export default function UserDashboard() {
                 onClick={() => setViewMode("calendar")}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   viewMode === "calendar"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-violet-600 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
@@ -290,7 +290,7 @@ export default function UserDashboard() {
                 placeholder="Search transactions, groups, users..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
               />
             </div>
             <button className="px-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg hover: flex items-center gap-2 font-medium text-gray-700">
@@ -315,7 +315,7 @@ export default function UserDashboard() {
                   onClick={() => setActiveTab(tab)}
                   className={`px-4 py-3 font-medium capitalize border-b-2 transition-colors ${
                     activeTab === tab
-                      ? "border-blue-600 text-blue-600"
+                      ? "border-violet-600 text-violet-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
@@ -358,7 +358,7 @@ export default function UserDashboard() {
                         <p className="font-semibold text-gray-900">
                           -{tx.amount} {tx.currency}
                         </p>
-                        <p className="text-xs text-blue-600 font-medium mt-1">
+                        <p className="text-xs text-violet-600 font-medium mt-1">
                           {tx.status}
                         </p>
                       </div>
@@ -451,7 +451,7 @@ export default function UserDashboard() {
                       key={idx}
                       className={`p-2 rounded-lg border ${
                         dayTransactions.length > 0
-                          ? "border-blue-200 bg-blue-50"
+                          ? "border-violet-200 bg-violet-50"
                           : "border-gray-200 "
                       }`}
                     >
@@ -459,7 +459,7 @@ export default function UserDashboard() {
                         {idx + 1}
                       </p>
                       {dayTransactions.length > 0 && (
-                        <p className="text-xs text-blue-600 font-medium">
+                        <p className="text-xs text-violet-600 font-medium">
                           {dayTransactions.length} transaction
                           {dayTransactions.length > 1 ? "s" : ""}
                         </p>
@@ -502,7 +502,7 @@ export default function UserDashboard() {
                             ? "Escrow"
                             : "Recurring Payment"}
                       </p>
-                      <p className="font-semibold text-gray-900 hover:text-blue-600">
+                      <p className="font-semibold text-gray-900 hover:text-violet-600">
                         {tx.description}
                       </p>
                     </div>
@@ -528,7 +528,7 @@ export default function UserDashboard() {
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-gray-600">Group</span>
-                    <span className="font-semibold text-blue-600">
+                    <span className="font-semibold text-violet-600">
                       {tx.groupName}
                     </span>
                   </div>
@@ -569,7 +569,7 @@ export default function UserDashboard() {
                     <p className="text-sm text-gray-600 font-medium mb-1">
                       {group.type}
                     </p>
-                    <p className="font-semibold text-gray-900 hover:text-blue-600">
+                    <p className="font-semibold text-gray-900 hover:text-violet-600">
                       {group.name}
                     </p>
                   </div>
@@ -629,7 +629,7 @@ export default function UserDashboard() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="bg-violet-600 h-2 rounded-full"
                       style={{ width: `${item.percentage}%` }}
                     ></div>
                   </div>

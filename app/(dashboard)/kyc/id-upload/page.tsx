@@ -31,9 +31,9 @@ export default function IDUpload() {
         <p className="text-gray-600 text-lg mb-12 leading-relaxed font-500">
           Please provide clear photos of both sides of your document
         </p>
-        <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <Info size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-900">
+        <div className="flex items-start gap-3 bg-violet-50 border border-violet-200 rounded-lg p-4 mb-8">
+          <Info size={20} className="text-violet-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-violet-900">
             Make sure the document is clear, fully visible, and all corners are
             visible.
           </p>
@@ -180,9 +180,9 @@ export default function IDUpload() {
         </div>
 
         {/* Info Box */}
-        <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-lg p-5 mb-10">
-          <Info size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
-          <p className="text-sm font-600 text-blue-900">
+        <div className="flex items-start gap-3 bg-violet-50 border border-violet-200 rounded-lg p-5 mb-10">
+          <Info size={20} className="text-violet-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm font-600 text-violet-900">
             Make sure the document is clear, fully visible, and all corners are
             visible
           </p>

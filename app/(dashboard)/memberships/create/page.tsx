@@ -70,7 +70,7 @@ export default function CreateMembershipPage() {
     <main className="min-h-screen  px-8 pb-8 max-w-2xl">
       <div className="mb-8">
         <Link href="/memberships">
-          <button className="text-blue-600 hover:text-blue-700 font-semibold mb-4 flex items-center gap-2">
+          <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Memberships
           </button>
         </Link>
@@ -173,9 +173,9 @@ export default function CreateMembershipPage() {
             </div>
 
             {values.membershipAmount && (
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-6 p-4 bg-violet-50 border border-violet-200 rounded-lg">
                 <p className="text-sm text-gray-600">Member will be charged</p>
-                <p className="text-lg font-bold text-blue-600">
+                <p className="text-lg font-bold text-violet-600">
                   {values.currency}{" "}
                   {parseFloat(values.membershipAmount).toFixed(2)} per{" "}
                   {values.frequency}
@@ -207,11 +207,11 @@ export default function CreateMembershipPage() {
       </div>
 
       {/* Info Box */}
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6">
-        <h3 className="font-bold text-blue-900 mb-3">
+      <div className="mt-8 bg-violet-50 border border-violet-200 rounded-2xl p-6">
+        <h3 className="font-bold text-violet-900 mb-3">
           Tips for Creating a Great Membership
         </h3>
-        <ul className="space-y-2 text-sm text-blue-800">
+        <ul className="space-y-2 text-sm text-violet-800">
           <li>• Clearly describe the value members will receive</li>
           <li>• Be competitive with pricing while accounting for your costs</li>
           <li>• Highlight exclusive benefits that members-only get</li>

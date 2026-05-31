@@ -72,7 +72,7 @@ export default function MembershipsPage() {
           </p>
         </div>
         <Link href="/memberships/create">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+          <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
             + Create Membership
           </button>
         </Link>
@@ -128,7 +128,7 @@ export default function MembershipsPage() {
 
               <div className="mb-4 pb-4 border-b border-gray-200">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-blue-600">
+                  <span className="text-3xl font-bold text-violet-600">
                     {formatCurrency(
                       membership.membershipAmount,
                       membership.currency,
@@ -142,7 +142,7 @@ export default function MembershipsPage() {
 
               <div className="flex justify-between text-sm text-gray-600 mb-4">
                 <span>{membership.memberCount} members</span>
-                <span className="text-blue-600 font-semibold">
+                <span className="text-violet-600 font-semibold">
                   {membership.status}
                 </span>
               </div>

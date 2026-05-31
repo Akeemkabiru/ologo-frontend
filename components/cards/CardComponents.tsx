@@ -70,18 +70,18 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onClick }) => {
             alt={user.fullName}
             width={64}
             height={64}
-            className="w-16 h-16 rounded-full mb-3 border-2 border-blue-200"
+            className="w-16 h-16 rounded-full mb-3 border-2 border-violet-200"
           />
         ) : (
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-3">
-            <span className="text-lg font-bold text-blue-600">
+          <div className="w-16 h-16 rounded-full bg-violet-100 flex items-center justify-center mb-3">
+            <span className="text-lg font-bold text-violet-600">
               {user.fullName.charAt(0)}
             </span>
           </div>
         )}
         <h3 className="font-semibold text-gray-900">{user.fullName}</h3>
         {user.verified && (
-          <span className="text-xs text-blue-600 mt-1 flex items-center gap-1">
+          <span className="text-xs text-violet-600 mt-1 flex items-center gap-1">
             <CheckCircle2 size={16} /> Verified
           </span>
         )}
@@ -148,7 +148,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
           </div>
           <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-blue-500"
+              className="h-full bg-violet-500"
               initial={{ width: 0 }}
               animate={{ width: `${Math.min(progress, 100)}%` }}
               transition={{ duration: 1, delay: 0.3 }}
@@ -173,7 +173,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
           <span
             className={`text-xs font-semibold px-3 py-1.5 rounded-full inline-block ${
               event.status === "active"
-                ? "bg-blue-100 text-blue-700"
+                ? "bg-violet-100 text-violet-700"
                 : event.status === "completed"
                   ? "bg-gray-100 text-gray-700"
                   : "bg-gray-100 text-gray-700"
@@ -219,7 +219,7 @@ export const DonationCard: React.FC<DonationCardProps> = ({ donation }) => {
           </p>
         </div>
         <motion.span
-          className="text-lg font-bold text-blue-600"
+          className="text-lg font-bold text-violet-600"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.3 }}
@@ -228,7 +228,7 @@ export const DonationCard: React.FC<DonationCardProps> = ({ donation }) => {
         </motion.span>
       </motion.div>
       {donation.note && (
-        <p className="text-sm text-gray-600 italic border-l-2 border-blue-200 pl-3">
+        <p className="text-sm text-gray-600 italic border-l-2 border-violet-200 pl-3">
           &apos;{donation.note}&apos;
         </p>
       )}
@@ -256,7 +256,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({
       whileHover={{ y: -4 }}
       className="relative rounded-2xl overflow-hidden cursor-pointer group"
     >
-      <div className="absolute inset-0 bg-blue-600" />
+      <div className="absolute inset-0 bg-violet-600" />
       <motion.div
         className="absolute inset-0 bg-transparent"
         animate={{
@@ -316,8 +316,8 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
 }) => {
   const isIncoming = transaction.type.includes("receive");
   const Icon = isIncoming ? ArrowDownLeft : ArrowUpRight;
-  const color = isIncoming ? "text-blue-600" : "text-gray-600";
-  const bgColor = isIncoming ? "bg-blue-100/50" : "bg-gray-100/50";
+  const color = isIncoming ? "text-violet-600" : "text-gray-600";
+  const bgColor = isIncoming ? "bg-violet-100/50" : "bg-gray-100/50";
 
   return (
     <Card>
@@ -358,7 +358,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
           <span
             className={`text-xs font-semibold px-2.5 py-1 rounded-full inline-block mt-1 ${
               transaction.status === "completed"
-                ? "bg-blue-100 text-blue-700"
+                ? "bg-violet-100 text-violet-700"
                 : transaction.status === "pending"
                   ? "bg-gray-100 text-gray-700"
                   : "bg-gray-100 text-gray-700"
@@ -408,7 +408,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           {trend !== undefined && (
             <motion.p
               className={`text-sm mt-3 font-medium flex items-center gap-1 ${
-                trend > 0 ? "text-blue-600" : "text-gray-600"
+                trend > 0 ? "text-violet-600" : "text-gray-600"
               }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -480,7 +480,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       {action && (
         <motion.button
           onClick={action.onClick}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg"
+          className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-6 py-2.5 rounded-lg"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}

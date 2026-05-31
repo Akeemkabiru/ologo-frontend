@@ -91,7 +91,7 @@ export const FormInput: React.FC<FormInputProps> = ({
           } ${
             error
               ? "border-red-500 focus:ring-red-500"
-              : "border-gray-200 focus:ring-blue-500"
+              : "border-gray-200 focus:ring-violet-500"
           } ${props.className || ""}`}
         />
       </div>
@@ -129,7 +129,7 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors resize-none ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-gray-200 focus:ring-blue-500"
+            : "border-gray-200 focus:ring-violet-500"
         } ${props.className || ""}`}
       />
       {error && errorMessage && (
@@ -168,7 +168,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-gray-200 focus:ring-blue-500"
+            : "border-gray-200 focus:ring-violet-500"
         } ${props.className || ""}`}
       >
         <option value="">Select an option</option>
@@ -209,7 +209,7 @@ export const FormCheckbox: React.FC<FormCheckboxProps> = ({
           className={`w-5 h-5 rounded border ${
             error
               ? "border-red-500 focus:ring-red-500"
-              : "border-gray-200 focus:ring-blue-500"
+              : "border-gray-200 focus:ring-violet-500"
           } cursor-pointer`}
         />
         {label && (
@@ -287,7 +287,7 @@ export const FormButton: React.FC<FormButtonProps> = ({
 
   const variantStyles = {
     primary:
-      "bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed",
+      "bg-violet-600 hover:bg-violet-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed",
     secondary:
       "bg-gray-200 hover:bg-gray-300 text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed",
     danger:
@@ -344,7 +344,7 @@ export const FormFileUpload: React.FC<FormFileUploadProps> = ({
   return (
     <FormGroup>
       {label && <FormLabel>{label}</FormLabel>}
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors cursor-pointer">
+      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-violet-500 transition-colors cursor-pointer">
         <input
           type="file"
           {...props}

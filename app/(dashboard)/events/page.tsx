@@ -59,7 +59,7 @@ export default function EventsPage() {
           </p>
         </div>
         <Link href="/events/create">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+          <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
             + Create Event
           </button>
         </Link>
@@ -102,7 +102,7 @@ export default function EventsPage() {
               onClick={() => setViewType("grid")}
               className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-colors ${
                 viewType === "grid"
-                  ? "bg-blue-600 text-white"
+                  ? "bg-violet-600 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
@@ -112,7 +112,7 @@ export default function EventsPage() {
               onClick={() => setViewType("list")}
               className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-colors ${
                 viewType === "list"
-                  ? "bg-blue-600 text-white"
+                  ? "bg-violet-600 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >

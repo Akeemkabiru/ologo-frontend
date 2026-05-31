@@ -24,7 +24,7 @@ export default function Checkbox({
           className={`mt-1 h-4 w-4 rounded border ${
             error ? "border-red-500" : "border-gray-300"
           } ${
-            checked ? "bg-blue-500 border-blue-500" : "bg-white"
+            checked ? "bg-violet-500 border-violet-500" : "bg-white"
           } cursor-pointer ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
         />
         {label && (

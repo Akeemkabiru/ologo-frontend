@@ -110,7 +110,7 @@ export default function ProfilePage() {
               </h2>
               <p className="text-gray-600 mb-3">@{mockUser.username}</p>
               {mockUser.verified && (
-                <div className="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full mb-4 flex items-center gap-2">
+                <div className="inline-block bg-violet-100 text-violet-700 text-sm font-semibold px-3 py-1 rounded-full mb-4 flex items-center gap-2">
                   <CheckCircle2 size={16} /> {mockUser.verificationStatus}
                 </div>
               )}
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                 {mockUser.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full"
+                    className="bg-violet-100 text-violet-700 text-xs font-semibold px-3 py-1 rounded-full"
                   >
                     {tag}
                   </span>
@@ -167,7 +167,7 @@ export default function ProfilePage() {
               {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="text-blue-600 hover:text-blue-700 font-semibold"
+                  className="text-violet-600 hover:text-violet-700 font-semibold"
                 >
                   Edit
                 </button>
@@ -266,7 +266,7 @@ export default function ProfilePage() {
                     Last changed 3 months ago
                   </p>
                 </div>
-                <button className="text-blue-600 hover:text-blue-700 font-semibold">
+                <button className="text-violet-600 hover:text-violet-700 font-semibold">
                   Change
                 </button>
               </div>
@@ -277,7 +277,7 @@ export default function ProfilePage() {
                   </p>
                   <p className="text-sm text-gray-600">Not enabled</p>
                 </div>
-                <button className="text-blue-600 hover:text-blue-700 font-semibold">
+                <button className="text-violet-600 hover:text-violet-700 font-semibold">
                   Enable
                 </button>
               </div>
@@ -291,7 +291,7 @@ export default function ProfilePage() {
                   </p>
                 </div>
                 <Link href="/settings">
-                  <button className="text-blue-600 hover:text-blue-700 font-semibold">
+                  <button className="text-violet-600 hover:text-violet-700 font-semibold">
                     Configure
                   </button>
                 </Link>

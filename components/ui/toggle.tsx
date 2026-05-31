@@ -14,7 +14,7 @@ export default function Toggle({
         onClick={() => onChange(!checked)}
         disabled={disabled}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          checked ? "bg-blue-500" : "bg-gray-300"
+          checked ? "bg-violet-500" : "bg-gray-300"
         } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
       >
         <span

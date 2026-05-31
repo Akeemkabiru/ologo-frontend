@@ -59,7 +59,7 @@ export default function EditProfile() {
           transition={{ duration: 0.5 }}
         >
           <Link href="/profile">
-            <button className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-4">
+            <button className="flex items-center gap-2 text-violet-600 hover:text-violet-700 font-medium mb-4">
               <ArrowLeft size={18} />
               Back to Profile
             </button>
@@ -82,7 +82,7 @@ export default function EditProfile() {
             </h2>
             <div className="flex items-center gap-8">
               <div className="flex-shrink-0">
-                <div className="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
+                <div className="w-32 h-32 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                   {profileImage ? (
                     <img
                       src={URL.createObjectURL(profileImage)}
@@ -95,7 +95,7 @@ export default function EditProfile() {
                 </div>
               </div>
               <div className="flex-1">
-                <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
+                <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload size={32} className="text-gray-400 mb-2" />
                     <p className="mb-2 text-sm text-gray-600">
@@ -136,7 +136,7 @@ export default function EditProfile() {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -148,7 +148,7 @@ export default function EditProfile() {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function EditProfile() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -172,7 +172,7 @@ export default function EditProfile() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div className="md:col-span-2">
@@ -184,7 +184,7 @@ export default function EditProfile() {
                   value={formData.bio}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                 />
               </div>
             </div>
@@ -207,7 +207,7 @@ export default function EditProfile() {
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -219,7 +219,7 @@ export default function EditProfile() {
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -231,7 +231,7 @@ export default function EditProfile() {
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -243,7 +243,7 @@ export default function EditProfile() {
                   name="zipCode"
                   value={formData.zipCode}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
               <div className="md:col-span-2">
@@ -255,7 +255,7 @@ export default function EditProfile() {
                   name="country"
                   value={formData.country}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -271,7 +271,7 @@ export default function EditProfile() {
               Identification Document
             </h2>
             <div>
-              <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <Upload size={32} className="text-gray-400 mb-2" />
                   <p className="mb-2 text-sm text-gray-600">
@@ -309,7 +309,7 @@ export default function EditProfile() {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700 disabled:bg-gray-400 transition-colors flex items-center justify-center gap-2"
             >
               <Save size={20} />
               {saving ? "Saving..." : "Save Changes"}

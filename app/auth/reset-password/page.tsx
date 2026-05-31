@@ -67,7 +67,7 @@ function ResetPasswordForm() {
             </div>
 
             <Link href="/auth/login">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg">
+              <button className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-lg">
                 Sign in to your account
               </button>
             </Link>
@@ -105,12 +105,12 @@ function ResetPasswordForm() {
 
             <div className="space-y-3">
               <Link href="/auth/forgot-password">
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg">
+                <button className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-lg">
                   Request new link
                 </button>
               </Link>
               <Link href="/auth/login">
-                <button className="w-full border-2 border-gray-200 hover:bg-blue-50 text-gray-700 font-semibold py-3 rounded-lg">
+                <button className="w-full border-2 border-gray-200 hover:bg-violet-50 text-gray-700 font-semibold py-3 rounded-lg">
                   Back to Sign In
                 </button>
               </Link>
@@ -176,7 +176,7 @@ function ResetPasswordForm() {
 
             <div className="text-center">
               <Link href="/auth/login">
-                <button className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                <button className="text-violet-600 hover:text-violet-700 font-semibold text-sm">
                   Back to Sign In
                 </button>
               </Link>

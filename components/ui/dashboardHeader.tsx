@@ -14,7 +14,7 @@ export default function DashboardHeader() {
             <input
               type="text"
               placeholder="Search for something"
-              className="w-64 px-4 py-2.5 bg-gray-100 rounded-lg text-sm font-500 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+              className="w-64 px-4 py-2.5 bg-gray-100 rounded-lg text-sm font-500 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all"
             />
             <svg
               className="absolute right-3 top-3 w-5 h-5 text-gray-400"
@@ -80,7 +80,7 @@ export default function DashboardHeader() {
             <div className="h-6 w-px bg-gray-200"></div>
 
             {/* Profile */}
-            <button className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold overflow-hidden">
+            <button className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold overflow-hidden">
               <img
                 src="https://i.pravatar.cc/40?img=1"
                 alt="Profile"

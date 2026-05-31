@@ -34,7 +34,7 @@ export default function KYCSuccess() {
       </p>
 
       {/* Features List */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 w-full max-w-md mb-12 space-y-5">
+      <div className="bg-violet-50 border border-violet-200 rounded-lg p-6 w-full max-w-md mb-12 space-y-5">
         <div className="flex gap-3 items-start">
           <svg
             className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5"

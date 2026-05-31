@@ -81,7 +81,7 @@ export default function WalletTransferPage() {
     <main className="ml-64 pt-20 px-8 pb-8 max-w-2xl">
       <div className="mb-8">
         <Link href="/wallet">
-          <button className="text-blue-600 hover:text-blue-700 font-semibold mb-4 flex items-center gap-2">
+          <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Wallet
           </button>
         </Link>
@@ -110,13 +110,13 @@ export default function WalletTransferPage() {
               <button
                 type="button"
                 onClick={handleSearchRecipient}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors h-10 mt-7"
+                className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors h-10 mt-7"
               >
                 Search
               </button>
             </div>
             {recipientInfo && (
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-3">
+              <div className="mt-4 p-4 bg-violet-50 border border-violet-200 rounded-lg flex items-center gap-3">
                 <img
                   src={recipientInfo.profileImage}
                   alt={recipientInfo.fullName}
@@ -128,7 +128,7 @@ export default function WalletTransferPage() {
                     {recipientInfo.verified && (
                       <CheckCircle2
                         size={18}
-                        className="text-blue-600 ml-1 inline"
+                        className="text-violet-600 ml-1 inline"
                       />
                     )}
                   </p>

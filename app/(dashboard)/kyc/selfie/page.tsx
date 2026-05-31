@@ -79,11 +79,11 @@ export default function Selfie() {
         </div>
 
         {/* Tips */}
-        <div className="space-y-3 bg-blue-50 border border-blue-200 rounded-lg p-5">
-          <p className="text-sm font-600 text-blue-900">
+        <div className="space-y-3 bg-violet-50 border border-violet-200 rounded-lg p-5">
+          <p className="text-sm font-600 text-violet-900">
             Tips for best results:
           </p>
-          <ul className="text-sm text-blue-800 space-y-2.5 font-500">
+          <ul className="text-sm text-violet-800 space-y-2.5 font-500">
             <li className="flex items-center gap-2">
               <CheckCircle2 size={16} /> Make sure your face is clearly visible
             </li>

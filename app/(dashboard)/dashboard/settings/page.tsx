@@ -29,7 +29,7 @@ export default function Settings() {
               <div
                 className={`px-4 py-2 rounded-full text-sm font-semibold ${
                   kycStatus === "completed"
-                    ? "bg-blue-100 text-blue-700"
+                    ? "bg-violet-100 text-violet-700"
                     : kycStatus === "expired"
                       ? "bg-gray-100 text-gray-700"
                       : "bg-gray-100 text-gray-700"
@@ -65,7 +65,7 @@ export default function Settings() {
                 <div>
                   <p className="font-semibold text-gray-900">Choose ID Type</p>
                   <p className="text-sm text-gray-600">
-                    Select the type of identification you'll use
+                    Select the type of identification you&apos;ll use
                   </p>
                 </div>
               </div>
@@ -138,8 +138,8 @@ export default function Settings() {
               </Link>
             )}
             {kycStatus === "completed" && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-blue-700 text-sm font-semibold flex items-center gap-2">
+              <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
+                <p className="text-violet-700 text-sm font-semibold flex items-center gap-2">
                   <CheckCircle2 size={18} /> Your identity has been verified.
                   You have access to all features.
                 </p>

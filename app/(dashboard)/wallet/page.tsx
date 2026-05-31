@@ -96,12 +96,12 @@ export default function WalletPage() {
         </div>
         <div className="flex gap-4">
           <Link href="/wallet/topup">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
               + Top Up
             </button>
           </Link>
           <Link href="/wallet/transfer">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
               Transfer
             </button>
           </Link>
@@ -109,10 +109,10 @@ export default function WalletPage() {
       </div>
 
       {/* Overall Balance */}
-      <div className="bg-linear-to-br from-blue-600 to-blue-700 text-white rounded-2xl shadow-lg p-8 mb-8">
-        <p className="text-blue-100 mb-2">Total Balance</p>
+      <div className="bg-linear-to-br from-violet-600 to-violet-700 text-white rounded-2xl shadow-lg p-8 mb-8">
+        <p className="text-violet-100 mb-2">Total Balance</p>
         <h2 className="text-2xl font-bold mb-4">${totalBalance.toFixed(2)}</h2>
-        <p className="text-blue-100">Across all currencies</p>
+        <p className="text-violet-100">Across all currencies</p>
       </div>
 
       {/* My Wallets */}
@@ -138,7 +138,7 @@ export default function WalletPage() {
             mockWallets.reduce((sum, w) => sum + w.totalDeposits, 0),
             "USD",
           )}
-          icon={<Download size={32} className="text-blue-600" />}
+          icon={<Download size={32} className="text-violet-600" />}
         />
         <StatsCard
           label="Total Withdrawn"
@@ -146,7 +146,7 @@ export default function WalletPage() {
             mockWallets.reduce((sum, w) => sum + w.totalWithdrawals, 0),
             "USD",
           )}
-          icon={<Upload size={32} className="text-blue-600" />}
+          icon={<Upload size={32} className="text-violet-600" />}
         />
         <StatsCard
           label="Total Transferred"
@@ -154,12 +154,12 @@ export default function WalletPage() {
             mockWallets.reduce((sum, w) => sum + w.totalTransfers, 0),
             "USD",
           )}
-          icon={<DollarSign size={32} className="text-blue-600" />}
+          icon={<DollarSign size={32} className="text-violet-600" />}
         />
         <StatsCard
           label="Active Wallets"
           value={mockWallets.length}
-          icon={<Briefcase size={32} className="text-blue-600" />}
+          icon={<Briefcase size={32} className="text-violet-600" />}
         />
       </div>
 
@@ -170,7 +170,7 @@ export default function WalletPage() {
             Transaction History
           </h2>
           <Link href="/wallet/history">
-            <button className="text-blue-600 hover:text-blue-700 font-semibold">
+            <button className="text-violet-600 hover:text-violet-700 font-semibold">
               View All
             </button>
           </Link>

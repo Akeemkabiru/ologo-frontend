@@ -14,7 +14,7 @@ export default function VirtualCardsPage() {
           </p>
         </div>
         <Link href="/virtual-cards/create">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+          <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
             + Create Card
           </button>
         </Link>

@@ -109,7 +109,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     <main className="min-h-screen  px-8 pb-8">
       {/* Back Button */}
       <Link href="/events">
-        <button className="text-blue-600 hover:text-blue-700 font-semibold mb-6 flex items-center gap-2">
+        <button className="text-violet-600 hover:text-violet-700 font-semibold mb-6 flex items-center gap-2">
           ← Back to Events
         </button>
       </Link>
@@ -145,7 +145,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                   {mockEvent.host.verified && (
                     <CheckCircle2
                       size={18}
-                      className="text-blue-600 ml-1 inline"
+                      className="text-violet-600 ml-1 inline"
                     />
                   )}
                 </p>
@@ -157,7 +157,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
               {mockEvent.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full"
+                  className="bg-violet-100 text-violet-700 text-xs font-semibold px-3 py-1 rounded-full"
                 >
                   #{tag}
                 </span>
@@ -208,7 +208,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
               </div>
               <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 transition-all"
+                  className="h-full bg-violet-500 transition-all"
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 />
               </div>
@@ -217,7 +217,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             <div className="space-y-3 mb-6 pb-6 border-b border-gray-200">
               <div className="flex justify-between">
                 <span className="text-gray-600">Raised</span>
-                <span className="font-bold text-blue-600">
+                <span className="font-bold text-violet-600">
                   {formatCurrency(mockEvent.amountRaised, mockEvent.currency)}
                 </span>
               </div>

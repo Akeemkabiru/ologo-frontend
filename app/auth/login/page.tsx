@@ -85,7 +85,7 @@ export default function Login() {
                   </svg>
                 }
                 containerClassName=""
-                className="placeholder-gray-400 text-gray-700 border-2 border-gray-200 focus:border-blue-500 transition-colors"
+                className="placeholder-gray-400 text-gray-700 border-2 border-gray-200 focus:border-violet-500 transition-colors"
               />
 
               {/* Password Input */}
@@ -150,7 +150,7 @@ export default function Login() {
                     )}
                   </button>
                 }
-                className="placeholder-gray-400 text-gray-700 border-2 border-gray-200 focus:border-blue-500 transition-colors"
+                className="placeholder-gray-400 text-gray-700 border-2 border-gray-200 focus:border-violet-500 transition-colors"
               />
 
               {/* Remember Me & Forgot Password */}
@@ -162,7 +162,7 @@ export default function Login() {
                 />
                 <Link
                   href="/auth/forgot-password"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                  className="text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
                 >
                   Forgot Password?
                 </Link>
@@ -172,7 +172,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={formik.isSubmitting}
-                className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+                className="w-full bg-violet-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-violet-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 {formik.isSubmitting ? "Signing in..." : "Sign in"}
               </button>
@@ -190,7 +190,7 @@ export default function Login() {
           <div className="grid gap-3 mb-0">
             <button
               type="button"
-              className="w-full border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center justify-center gap-2"
+              className="w-full border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-violet-500 hover:bg-violet-50 hover:text-violet-600 transition-all duration-200 flex items-center justify-center gap-2"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.905-.08 1.81-.78 3.02-.67 1.44.12 2.51.72 3.15 1.81-3.0 1.8-2.48 5.51.48 6.5-.59 1.38-1.38 2.24-2.63 2.93zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
@@ -200,7 +200,7 @@ export default function Login() {
 
             <button
               type="button"
-              className="w-full border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center justify-center gap-2"
+              className="w-full border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-violet-500 hover:bg-violet-50 hover:text-violet-600 transition-all duration-200 flex items-center justify-center gap-2"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -219,7 +219,7 @@ export default function Login() {
             Don&apos;t have an account?{" "}
             <a
               href="/auth/register"
-              className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+              className="font-semibold text-violet-600 hover:text-violet-700 transition-colors"
             >
               Sign up
             </a>

@@ -49,21 +49,21 @@ export default function ForgotPassword() {
               <p className="text-gray-900 font-semibold break-all">{submittedEmail}</p>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <div className="bg-violet-50 border border-violet-200 rounded-lg p-4 mb-8">
               <p className="text-sm text-gray-700">
-                <span className="font-semibold text-blue-900">Note:</span> Check your inbox and follow the link.
+                <span className="font-semibold text-violet-900">Note:</span> Check your inbox and follow the link.
               </p>
             </div>
 
             <div className="space-y-3">
               <Link href="/auth/login">
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg">
+                <button className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-lg">
                   Back to Sign In
                 </button>
               </Link>
               <button
                 onClick={() => setIsSubmitted(false)}
-                className="w-full border-2 border-gray-200 hover:bg-blue-50 text-gray-700 font-semibold py-3 rounded-lg"
+                className="w-full border-2 border-gray-200 hover:bg-violet-50 text-gray-700 font-semibold py-3 rounded-lg"
               >
                 Try another email
               </button>
@@ -112,7 +112,7 @@ export default function ForgotPassword() {
             <p className="text-gray-600 text-sm">
               Back to{" "}
               <Link href="/auth/login">
-                <button className="text-blue-600 hover:text-blue-700 font-semibold">
+                <button className="text-violet-600 hover:text-violet-700 font-semibold">
                   Sign In
                 </button>
               </Link>

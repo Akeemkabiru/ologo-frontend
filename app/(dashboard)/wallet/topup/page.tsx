@@ -66,7 +66,7 @@ export default function WalletTopUpPage() {
     <main className="ml-64 pt-20 px-8 pb-8 max-w-2xl">
       <div className="mb-8">
         <Link href="/wallet">
-          <button className="text-blue-600 hover:text-blue-700 font-semibold mb-4 flex items-center gap-2">
+          <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Wallet
           </button>
         </Link>
@@ -106,9 +106,9 @@ export default function WalletTopUpPage() {
               />
             </div>
             {values.amount && (
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-4 p-4 bg-violet-50 border border-violet-200 rounded-lg">
                 <p className="text-sm text-gray-600">Total to add</p>
-                <p className="text-lg font-bold text-blue-600">
+                <p className="text-lg font-bold text-violet-600">
                   {values.currency} {parseFloat(values.amount).toFixed(2)}
                 </p>
               </div>
@@ -177,7 +177,7 @@ export default function WalletTopUpPage() {
             )}
             {/* Bank Transfer */}
             {values.paymentMethod === "bank" && (
-              <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-6 p-6 bg-violet-50 border border-violet-200 rounded-lg">
                 <p className="text-sm text-gray-600 mb-2">
                   Bank Transfer Details:
                 </p>
