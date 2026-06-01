@@ -74,7 +74,6 @@ export default function ProfilePage() {
     },
     onSubmit: async (values) => {
       try {
-        // TODO: Call userService.updateProfile()
         console.log("Updating profile:", values);
         // Mock success
         await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -4,7 +4,7 @@ export default function VantaClouds() {
   return (
     <div className="fixed inset-0 -z-10 w-screen h-screen overflow-hidden">
       {/* Gradient Background */}
-      <div className="absolute inset-0 bg-linear-to-b from-sky-200 via-sky-100 to-sky-50" />
+      <div className="absolute inset-0 bg-linear-to-b from-violet-400 via-purple-200 to-violet-100" />
 
       {/* Animated SVG Cloud Shapes */}
       <svg

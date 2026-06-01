@@ -15,7 +15,6 @@ import {
   MessageCircle,
   User,
   Settings,
-  BarChart3,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -34,7 +33,6 @@ export default function Sidebar() {
     { icon: MessageCircle, label: "Messages", href: "/chat" },
     { icon: User, label: "Profile", href: "/profile" },
     { icon: Settings, label: "Settings", href: "/dashboard/settings" },
-    { icon: BarChart3, label: "Admin", href: "/admin" },
   ];
 
   return (
