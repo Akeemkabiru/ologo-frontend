@@ -1,12 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {
-  Card,
-  UserCard,
-  EventCard,
-  StatsCard,
-} from "@/components/cards/CardComponents";
+import { Card, EventCard } from "@/components/cards/CardComponents";
 import { formatDateTime } from "@/lib/utils";
 import {
   Form,

@@ -59,12 +59,12 @@ export default function InputField({
           minLength={minLength}
           pattern={pattern}
           readOnly={readOnly}
-          className={`w-full px-4 py-3 border rounded-lg text-base font-500 transition-all ${
+          className={`w-full px-4 py-2 border rounded-lg text-base font-500 shadow-none transition-shadow duration-300 ${
             icon ? "pl-11" : ""
           } ${rightIcon ? "pr-11" : ""} ${
             error
-              ? "border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 text-gray-900 placeholder:text-gray-400"
-              : "border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500"
+              ? "border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-400/60 focus:border-violet-600 focus:shadow-[0_0_25px_rgba(124,58,241,0.8)] text-gray-900 placeholder:text-gray-400"
+              : "border-violet-500 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400/60 focus:border-violet-600 focus:shadow-[0_0_25px_rgba(124,58,241,0.8)]"
           } ${
             disabled
               ? "bg-gray-100 cursor-not-allowed text-gray-500 placeholder:text-gray-400"
