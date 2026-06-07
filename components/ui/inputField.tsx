@@ -12,7 +12,6 @@ export default function InputField({
   disabled = false,
   required = false,
   error = false,
-  errorMessage,
   className = "",
   containerClassName = "",
   autoComplete,
@@ -20,7 +19,6 @@ export default function InputField({
   minLength,
   pattern,
   readOnly = false,
-  icon,
   rightIcon,
   ...rest
 }: IInputField) {
@@ -31,19 +29,15 @@ export default function InputField({
       {label && (
         <label
           htmlFor={inputId}
-          className={`text-sm font-600 ${
+          className={`text-sm font-medium ${
             required ? "after:content-['*'] after:ml-1 after:text-gray-700" : ""
-          } ${error ? "text-gray-700" : "text-gray-800"}`}
+          } `}
         >
           {label}
         </label>
       )}
-      <div className="relative flex items-center">
-        {icon && (
-          <div className="absolute left-4 text-gray-400 flex items-center">
-            {icon}
-          </div>
-        )}
+
+      <div className="relative flex items-center group">
         <input
           id={inputId}
           type={type}
@@ -59,28 +53,46 @@ export default function InputField({
           minLength={minLength}
           pattern={pattern}
           readOnly={readOnly}
-          className={`w-full px-4 py-2 border rounded-lg text-base font-500 shadow-none transition-shadow duration-300 ${
-            icon ? "pl-11" : ""
-          } ${rightIcon ? "pr-11" : ""} ${
-            error
-              ? "border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-400/60 focus:border-violet-600 focus:shadow-[0_0_25px_rgba(124,58,241,0.8)] text-gray-900 placeholder:text-gray-400"
-              : "border-violet-500 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400/60 focus:border-violet-600 focus:shadow-[0_0_25px_rgba(124,58,241,0.8)]"
-          } ${
-            disabled
-              ? "bg-gray-100 cursor-not-allowed text-gray-500 placeholder:text-gray-400"
-              : "bg-white"
-          } ${className}`}
+          className={`
+            w-full px-4 py-2.5 text-sm rounded-2xl
+
+            /* BASE (VISIBLE BRAND BORDER) */
+            bg-white/40 backdrop-blur-xl
+            border-[1.5px] border-[#7f22fe]/60
+
+            text-gray-900 placeholder:text-gray-500
+
+            shadow-sm
+            transition-all duration-300 ease-out
+
+            /* HOVER (slightly stronger border) */
+            hover:border-[#7f22fe]/80
+
+            /* FOCUS (NEON MOMENT) */
+            focus:outline-none
+            focus:bg-white/55
+            focus:border-[#7f22fe]
+            focus:ring-2 focus:ring-[#7f22fe]/30
+            focus:shadow-[0_0_10px_rgba(127,34,254,0.4),0_0_25px_rgba(127,34,254,0.45),0_0_45px_rgba(127,34,254,0.2)]
+
+            /* DISABLED */
+            disabled:bg-gray-100
+            disabled:text-gray-500
+            disabled:border-gray-300
+            disabled:cursor-not-allowed
+
+            ${rightIcon ? "pr-11" : ""}
+            ${className}
+          `}
           {...rest}
         />
+
         {rightIcon && (
-          <div className="absolute right-4 text-gray-400 cursor-pointer flex items-center">
+          <div className="absolute right-4 text-[#7f22fe]/70 group-focus-within:text-[#7f22fe] transition-colors flex items-center">
             {rightIcon}
           </div>
         )}
       </div>
-      {error && errorMessage && (
-        <p className="text-sm font-500 text-gray-700 mt-1">{errorMessage}</p>
-      )}
     </div>
   );
 }

@@ -1,14 +1,11 @@
 "use client";
 
+import { FormButton } from "@/components/forms/FormComponents";
 import InputField from "@/components/ui/inputField";
-import Link from "next/link";
-import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const PersonalInfoSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   dateOfBirth: Yup.string().required("Date of birth is required"),
   nationality: Yup.string().required("Nationality is required"),
@@ -41,7 +38,7 @@ export default function PersonalInfo() {
   return (
     <div className="flex flex-col">
       {/* Title */}
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <h1 className="text-xl font-bold text-gray-900 mb-2">
         Tell us about yourself
       </h1>
 
@@ -51,44 +48,10 @@ export default function PersonalInfo() {
       </p>
 
       {/* Form */}
-      <form onSubmit={formik.handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
-          <InputField
-            label="First Name"
-            type="text"
-            placeholder="John"
-            value={formik.values.firstName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            name="firstName"
-            error={formik.touched.firstName && !!formik.errors.firstName}
-            errorMessage={formik.errors.firstName}
-          />
-          <InputField
-            label="Last Name"
-            type="text"
-            placeholder="Doe"
-            value={formik.values.lastName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            name="lastName"
-            error={formik.touched.lastName && !!formik.errors.lastName}
-            errorMessage={formik.errors.lastName}
-          />
-        </div>
-
-        <InputField
-          label="Email Address"
-          type="email"
-          placeholder="john@example.com"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          name="email"
-          error={formik.touched.email && !!formik.errors.email}
-          errorMessage={formik.errors.email}
-        />
-
+      <form
+        onSubmit={formik.handleSubmit}
+        className="space-y-6 grid grid-cols-2 gap-x-4"
+      >
         <InputField
           label="Date of Birth"
           type="date"
@@ -150,13 +113,10 @@ export default function PersonalInfo() {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="block text-center w-full py-3 rounded-lg font-semibold transition-all duration-200 bg-violet-600 hover:bg-violet-700 text-white mt-8"
-        >
-          Continue to Next Step
-        </button>
       </form>
+      <FormButton type="submit" className=" w-full">
+        Continue to Next Step
+      </FormButton>
     </div>
   );
 }

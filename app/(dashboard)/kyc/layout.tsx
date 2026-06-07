@@ -5,13 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 const steps = [
   { id: 1, name: "ID Type", path: "/kyc" },
   { id: 2, name: "Personal Info", path: "/kyc/personal-info" },
-  { id: 3, name: "ID Upload", path: "/kyc/id-upload" },
-  { id: 4, name: "Selfie", path: "/kyc/selfie" },
-  { id: 5, name: "Verification", path: "/kyc/verification" },
+  { id: 3, name: "Selfie", path: "/kyc/selfie" },
+  { id: 4, name: "Verification", path: "/kyc/verification" },
 ];
 
 export default function KYCLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
 
   const currentStep =
@@ -19,28 +17,9 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
   const progress = (currentStep / steps.length) * 100;
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-8 pb-8">
-      <div className="max-w-3xl">
+    <main className="flex items-center w-full justify-center ">
+      <div className="rounded-2xl border-white/10 w-fit bg-white/20 backdrop-blur-xl shadow-2xl p-8">
         {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="text-violet-600 hover:text-violet-700 font-medium mb-8 flex items-center gap-2 transition-colors"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
-        </button>
 
         {/* Progress Section */}
         <div className="mb-12">
@@ -60,7 +39,7 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
               ></div>
             </div>
           </div>
-          <div className="grid grid-cols-5 gap-2 mt-6">
+          <div className="grid grid-cols-4 gap-2 mt-6 ">
             {steps.map((step) => (
               <div key={step.id} className="text-center">
                 <div
