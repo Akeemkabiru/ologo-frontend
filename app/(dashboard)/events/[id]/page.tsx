@@ -166,7 +166,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           </div>
           {/* Description */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               About This Event
             </h2>
             <p className="text-gray-700 leading-relaxed">
@@ -175,7 +175,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           </div>
           {/* Donations Section */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
               Recent Donations
             </h2>
             <div className="space-y-4">

@@ -108,7 +108,7 @@ export default function CreateMembershipPage() {
               name="description"
               value={values.description}
               onChange={handleChange}
-              onBlur={handleBlur as any}
+              onBlur={handleBlur}
               error={touched.description && !!errors.description}
               errorMessage={errors.description}
               required

@@ -99,7 +99,7 @@ export default function Register() {
         >
           {/* Header Section */}
           <motion.div className="mb-8 text-center" variants={itemVariants}>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-900 to-violet-600 bg-clip-text text-transparent mb-3">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-900 to-violet-600 bg-clip-text text-transparent mb-3">
               Create Account
             </h1>
             <p className="text-gray-500 text-base">

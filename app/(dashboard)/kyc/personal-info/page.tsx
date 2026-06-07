@@ -46,7 +46,7 @@ export default function PersonalInfo() {
       </h1>
 
       {/* Subtitle */}
-      <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
         We need your personal information to verify your identity
       </p>
 

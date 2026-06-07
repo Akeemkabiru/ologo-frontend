@@ -155,7 +155,7 @@ export default function ProfilePage() {
           {/* Profile Edit Form */}
           <Card className="mb-8">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="text-xl font-bold text-gray-900">
                 Profile Information
               </h2>
               {!isEditing && (
@@ -200,7 +200,6 @@ export default function ProfilePage() {
                   name="about"
                   value={values.about}
                   onChange={handleChange}
-                  onBlur={handleBlur as any}
                   className="min-h-24"
                 />
                 <div className="flex gap-4 mt-6">
@@ -249,7 +248,7 @@ export default function ProfilePage() {
           </Card>
           {/* Account Security */}
           <Card className="mb-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
               Account Security
             </h2>
             <div className="space-y-4">
@@ -294,7 +293,7 @@ export default function ProfilePage() {
           </Card>
           {/* My Events */}
           <Card>
-            <h2 className="text-lg font-bold text-gray-900 mb-6">My Events</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">My Events</h2>
             <div className="grid grid-cols-1 gap-6">
               {mockUserEvents.map((event) => (
                 <Link key={event.id} href={`/events/${event.id}`}>

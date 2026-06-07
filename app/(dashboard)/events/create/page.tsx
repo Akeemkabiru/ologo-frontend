@@ -92,7 +92,7 @@ export default function CreateEventPage() {
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}
           <div className="mb-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
               Basic Information
             </h2>
             <FormInput
@@ -112,7 +112,7 @@ export default function CreateEventPage() {
               name="description"
               value={values.description}
               onChange={handleChange}
-              onBlur={handleBlur as any}
+              onBlur={handleBlur}
               error={touched.description && !!errors.description}
               errorMessage={errors.description}
               required
@@ -159,7 +159,7 @@ export default function CreateEventPage() {
           </div>
           {/* Fundraising Details */}
           <div className="mb-8 border-t border-gray-200 pt-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
               Fundraising Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

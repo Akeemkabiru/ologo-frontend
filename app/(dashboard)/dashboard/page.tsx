@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import {
   Wallet,
   TrendingUp,
-  Send,
   Download,
   Search,
   Filter,
@@ -15,7 +14,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Trash2,
-  FileText,
 } from "lucide-react";
 
 export default function UserDashboard() {
