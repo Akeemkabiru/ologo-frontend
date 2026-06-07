@@ -298,9 +298,12 @@ export default function UserDashboard() {
       >
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">
-              Transaction History
-            </h3>
+            <div className="flex items-center gap-x-6">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Transaction History
+              </h3>
+              <h3 className="text-lg font-semibold text-gray-900">Future</h3>
+            </div>
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode("list")}

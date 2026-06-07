@@ -169,6 +169,7 @@ export default function WalletPage() {
           <h2 className="text-xl font-bold text-gray-900">
             Transaction History
           </h2>
+
           <Link href="/wallet/history">
             <button className="text-violet-600 hover:text-violet-700 font-semibold">
               View All

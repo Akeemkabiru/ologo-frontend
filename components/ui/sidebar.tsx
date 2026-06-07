@@ -13,8 +13,6 @@ import {
   Lock,
   CreditCard,
   MessageCircle,
-  User,
-  Settings,
   Menu,
   X,
 } from "lucide-react";
@@ -34,8 +32,6 @@ export default function Sidebar() {
     { icon: Lock, label: "Escrow", href: "/escrow" },
     { icon: CreditCard, label: "Virtual Cards", href: "/virtual-cards" },
     { icon: MessageCircle, label: "Messages", href: "/chat" },
-    { icon: User, label: "Profile", href: "/profile" },
-    { icon: Settings, label: "Settings", href: "/dashboard/settings" },
   ];
 
   return (
