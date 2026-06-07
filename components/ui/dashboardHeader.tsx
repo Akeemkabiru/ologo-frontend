@@ -2,7 +2,7 @@
 
 export default function DashboardHeader() {
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-40 w-full">
+    <header className=" border-white/10  bg-white/20 backdrop-blur-xl shadow-2xl sticky top-0 z-40 w-full">
       <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 md:py-5 gap-4 min-h-[60px]">
         {/* Title */}
         <h1 className="text-base md:text-lg font-bold text-gray-900 pl-12 md:pl-0">
@@ -11,28 +11,6 @@ export default function DashboardHeader() {
 
         {/* Right Section */}
         <div className="flex items-center gap-3 md:gap-6">
-          {/* Search - Hidden on mobile */}
-          <div className="relative hidden lg:block">
-            <input
-              type="text"
-              placeholder="Search for something"
-              className="w-48 lg:w-64 px-4 py-2.5 bg-gray-100 rounded-lg text-sm font-500 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all"
-            />
-            <svg
-              className="absolute right-3 top-3 w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-
           {/* Icons */}
           <div className="flex items-center gap-2 md:gap-5">
             {/* Settings */}

@@ -198,7 +198,7 @@ export default function UserDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + idx * 0.1 }}
-            className="bg-white rounded-2xl border border-gray-200 p-6"
+            className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -214,31 +214,80 @@ export default function UserDashboard() {
       </motion.div>
 
       {/* Wallet Card */}
-      <motion.div
-        className="mb-10"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="bg-violet-600 w-fit rounded-2xl text-white p-8 shadow-lg">
-          <p className="text-violet-100 text-sm font-medium mb-2">
-            Wallet Balance
-          </p>
-          <div className="flex items-end justify-between">
-            <div>
-              <h2 className="text-3xl font-bold mb-1">
-                ${walletBalance.toFixed(2)}
-              </h2>
-              <p className="text-violet-100">{walletCurrency}</p>
-            </div>
-            <Link href="/wallet/topup" className="ml-6">
-              <button className="bg-white/20 hover:bg-white/30 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
+      <div className="grid grid-cols-3 gap-6 w-full">
+        <motion.div
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+            <p className="text-violet-100 text-sm font-medium mb-2">
+              Wallet Balance
+            </p>
+            <div className="flex items-end justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-1">
+                  ${walletBalance.toFixed(2)}
+                </h2>
+                <p className="text-violet-100">{walletCurrency}</p>
+              </div>
+
+              <button className="bg-white/20 hover:bg-white/30 text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
                 + Top Up
               </button>
-            </Link>
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+            <p className="text-violet-100 text-sm font-medium mb-2">Escrow</p>
+            <div className="flex items-end justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-1">
+                  ${walletBalance.toFixed(2)}
+                </h2>
+                <p className="text-violet-100">{walletCurrency}</p>
+              </div>
+
+              <button className="bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                + Create Escrow
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+            <p className="text-violet-100 text-sm font-medium mb-2">
+              Future Fund
+            </p>
+            <div className="flex items-end justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-1">
+                  ${walletBalance.toFixed(2)}
+                </h2>
+                <p className="text-violet-100">{walletCurrency}</p>
+              </div>
+
+              <button className="bg-white/20 hover:bg-white/30 w-fit text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
+                + Create Escrow
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Transactions Section */}
       <motion.div
@@ -258,7 +307,7 @@ export default function UserDashboard() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   viewMode === "list"
                     ? "bg-violet-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700"
                 }`}
               >
                 List
@@ -268,7 +317,7 @@ export default function UserDashboard() {
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   viewMode === "calendar"
                     ? "bg-violet-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700 "
                 }`}
               >
                 Calendar
@@ -291,13 +340,13 @@ export default function UserDashboard() {
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
               />
             </div>
-            <button className="px-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg hover: flex items-center gap-2 font-medium text-gray-700">
+            <button className="px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
               <Filter size={18} />
               Filter
             </button>
             <button
               onClick={() => handleExport("csv")}
-              className="px-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg hover: flex items-center gap-2 font-medium text-gray-700"
+              className="px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
             >
               <Download size={18} />
               Export
@@ -326,15 +375,15 @@ export default function UserDashboard() {
 
         {/* List View */}
         {viewMode === "list" && (
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden text-sm">
+          <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6 overflow-hidden text-sm">
             {filteredTransactions.length > 0 ? (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y-2 divide-white">
                 {filteredTransactions.map((tx) => (
                   <motion.div
                     key={tx.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="p-6 hover: transition-colors cursor-pointer group"
+                    className="p-5 hover: transition-colors cursor-pointer group"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4 flex-1">
@@ -380,7 +429,7 @@ export default function UserDashboard() {
 
         {/* Calendar View */}
         {viewMode === "calendar" && (
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h4 className="text-lg font-bold text-gray-900">
                 {selectedMonth.toLocaleDateString("en-US", {
@@ -488,7 +537,7 @@ export default function UserDashboard() {
                 key={tx.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-white rounded-2xl text-sm border border-gray-200 p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-6 cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-4">
                   <Link href={`/groups/${tx.groupId}`}>
@@ -559,7 +608,7 @@ export default function UserDashboard() {
               key={group.id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+              className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6 hover:shadow-lg transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
                 <Link href={`/groups/${group.id}`}>
@@ -605,7 +654,7 @@ export default function UserDashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Spending Chart */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
             <h4 className="font-semibold text-gray-900 mb-4">
               Spending by Category
             </h4>
@@ -637,7 +686,7 @@ export default function UserDashboard() {
           </div>
 
           {/* Activity Stats */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
             <h4 className="font-semibold text-gray-900 mb-4">
               Activity Summary
             </h4>

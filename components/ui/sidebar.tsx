@@ -62,12 +62,12 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed w-64 bg-white border-r border-gray-200 h-screen overflow-y-auto transition-transform duration-300 z-40 left-0 top-0 ${
+        className={`fixed w-64 border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl scrollbar-none h-screen overflow-y-auto transition-transform duration-300 z-40 left-0 top-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* Logo */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-gray-200">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
               O
@@ -77,7 +77,7 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="mt-8 px-4">
+        <nav className="mt-8 px-4  ">
           <div className="space-y-2">
             {menuItems.map((item) => {
               const isActive = pathname === item.href;

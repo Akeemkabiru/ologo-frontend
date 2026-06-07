@@ -31,7 +31,7 @@ export default function InputField({
           htmlFor={inputId}
           className={`text-sm font-medium ${
             required ? "after:content-['*'] after:ml-1 after:text-gray-700" : ""
-          } `}
+          } ${error ? "text-red-500" : "text-gray-800"}`}
         >
           {label}
         </label>
@@ -54,7 +54,7 @@ export default function InputField({
           pattern={pattern}
           readOnly={readOnly}
           className={`
-            w-full px-4 py-2.5 text-sm rounded-2xl
+            w-full px-4 py-2.5 text-sm rounded-lg
 
             /* BASE (VISIBLE BRAND BORDER) */
             bg-white/40 backdrop-blur-xl
