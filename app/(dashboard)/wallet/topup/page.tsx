@@ -89,7 +89,6 @@ export default function WalletTopUpPage() {
                 step="0.01"
                 value={values.amount}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.amount && !!errors.amount}
                 errorMessage={errors.amount}
                 required
@@ -140,7 +139,6 @@ export default function WalletTopUpPage() {
                   name="cardNumber"
                   value={values.cardNumber || ""}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   error={touched.cardNumber && !!errors.cardNumber}
                   errorMessage={errors.cardNumber}
                 />
@@ -151,7 +149,6 @@ export default function WalletTopUpPage() {
                     name="expiryDate"
                     value={values.expiryDate || ""}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     error={touched.expiryDate && !!errors.expiryDate}
                     errorMessage={errors.expiryDate}
                   />
@@ -162,7 +159,6 @@ export default function WalletTopUpPage() {
                     type="password"
                     value={values.cvv || ""}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     error={touched.cvv && !!errors.cvv}
                     errorMessage={errors.cvv}
                   />

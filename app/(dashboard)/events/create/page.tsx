@@ -101,7 +101,6 @@ export default function CreateEventPage() {
               name="name"
               value={values.name}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={touched.name && !!errors.name}
               errorMessage={errors.name}
               required
@@ -145,7 +144,6 @@ export default function CreateEventPage() {
                 name="tags"
                 value={values.tags}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 helperText="Comma-separated tags for discoverability"
               />
               <FormCheckbox
@@ -169,7 +167,6 @@ export default function CreateEventPage() {
                 type="number"
                 value={values.expectedAmount}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.expectedAmount && !!errors.expectedAmount}
                 errorMessage={errors.expectedAmount}
                 required
@@ -193,7 +190,6 @@ export default function CreateEventPage() {
                 type="date"
                 value={values.expectedDate}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.expectedDate && !!errors.expectedDate}
                 errorMessage={errors.expectedDate}
                 required

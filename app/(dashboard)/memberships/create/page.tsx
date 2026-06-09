@@ -96,7 +96,6 @@ export default function CreateMembershipPage() {
               name="name"
               value={values.name}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={touched.name && !!errors.name}
               errorMessage={errors.name}
               required
@@ -108,7 +107,6 @@ export default function CreateMembershipPage() {
               name="description"
               value={values.description}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={touched.description && !!errors.description}
               errorMessage={errors.description}
               required
@@ -139,7 +137,6 @@ export default function CreateMembershipPage() {
                 step="0.01"
                 value={values.membershipAmount}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.membershipAmount && !!errors.membershipAmount}
                 errorMessage={errors.membershipAmount}
                 required

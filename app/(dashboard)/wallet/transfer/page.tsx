@@ -102,7 +102,6 @@ export default function WalletTransferPage() {
                 type="email"
                 value={values.recipientEmail}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.recipientEmail && !!errors.recipientEmail}
                 errorMessage={errors.recipientEmail}
                 className="flex-1"
@@ -149,7 +148,6 @@ export default function WalletTransferPage() {
                 step="0.01"
                 value={values.amount}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={touched.amount && !!errors.amount}
                 errorMessage={errors.amount}
                 required
@@ -200,7 +198,6 @@ export default function WalletTransferPage() {
                   step="0.01"
                   value={values.frequencyAmount || ""}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   error={touched.frequencyAmount && !!errors.frequencyAmount}
                   errorMessage={errors.frequencyAmount}
                 />

@@ -174,7 +174,6 @@ export default function ProfilePage() {
                   name="fullName"
                   value={values.fullName}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   error={touched.fullName && !!errors.fullName}
                   errorMessage={errors.fullName}
                 />
@@ -184,7 +183,6 @@ export default function ProfilePage() {
                   name="email"
                   value={values.email}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   error={touched.email && !!errors.email}
                   errorMessage={errors.email}
                 />
@@ -193,7 +191,6 @@ export default function ProfilePage() {
                   name="phone"
                   value={values.phone}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                 />
                 <FormTextarea
                   label="About"
