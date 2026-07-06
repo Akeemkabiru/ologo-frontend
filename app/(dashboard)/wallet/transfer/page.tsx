@@ -78,7 +78,7 @@ export default function WalletTransferPage() {
     });
   };
   return (
-    <main className="ml-64 pt-20 px-8 pb-8 max-w-2xl">
+    <main className="px-4 sm:px-6 md:px-8 pt-6 pb-8 max-w-2xl">
       <div className="mb-8">
         <Link href="/wallet">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
@@ -90,7 +90,7 @@ export default function WalletTransferPage() {
           Transfer funds to another user or wallet
         </p>
       </div>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Recipient Section */}
           <div className="mb-8">

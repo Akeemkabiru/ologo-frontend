@@ -17,8 +17,8 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
   const progress = (currentStep / steps.length) * 100;
 
   return (
-    <main className="flex items-center w-full justify-center ">
-      <div className="rounded-2xl border-white/10 w-fit bg-white/20 backdrop-blur-xl shadow-2xl p-8">
+    <main className="flex items-center w-full justify-center px-4 py-8">
+      <div className="rounded-2xl border-white/10 w-full max-w-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-5 sm:p-6 md:p-8">
         {/* Back Button */}
 
         {/* Progress Section */}

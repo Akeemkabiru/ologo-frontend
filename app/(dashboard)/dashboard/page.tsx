@@ -171,7 +171,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <main className="min-h-screen px-8 pb-16">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-16">
       {/* Welcome Section */}
       <motion.div
         className="mb-8"
@@ -214,7 +214,7 @@ export default function UserDashboard() {
       </motion.div>
 
       {/* Wallet Card */}
-      <div className="grid grid-cols-3 gap-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         <motion.div
           className="mb-10"
           initial={{ opacity: 0, y: 20 }}
@@ -297,7 +297,7 @@ export default function UserDashboard() {
         className="mb-10"
       >
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div className="flex items-center gap-x-6">
               <h3 className="text-lg font-semibold text-gray-900">
                 Transaction History
@@ -329,7 +329,7 @@ export default function UserDashboard() {
           </div>
 
           {/* Search & Filter */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
             <div className="flex-1 relative">
               <Search
                 size={18}
@@ -343,17 +343,19 @@ export default function UserDashboard() {
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
               />
             </div>
-            <button className="px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
-              <Filter size={18} />
-              Filter
-            </button>
-            <button
-              onClick={() => handleExport("csv")}
-              className="px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
-            >
-              <Download size={18} />
-              Export
-            </button>
+            <div className="flex gap-3">
+              <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
+                <Filter size={18} />
+                Filter
+              </button>
+              <button
+                onClick={() => handleExport("csv")}
+                className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
+              >
+                <Download size={18} />
+                Export
+              </button>
+            </div>
           </div>
 
           {/* Tabs */}

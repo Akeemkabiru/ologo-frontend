@@ -50,7 +50,7 @@ export default function EditProfile() {
     alert("Profile updated successfully!");
   };
   return (
-      <main className="min-h-screen bg-gray-50 px-8 pb-16">
+      <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-16">
         {/* Header */}
         <motion.div
           className="mb-8"
@@ -72,7 +72,7 @@ export default function EditProfile() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Profile Picture Section */}
           <motion.div
-            className="bg-white rounded-2xl border border-gray-200 p-8"
+            className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -80,7 +80,7 @@ export default function EditProfile() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Profile Picture
             </h2>
-            <div className="flex items-center gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
               <div className="flex-shrink-0">
                 <div className="w-32 h-32 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                   {profileImage ? (
@@ -94,7 +94,7 @@ export default function EditProfile() {
                   )}
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload size={32} className="text-gray-400 mb-2" />
@@ -118,7 +118,7 @@ export default function EditProfile() {
           </motion.div>
           {/* Personal Information Section */}
           <motion.div
-            className="bg-white rounded-2xl border border-gray-200 p-8"
+            className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -191,7 +191,7 @@ export default function EditProfile() {
           </motion.div>
           {/* Address Section */}
           <motion.div
-            className="bg-white rounded-2xl border border-gray-200 p-8"
+            className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -262,7 +262,7 @@ export default function EditProfile() {
           </motion.div>
           {/* Identification Section */}
           <motion.div
-            className="bg-white rounded-2xl border border-gray-200 p-8"
+            className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}

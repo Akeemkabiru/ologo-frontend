@@ -79,7 +79,7 @@ export default function ProfilePage() {
     },
   });
   return (
-    <main className="min-h-screen bg-gray-50 px-8 pb-8">
+    <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>

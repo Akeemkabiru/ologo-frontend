@@ -6,7 +6,7 @@ import { Card, EmptyState } from "@/components/cards/CardComponents";
 import { MessageCircle } from "lucide-react";
 export default function ChatPage() {
   return (
-    <main className="min-h-screen  px-8 pb-8 flex flex-col">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8 flex flex-col">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Messages</h1>
         <p className="text-gray-600 mt-1">

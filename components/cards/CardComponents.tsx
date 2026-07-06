@@ -37,7 +37,7 @@ export const Card: React.FC<CardProps> = ({
           ? { y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }
           : {}
       }
-      className={`bg-white rounded-2xl border border-gray-200/50 p-6 ${
+      className={`bg-white rounded-2xl border border-gray-200/50 p-4 sm:p-6 ${
         hoverable ? "cursor-pointer" : ""
       } ${className || ""}`}
     >

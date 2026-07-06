@@ -8,9 +8,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <body className="min-h-screen relative">
+    <div className="min-h-screen relative">
       <VantaClouds />
       <div className="relative z-10">{children}</div>
-    </body>
+    </div>
   );
 }

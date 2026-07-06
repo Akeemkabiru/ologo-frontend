@@ -33,7 +33,7 @@ export default function ForgotPassword() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="rounded-4xl border flex flex-col items-center border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8 text-center">
+          <div className="rounded-4xl border flex flex-col items-center border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8 text-center">
             {/* Icon */}
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
               <svg
@@ -61,7 +61,7 @@ export default function ForgotPassword() {
             </div>
 
             {/* Note */}
-            <div className="bg-white/30 border border-[#7f22fe]/20 rounded-2xl p-4 mb-6 text-left w-fit">
+            <div className="bg-white/30 border border-[#7f22fe]/20 rounded-2xl p-4 mb-6 text-left w-full">
               <p className="text-sm text-gray-700">
                 Follow the link in your inbox to reset your password.
               </p>
@@ -91,7 +91,7 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8">
+        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
           {/* Header */}
           <div className="mb-10 space-y-1">
             <h1 className="text-lg font-bold text-gray-900">Reset password</h1>

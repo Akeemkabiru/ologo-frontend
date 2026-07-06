@@ -106,7 +106,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     }
   };
   return (
-    <main className="min-h-screen  px-8 pb-8">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8">
       {/* Back Button */}
       <Link href="/events">
         <button className="text-violet-600 hover:text-violet-700 font-semibold mb-6 flex items-center gap-2">

@@ -49,9 +49,9 @@ export default function EventsPage() {
     return matchesSearch && matchesStatus;
   });
   return (
-    <main className="min-h-screen  px-8 pb-8">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Events</h1>
           <p className="text-gray-600 mt-1">
@@ -59,7 +59,7 @@ export default function EventsPage() {
           </p>
         </div>
         <Link href="/events/create">
-          <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+          <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
             + Create Event
           </button>
         </Link>

@@ -5,7 +5,7 @@ import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
 export default function Settings() {
   const [kycStatus, setKycStatus] = useState("pending"); // pending, completed, expired
   return (
-    <main className="min-h-screen bg-gray-50 px-8 pb-8">
+    <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-8">
       <div className="max-w-3xl">
         {/* Page Title */}
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>

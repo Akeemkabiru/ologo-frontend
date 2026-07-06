@@ -70,7 +70,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         {/* Card (same as login) */}
-        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8 transition-all duration-300">
+        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8 transition-all duration-300">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-lg font-bold text-gray-900 mb-1">
@@ -83,7 +83,7 @@ export default function Register() {
           <form onSubmit={formik.handleSubmit} className="grid gap-4">
             <div className="grid gap-5">
               {/* First Name */}
-              <div className="grid gap-x-3 grid-cols-2">
+              <div className="grid gap-x-3 gap-y-5 grid-cols-1 sm:grid-cols-2">
                 {" "}
                 <InputField
                   type="text"

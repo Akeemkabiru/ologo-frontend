@@ -50,7 +50,7 @@ export default function PersonalInfo() {
       {/* Form */}
       <form
         onSubmit={formik.handleSubmit}
-        className="space-y-6 grid grid-cols-2 gap-x-4"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-4 sm:gap-y-6"
       >
         <InputField
           label="Date of Birth"
@@ -85,9 +85,10 @@ export default function PersonalInfo() {
           name="address"
           error={formik.touched.address && !!formik.errors.address}
           errorMessage={formik.errors.address}
+          containerClassName="sm:col-span-2"
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:col-span-2">
           <InputField
             label="City"
             type="text"

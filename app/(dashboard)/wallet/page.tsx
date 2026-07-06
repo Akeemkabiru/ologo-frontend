@@ -85,23 +85,23 @@ export default function WalletPage() {
   const totalBalance = mockWallets.reduce((sum, w) => sum + w.balance, 0);
 
   return (
-    <main className="min-h-screen  px-8 pb-8">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Wallet</h1>
           <p className="text-gray-600 mt-1">
             Manage your funds across multiple currencies
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Link href="/wallet/topup">
-            <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
               + Top Up
             </button>
           </Link>
           <Link href="/wallet/transfer">
-            <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
               Transfer
             </button>
           </Link>
@@ -109,7 +109,7 @@ export default function WalletPage() {
       </div>
 
       {/* Overall Balance */}
-      <div className="bg-linear-to-br from-violet-600 to-violet-700 text-white rounded-2xl shadow-lg p-8 mb-8">
+      <div className="bg-linear-to-br from-violet-600 to-violet-700 text-white rounded-2xl shadow-lg p-5 sm:p-6 md:p-8 mb-8">
         <p className="text-violet-100 mb-2">Total Balance</p>
         <h2 className="text-2xl font-bold mb-4">${totalBalance.toFixed(2)}</h2>
         <p className="text-violet-100">Across all currencies</p>

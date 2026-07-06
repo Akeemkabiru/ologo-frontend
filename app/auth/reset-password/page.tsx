@@ -43,7 +43,7 @@ function ResetPasswordForm() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8 text-center">
+          <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
                 <svg
@@ -80,7 +80,7 @@ function ResetPasswordForm() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8 text-center">
+          <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8 text-center">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-100 flex items-center justify-center">
               <svg
                 className="w-8 h-8 text-red-600"
@@ -122,7 +122,7 @@ function ResetPasswordForm() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-8">
+        <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-lg font-bold text-gray-900 mb-1">

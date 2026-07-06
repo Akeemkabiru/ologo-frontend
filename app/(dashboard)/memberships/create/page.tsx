@@ -67,7 +67,7 @@ export default function CreateMembershipPage() {
   });
 
   return (
-    <main className="min-h-screen  px-8 pb-8 max-w-2xl">
+    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8 max-w-2xl">
       <div className="mb-8">
         <Link href="/memberships">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
@@ -82,7 +82,7 @@ export default function CreateMembershipPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}
           <div className="mb-8">
