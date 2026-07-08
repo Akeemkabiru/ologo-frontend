@@ -174,12 +174,12 @@ export default function UserDashboard() {
     <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-16">
       {/* Welcome Section */}
       <motion.div
-        className="mb-8"
+        className="mb-5 sm:mb-6 md:mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome back!</h1>
         <p className="text-gray-600 font-medium">
           Here&apos;s an overview of your wallet and transactions
         </p>
@@ -187,7 +187,7 @@ export default function UserDashboard() {
 
       {/* Quick Stats */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.1, staggerChildren: 0.05 }}
@@ -198,7 +198,7 @@ export default function UserDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + idx * 0.1 }}
-            className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6"
+            className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -214,9 +214,9 @@ export default function UserDashboard() {
       </motion.div>
 
       {/* Wallet Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 w-full">
         <motion.div
-          className="mb-10"
+          className="mb-6 sm:mb-8 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -241,7 +241,7 @@ export default function UserDashboard() {
         </motion.div>
 
         <motion.div
-          className="mb-10"
+          className="mb-6 sm:mb-8 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -264,7 +264,7 @@ export default function UserDashboard() {
         </motion.div>
 
         <motion.div
-          className="mb-10"
+          className="mb-6 sm:mb-8 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -294,7 +294,7 @@ export default function UserDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="mb-10"
+        className="mb-6 sm:mb-8 md:mb-10"
       >
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -380,7 +380,7 @@ export default function UserDashboard() {
 
         {/* List View */}
         {viewMode === "list" && (
-          <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6 overflow-hidden text-sm">
+          <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
             {filteredTransactions.length > 0 ? (
               <div className="divide-y-2 divide-white">
                 {filteredTransactions.map((tx) => (
@@ -434,7 +434,7 @@ export default function UserDashboard() {
 
         {/* Calendar View */}
         {viewMode === "calendar" && (
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
             <div className="flex items-center justify-between mb-6">
               <h4 className="text-lg font-bold text-gray-900">
                 {selectedMonth.toLocaleDateString("en-US", {
@@ -535,14 +535,14 @@ export default function UserDashboard() {
           Upcoming Transactions
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {futureTransactions.length > 0 ? (
             futureTransactions.map((tx) => (
               <motion.div
                 key={tx.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-4">
                   <Link href={`/groups/${tx.groupId}`}>
@@ -603,17 +603,17 @@ export default function UserDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="mt-12"
+        className="mt-5 sm:mt-6 md:mt-8 sm:mt-10 md:mt-12"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6">Your Groups</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           {userGroups.map((group) => (
             <motion.div
               key={group.id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6 hover:shadow-lg transition-shadow"
+              className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 hover:shadow-lg transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
                 <Link href={`/groups/${group.id}`}>
@@ -651,15 +651,15 @@ export default function UserDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="mt-12"
+        className="mt-5 sm:mt-6 md:mt-8 sm:mt-10 md:mt-12"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6">
           Analytics & Metrics
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {/* Spending Chart */}
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
             <h4 className="font-semibold text-gray-900 mb-4">
               Spending by Category
             </h4>
@@ -691,7 +691,7 @@ export default function UserDashboard() {
           </div>
 
           {/* Activity Stats */}
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-6">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
             <h4 className="font-semibold text-gray-900 mb-4">
               Activity Summary
             </h4>

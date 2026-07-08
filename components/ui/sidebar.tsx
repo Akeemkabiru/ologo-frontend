@@ -39,7 +39,7 @@ export default function Sidebar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 hover:bg-gray-100 rounded-lg bg-white"
+        className={`${pathname === "/wallet" ? "hidden" : "md:hidden"} fixed top-4 left-4 z-50 p-2 hover:bg-gray-100 rounded-lg bg-white`}
       >
         {isOpen ? (
           <X size={24} className="text-gray-900" />
@@ -63,7 +63,7 @@ export default function Sidebar() {
         }`}
       >
         {/* Logo */}
-        <div className="p-6 border-gray-200">
+        <div className="p-4 sm:p-5 md:p-6 border-gray-200">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
               O
@@ -73,7 +73,7 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="mt-8 px-4  ">
+        <nav className="mt-5 sm:mt-6 md:mt-8 px-4  ">
           <div className="space-y-2">
             {menuItems.map((item) => {
               const isActive = pathname === item.href;

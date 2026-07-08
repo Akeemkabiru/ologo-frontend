@@ -9,15 +9,15 @@ export default function Selfie() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Take a selfie</h1>
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Take a selfie</h1>
 
-      <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+      <p className="text-gray-600 text-sm sm:text-base mb-5 sm:mb-6 md:mb-8 leading-relaxed">
         We need to verify that it's really you. Please take a clear photo of
         your face
       </p>
 
       {/* Camera/Selfie Area */}
-      <div className="mb-12">
+      <div className="mb-5 sm:mb-6 md:mb-8 sm:mb-10 md:mb-12">
         {captureSelfie ? (
           <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-xl aspect-square flex items-center justify-center overflow-hidden mb-6 relative shadow-lg">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -98,7 +98,7 @@ export default function Selfie() {
       {captureSelfie && (
         <Link
           href="/kyc/verification"
-          className="block text-center w-full py-3 rounded-lg font-semibold transition-all duration-200 bg-violet-600 hover:bg-violet-700 text-white mt-8"
+          className="block text-center w-full py-3 rounded-lg font-semibold transition-all duration-200 bg-violet-600 hover:bg-violet-700 text-white mt-5 sm:mt-6 md:mt-8"
         >
           Continue to Verification
         </Link>

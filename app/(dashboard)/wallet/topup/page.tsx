@@ -64,13 +64,13 @@ export default function WalletTopUpPage() {
   });
   return (
     <main className="px-4 sm:px-6 md:px-8 pt-6 pb-8 max-w-2xl">
-      <div className="mb-8">
+      <div className="mb-5 sm:mb-6 md:mb-8">
         <Link href="/wallet">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Wallet
           </button>
         </Link>
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Top Up Wallet</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">Top Up Wallet</h1>
         <p className="text-gray-600">
           Add funds to your wallet using your preferred payment method
         </p>
@@ -78,9 +78,9 @@ export default function WalletTopUpPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Amount Section */}
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-6 md:mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Amount</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <FormInput
                 label="Amount"
                 placeholder="100"
@@ -114,7 +114,7 @@ export default function WalletTopUpPage() {
             )}
           </div>
           {/* Payment Method */}
-          <div className="mb-8 border-t border-gray-200 pt-8">
+          <div className="mb-5 sm:mb-6 md:mb-8 border-t border-gray-200 pt-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Payment Method
             </h2>
@@ -132,7 +132,7 @@ export default function WalletTopUpPage() {
             />
             {/* Card Details */}
             {values.paymentMethod === "card" && (
-              <div className="mt-6 p-6  rounded-lg border border-gray-200">
+              <div className="mt-6 p-4 sm:p-5 md:p-6  rounded-lg border border-gray-200">
                 <FormInput
                   label="Card Number"
                   placeholder="4532 1234 5678 9010"
@@ -173,7 +173,7 @@ export default function WalletTopUpPage() {
             )}
             {/* Bank Transfer */}
             {values.paymentMethod === "bank" && (
-              <div className="mt-6 p-6 bg-violet-50 border border-violet-200 rounded-lg">
+              <div className="mt-6 p-4 sm:p-5 md:p-6 bg-violet-50 border border-violet-200 rounded-lg">
                 <p className="text-sm text-gray-600 mb-2">
                   Bank Transfer Details:
                 </p>
@@ -198,7 +198,7 @@ export default function WalletTopUpPage() {
             )}
             {/* Digital Wallet */}
             {values.paymentMethod === "wallet" && (
-              <div className="mt-6 p-6 bg-purple-50 border border-purple-200 rounded-lg">
+              <div className="mt-6 p-4 sm:p-5 md:p-6 bg-purple-50 border border-purple-200 rounded-lg">
                 <p className="text-sm text-gray-600">
                   Connect your digital wallet to proceed with the payment.
                 </p>
@@ -209,7 +209,7 @@ export default function WalletTopUpPage() {
             )}
           </div>
           {/* Info Box */}
-          <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="mb-5 sm:mb-6 md:mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">
               <strong>Note:</strong> A processing fee of 2.5% will be applied to
               your transaction.

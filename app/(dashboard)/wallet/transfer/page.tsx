@@ -79,13 +79,13 @@ export default function WalletTransferPage() {
   };
   return (
     <main className="px-4 sm:px-6 md:px-8 pt-6 pb-8 max-w-2xl">
-      <div className="mb-8">
+      <div className="mb-5 sm:mb-6 md:mb-8">
         <Link href="/wallet">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Wallet
           </button>
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Send Money</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Send Money</h1>
         <p className="text-gray-600">
           Transfer funds to another user or wallet
         </p>
@@ -93,7 +93,7 @@ export default function WalletTransferPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Recipient Section */}
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-6 md:mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Send To</h2>
             <div className="flex gap-2">
               <FormInput
@@ -137,9 +137,9 @@ export default function WalletTransferPage() {
             )}
           </div>
           {/* Amount Section */}
-          <div className="mb-8 border-t border-gray-200 pt-8">
+          <div className="mb-5 sm:mb-6 md:mb-8 border-t border-gray-200 pt-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Amount</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <FormInput
                 label="Amount"
                 placeholder="100"
@@ -165,7 +165,7 @@ export default function WalletTransferPage() {
             </div>
           </div>
           {/* Transfer Type */}
-          <div className="mb-8 border-t border-gray-200 pt-8">
+          <div className="mb-5 sm:mb-6 md:mb-8 border-t border-gray-200 pt-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Transfer Type
             </h2>
@@ -176,7 +176,7 @@ export default function WalletTransferPage() {
               onChange={handleChange}
             />
             {values.isRecurring && (
-              <div className="mt-6 p-6  rounded-lg border border-gray-200 space-y-4">
+              <div className="mt-6 p-4 sm:p-5 md:p-6  rounded-lg border border-gray-200 space-y-4">
                 <FormSelect
                   label="Frequency"
                   name="frequency"
@@ -205,7 +205,7 @@ export default function WalletTransferPage() {
             )}
           </div>
           {/* Description */}
-          <div className="mb-8 border-t border-gray-200 pt-8">
+          <div className="mb-5 sm:mb-6 md:mb-8 border-t border-gray-200 pt-8">
             <FormTextarea
               label="Description (Optional)"
               placeholder="Add a note about this transfer"
@@ -217,7 +217,7 @@ export default function WalletTransferPage() {
           </div>
           {/* Summary */}
           {values.amount && (
-            <div className="mb-8 p-6 bg-green-50 border border-green-200 rounded-lg">
+            <div className="mb-5 sm:mb-6 md:mb-8 p-4 sm:p-5 md:p-6 bg-green-50 border border-green-200 rounded-lg">
               <h3 className="font-bold text-gray-900 mb-3">Transfer Summary</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">

@@ -77,11 +77,11 @@ export default function Verification() {
           <h2 className="text-lg font-bold text-gray-900 mb-3">
             Verification Successful
           </h2>
-          <p className="text-gray-600 mb-10 font-500 text-lg">
+          <p className="text-gray-600 mb-6 sm:mb-8 md:mb-10 font-500 text-lg">
             Your identity has been verified successfully
           </p>
 
-          <div className="rounded-lg p-6 mb-10 text-left space-y-4 border border-gray-200">
+          <div className="rounded-lg p-4 sm:p-5 md:p-6 mb-6 sm:mb-8 md:mb-10 text-left space-y-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <span className="text-gray-700 font-500">Document</span>
               <span className="font-600 text-gray-900 flex items-center gap-2">

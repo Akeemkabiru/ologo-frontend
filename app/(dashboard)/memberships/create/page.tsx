@@ -68,13 +68,13 @@ export default function CreateMembershipPage() {
 
   return (
     <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8 max-w-2xl">
-      <div className="mb-8">
+      <div className="mb-5 sm:mb-6 md:mb-8">
         <Link href="/memberships">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Memberships
           </button>
         </Link>
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
           Create Membership
         </h1>
         <p className="text-gray-600">
@@ -85,7 +85,7 @@ export default function CreateMembershipPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-6 md:mb-8">
             <h2 className="text-lg font-bold text-gray-900 mb-6">
               Basic Information
             </h2>
@@ -125,10 +125,10 @@ export default function CreateMembershipPage() {
           </div>
 
           {/* Pricing */}
-          <div className="mb-8 border-t border-gray-200 pt-8">
+          <div className="mb-5 sm:mb-6 md:mb-8 border-t border-gray-200 pt-8">
             <h2 className="text-lg font-bold text-gray-900 mb-6">Pricing</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               <FormInput
                 label="Amount"
                 placeholder="9.99"
@@ -204,7 +204,7 @@ export default function CreateMembershipPage() {
       </div>
 
       {/* Info Box */}
-      <div className="mt-8 bg-violet-50 border border-violet-200 rounded-2xl p-6">
+      <div className="mt-5 sm:mt-6 md:mt-8 bg-violet-50 border border-violet-200 rounded-2xl p-4 sm:p-5 md:p-6">
         <h3 className="font-bold text-violet-900 mb-3">
           Tips for Creating a Great Membership
         </h3>

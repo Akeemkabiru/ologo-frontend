@@ -268,8 +268,8 @@ export const WalletCard: React.FC<WalletCardProps> = ({
           repeatType: "reverse",
         }}
       />
-      <div className="relative p-6 text-white">
-        <div className="flex justify-between items-start mb-8">
+      <div className="relative p-4 sm:p-5 md:p-6 text-white">
+        <div className="flex justify-between items-start mb-5 sm:mb-6 md:mb-8">
           <div>
             <p className="text-sm opacity-90 mb-1 font-medium">Balance</p>
             <h3 className="text-lg font-bold">

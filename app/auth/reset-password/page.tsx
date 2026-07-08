@@ -124,7 +124,7 @@ function ResetPasswordForm() {
       <div className="w-full max-w-md">
         <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-6 md:mb-8">
             <h1 className="text-lg font-bold text-gray-900 mb-1">
               Create new password
             </h1>

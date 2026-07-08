@@ -93,7 +93,7 @@ export default function ForgotPassword() {
       <div className="w-full max-w-md">
         <div className="rounded-4xl border border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
           {/* Header */}
-          <div className="mb-10 space-y-1">
+          <div className="mb-6 sm:mb-8 md:mb-10 space-y-1">
             <h1 className="text-lg font-bold text-gray-900">Reset password</h1>
             <p className="text-gray-500 text-sm">
               Enter your email to receive reset instructions
@@ -101,7 +101,7 @@ export default function ForgotPassword() {
           </div>
 
           {/* Form */}
-          <form onSubmit={formik.handleSubmit} className="space-y-6">
+          <form onSubmit={formik.handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
             <InputField
               label="Email address"
               type="email"

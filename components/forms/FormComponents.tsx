@@ -344,7 +344,7 @@ export const FormFileUpload: React.FC<FormFileUploadProps> = ({
   return (
     <FormGroup>
       {label && <FormLabel>{label}</FormLabel>}
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-violet-500 transition-colors cursor-pointer">
+      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-5 md:p-6 text-center hover:border-violet-500 transition-colors cursor-pointer">
         <input
           type="file"
           {...props}

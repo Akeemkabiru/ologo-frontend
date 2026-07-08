@@ -8,14 +8,14 @@ export default function Settings() {
     <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-8">
       <div className="max-w-3xl">
         {/* Page Title */}
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p className="text-gray-600 mb-8">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Settings</h1>
+        <p className="text-gray-600 mb-5 sm:mb-6 md:mb-8">
           Manage your account and security settings
         </p>
         {/* Settings Grid */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-5 md:space-y-6">
           {/* KYC Verification Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -147,7 +147,7 @@ export default function Settings() {
             )}
           </div>
           {/* Account Security */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Account Security
             </h2>
@@ -191,7 +191,7 @@ export default function Settings() {
             </div>
           </div>
           {/* Notifications */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Notifications
             </h2>

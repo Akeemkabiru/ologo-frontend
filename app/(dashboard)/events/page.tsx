@@ -51,9 +51,9 @@ export default function EventsPage() {
   return (
     <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5 sm:mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Events</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Events</h1>
           <p className="text-gray-600 mt-1">
             Browse and manage fundraising events
           </p>
@@ -65,7 +65,7 @@ export default function EventsPage() {
         </Link>
       </div>
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <FormInput
             placeholder="Search events..."
@@ -126,7 +126,7 @@ export default function EventsPage() {
         <div
           className={
             viewType === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6"
               : "space-y-4"
           }
         >

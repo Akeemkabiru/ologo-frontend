@@ -113,11 +113,11 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           ← Back to Events
         </button>
       </Link>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
         {/* Left Column - Event Details */}
         <div className="lg:col-span-2">
           {/* Event Image */}
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-6 md:mb-8">
             <Image
               src={mockEvent.image}
               alt={mockEvent.name}
@@ -127,8 +127,8 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             />
           </div>
           {/* Event Title & Host */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <div className="mb-5 sm:mb-6 md:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               {mockEvent.name}
             </h1>
             <div className="flex items-center gap-4 mb-6">
@@ -165,7 +165,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </div>
           </div>
           {/* Description */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               About This Event
             </h2>
@@ -174,7 +174,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </p>
           </div>
           {/* Donations Section */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Recent Donations
             </h2>
@@ -195,7 +195,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         </div>
         {/* Right Column - Donation Card */}
         <div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-32">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 sticky top-32">
             {/* Progress */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">

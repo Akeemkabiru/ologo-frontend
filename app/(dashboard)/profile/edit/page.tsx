@@ -53,7 +53,7 @@ export default function EditProfile() {
       <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-16">
         {/* Header */}
         <motion.div
-          className="mb-8"
+          className="mb-5 sm:mb-6 md:mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -64,12 +64,12 @@ export default function EditProfile() {
               Back to Profile
             </button>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Edit Profile</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Edit Profile</h1>
           <p className="text-gray-600 font-medium">
             Update your personal information and documents
           </p>
         </motion.div>
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 md:space-y-8">
           {/* Profile Picture Section */}
           <motion.div
             className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8"
@@ -80,7 +80,7 @@ export default function EditProfile() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Profile Picture
             </h2>
-            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 md:gap-6 sm:gap-8">
               <div className="flex-shrink-0">
                 <div className="w-32 h-32 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                   {profileImage ? (
@@ -95,7 +95,7 @@ export default function EditProfile() {
                 </div>
               </div>
               <div className="flex-1 w-full">
-                <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
+                <label className="flex flex-col items-center justify-center w-full p-4 sm:p-5 md:p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload size={32} className="text-gray-400 mb-2" />
                     <p className="mb-2 text-sm text-gray-600">
@@ -126,7 +126,7 @@ export default function EditProfile() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Personal Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   First Name
@@ -197,7 +197,7 @@ export default function EditProfile() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h2 className="text-xl font-bold text-gray-900 mb-6">Address</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Street Address
@@ -271,7 +271,7 @@ export default function EditProfile() {
               Identification Document
             </h2>
             <div>
-              <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full p-4 sm:p-5 md:p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <Upload size={32} className="text-gray-400 mb-2" />
                   <p className="mb-2 text-sm text-gray-600">

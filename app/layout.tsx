@@ -28,8 +28,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <VantaClouds />
       <body className="min-h-full flex flex-col overflow-x-hidden">
+        <VantaClouds />
         {children}
       </body>
     </html>

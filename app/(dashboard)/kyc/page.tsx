@@ -41,11 +41,11 @@ export default function IDTypeSelection() {
         What type of ID will you use?
       </h1>
 
-      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+      <p className="text-gray-600 text-sm mb-5 sm:mb-6 md:mb-8 leading-relaxed">
         Select your government-issued identification document for verification
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5 sm:mb-6 md:mb-8 sm:mb-10 md:mb-12">
         {idTypes.map((type) => {
           const IconComponent = type.icon;
 
@@ -114,7 +114,7 @@ export default function IDTypeSelection() {
       </div>
 
       {selectedType && (
-        <div className="mb-12">
+        <div className="mb-5 sm:mb-6 md:mb-8 sm:mb-10 md:mb-12">
           <h3 className="text-base font-semibold text-gray-900 mb-6">
             Upload your {idTypes.find((t) => t.id === selectedType)?.label}
           </h3>

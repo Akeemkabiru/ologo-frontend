@@ -1,8 +1,15 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 export default function DashboardHeader() {
+  const pathname = usePathname();
+  const hideOnMobile = pathname === "/wallet";
+
   return (
-    <header className=" border-white/10  bg-white/20 backdrop-blur-xl shadow-2xl sticky top-0 z-40 w-full">
+    <header
+      className={`${hideOnMobile ? "hidden md:block" : ""} border-white/10  bg-white/20 backdrop-blur-xl shadow-2xl sticky top-0 z-40 w-full`}
+    >
       <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 md:py-5 gap-4 min-h-[60px]">
         {/* Title */}
         <h1 className="text-base md:text-lg font-bold text-gray-900 pl-12 md:pl-0"></h1>

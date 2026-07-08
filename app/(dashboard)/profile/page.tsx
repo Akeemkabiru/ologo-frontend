@@ -81,13 +81,13 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
+      <div className="mb-5 sm:mb-6 md:mb-8">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
         <p className="text-gray-600">
           View and manage your profile information
         </p>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
         {/* Left Column - Profile Card */}
         <div>
           <Card>
@@ -153,7 +153,7 @@ export default function ProfilePage() {
         {/* Right Column - Profile Details */}
         <div className="lg:col-span-2">
           {/* Profile Edit Form */}
-          <Card className="mb-8">
+          <Card className="mb-5 sm:mb-6 md:mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-gray-900">
                 Profile Information
@@ -244,7 +244,7 @@ export default function ProfilePage() {
             )}
           </Card>
           {/* Account Security */}
-          <Card className="mb-8">
+          <Card className="mb-5 sm:mb-6 md:mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Account Security
             </h2>
@@ -291,7 +291,7 @@ export default function ProfilePage() {
           {/* My Events */}
           <Card>
             <h2 className="text-xl font-bold text-gray-900 mb-6">My Events</h2>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:gap-6">
               {mockUserEvents.map((event) => (
                 <Link key={event.id} href={`/events/${event.id}`}>
                   <EventCard event={event} />

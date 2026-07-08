@@ -6,7 +6,7 @@ export default function KYCSuccess() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[600px] px-6">
       {/* Success Icon */}
-      <div className="w-20 h-20 bg-violet-100 rounded-full flex items-center justify-center mb-6 mb-8">
+      <div className="w-20 h-20 bg-violet-100 rounded-full flex items-center justify-center mb-6 mb-5 sm:mb-6 md:mb-8">
         <svg
           className="w-10 h-10 text-violet-600"
           fill="none"
@@ -23,18 +23,18 @@ export default function KYCSuccess() {
       </div>
 
       {/* Title */}
-      <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
         Verification Complete!
       </h1>
 
       {/* Subtitle */}
-      <p className="text-gray-600 text-lg text-center mb-10 max-w-md leading-relaxed">
+      <p className="text-gray-600 text-sm sm:text-base text-center mb-6 sm:mb-8 md:mb-10 max-w-md leading-relaxed">
         Your KYC verification has been completed successfully. You can now
         access all features of your account.
       </p>
 
       {/* Features List */}
-      <div className="bg-violet-50 border border-violet-200 rounded-lg p-6 w-full max-w-md mb-10 space-y-4">
+      <div className="bg-violet-50 border border-violet-200 rounded-lg p-4 sm:p-5 md:p-6 w-full max-w-md mb-6 sm:mb-8 md:mb-10 space-y-4">
         <div className="flex gap-3 items-start">
           <svg
             className="w-5 h-5 text-violet-600 shrink-0 mt-0.5"
