@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Trash2,
 } from "lucide-react";
+import MobileHeader from "@/components/ui/MobileHeader";
 
 export default function UserDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -171,10 +172,13 @@ export default function UserDashboard() {
   };
 
   return (
-    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-16">
+    <main className="min-h-screen pb-16">
+      <MobileHeader title="Akbar Hafsyah" subtitle="Welcome back" />
+
+      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
       {/* Welcome Section */}
       <motion.div
-        className="mb-5 sm:mb-6 md:mb-8"
+        className="hidden md:block mb-5 sm:mb-6 md:mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -720,6 +724,7 @@ export default function UserDashboard() {
           </div>
         </div>
       </motion.div>
+      </div>
     </main>
   );
 }

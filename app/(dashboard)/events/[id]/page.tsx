@@ -13,6 +13,7 @@ import {
 } from "@/components/forms/FormComponents";
 import { Gift, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import MobileHeader from "@/components/ui/MobileHeader";
 interface EventDetailPageProps {
   params: {
     id: string;
@@ -106,10 +107,13 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     }
   };
   return (
-    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8">
+    <main className="min-h-screen pb-8">
+      <MobileHeader title={mockEvent.name} subtitle="Event" showBack backHref="/events" />
+
+      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
       {/* Back Button */}
       <Link href="/events">
-        <button className="text-violet-600 hover:text-violet-700 font-semibold mb-6 flex items-center gap-2">
+        <button className="hidden md:flex text-violet-600 hover:text-violet-700 font-semibold mb-6 items-center gap-2">
           ← Back to Events
         </button>
       </Link>
@@ -285,6 +289,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </Form>
           </div>
         </div>
+      </div>
       </div>
     </main>
   );

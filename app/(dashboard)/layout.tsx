@@ -2,6 +2,7 @@
 
 import Sidebar from "@/components/ui/sidebar";
 import DashboardHeader from "@/components/ui/dashboardHeader";
+import MobileBottomNav from "@/components/ui/MobileBottomNav";
 
 export default function DashboardLayout({
   children,
@@ -10,19 +11,22 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="min-h-full flex flex-col md:flex-row">
-      {/* Sidebar */}
+      {/* Sidebar - desktop only */}
       <Sidebar />
 
       {/* Main Content Area */}
       <div className="flex-1 min-w-0 md:ml-64 flex flex-col">
-        {/* Header */}
+        {/* Header - desktop only */}
         <DashboardHeader />
 
         {/* Page Content */}
-        <main className="flex-1 pt-6 md:pt-10 px-3 sm:px-4 md:px-6 lg:px-8 pb-6">
+        <main className="flex-1 pb-28 md:pt-10 md:px-6 lg:px-8 md:pb-6">
           {children}
         </main>
       </div>
+
+      {/* Bottom nav - mobile only */}
+      <MobileBottomNav />
     </div>
   );
 }

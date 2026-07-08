@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Upload, ArrowLeft, Save } from "lucide-react";
+import MobileHeader from "@/components/ui/MobileHeader";
 export default function EditProfile() {
   const [formData, setFormData] = useState({
     firstName: "John",
@@ -50,10 +51,17 @@ export default function EditProfile() {
     alert("Profile updated successfully!");
   };
   return (
-      <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-16">
+      <main className="min-h-screen pb-16">
+        <MobileHeader
+          title="Edit Profile"
+          subtitle="Update your information"
+          showBack
+          backHref="/profile"
+        />
+        <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
         {/* Header */}
         <motion.div
-          className="mb-5 sm:mb-6 md:mb-8"
+          className="hidden md:block mb-5 sm:mb-6 md:mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -316,6 +324,7 @@ export default function EditProfile() {
             </button>
           </motion.div>
         </form>
+        </div>
     </main>
   );
 }

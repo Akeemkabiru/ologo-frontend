@@ -13,6 +13,7 @@ import {
 import { CheckCircle2 } from "lucide-react";
 import { CURRENCIES } from "@/lib/constants";
 import { useForm } from "@/hooks";
+import MobileHeader from "@/components/ui/MobileHeader";
 interface TransferFormValues {
   recipientEmail: string;
   amount: string;
@@ -78,8 +79,15 @@ export default function WalletTransferPage() {
     });
   };
   return (
-    <main className="px-4 sm:px-6 md:px-8 pt-6 pb-8 max-w-2xl">
-      <div className="mb-5 sm:mb-6 md:mb-8">
+    <main className="pb-8 max-w-2xl">
+      <MobileHeader
+        title="Send Money"
+        subtitle="Transfer funds to another user"
+        showBack
+        backHref="/wallet"
+      />
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
         <Link href="/wallet">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Wallet
@@ -263,6 +271,7 @@ export default function WalletTransferPage() {
             </FormButton>
           </div>
         </Form>
+      </div>
       </div>
     </main>
   );

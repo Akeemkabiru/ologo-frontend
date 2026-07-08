@@ -2,14 +2,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import MobileHeader from "@/components/ui/MobileHeader";
 export default function Settings() {
   const [kycStatus, setKycStatus] = useState("pending"); // pending, completed, expired
   return (
-    <main className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-8 pb-8">
-      <div className="max-w-3xl">
+    <main className="min-h-screen pb-8">
+      <MobileHeader
+        title="Settings"
+        subtitle="Manage your account and security"
+      />
+      <div className="max-w-3xl px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
         {/* Page Title */}
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p className="text-gray-600 mb-5 sm:mb-6 md:mb-8">
+        <h1 className="hidden md:block text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Settings</h1>
+        <p className="hidden md:block text-gray-600 mb-5 sm:mb-6 md:mb-8">
           Manage your account and security settings
         </p>
         {/* Settings Grid */}

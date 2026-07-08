@@ -15,6 +15,7 @@ import { CURRENCIES, TIMEZONES, FREQUENCY_OPTIONS } from "@/lib/constants";
 import { generateId } from "@/lib/utils";
 import { useForm } from "@/hooks";
 import Image from "next/image";
+import MobileHeader from "@/components/ui/MobileHeader";
 interface EventFormValues {
   name: string;
   description: string;
@@ -81,8 +82,15 @@ export default function CreateEventPage() {
     }
   };
   return (
-    <main className="px-4 sm:px-6 md:px-8 pt-6 pb-8 max-w-4xl">
-      <div className="mb-5 sm:mb-6 md:mb-8">
+    <main className="pb-8 max-w-4xl">
+      <MobileHeader
+        title="Create Event"
+        subtitle="Start a fundraiser"
+        showBack
+        backHref="/events"
+      />
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Create Event</h1>
         <p className="text-gray-600">
           Start a fundraising event to reach your goals
@@ -226,6 +234,7 @@ export default function CreateEventPage() {
             </FormButton>
           </div>
         </Form>
+      </div>
       </div>
     </main>
   );

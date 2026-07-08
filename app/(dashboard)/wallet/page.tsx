@@ -24,10 +24,8 @@ import {
   Repeat,
   Plus,
   Home,
-  Target,
   CreditCard,
   Wallet as WalletIcon,
-  User,
   ShoppingBag,
   Coffee,
   Plane,
@@ -105,14 +103,6 @@ const mobileTransactions = [
   },
 ];
 
-const mobileNavItems = [
-  { label: "Home", icon: Home, href: "/dashboard" },
-  { label: "Goals", icon: Target, href: "/pledges" },
-  { label: "Card", icon: CreditCard, href: "/virtual-cards" },
-  { label: "Pocket", icon: WalletIcon, href: "/wallet" },
-  { label: "Profile", icon: User, href: "/profile" },
-];
-
 export default function WalletPage() {
   // Mock data - replace with API call to walletService.getWallet() and walletService.getTransactionHistory()
   const mockWallets = [
@@ -184,7 +174,7 @@ export default function WalletPage() {
   return (
     <main className="min-h-screen pb-8">
       {/* Mobile-only wallet screen */}
-      <div className="md:hidden -mt-6 -mx-3 sm:-mx-4 mb-6">
+      <div className="md:hidden mb-6">
         {/* Purple header */}
         <div className="bg-linear-to-br from-violet-600 to-violet-800 rounded-b-[32px] px-5 pt-8 pb-6 text-white">
           {/* Top row */}
@@ -248,7 +238,7 @@ export default function WalletPage() {
         </div>
 
         {/* White content */}
-        <div className="bg-gray-50 rounded-t-[28px] -mt-4 relative px-5 pt-6 pb-28">
+        <div className="relative px-5 pt-6 pb-8">
           {/* Recent Transfer */}
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 text-[15px]">
@@ -373,29 +363,6 @@ export default function WalletPage() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Mobile bottom nav */}
-      <div className="md:hidden fixed bottom-4 left-4 right-4 bg-violet-700 rounded-2xl shadow-xl flex items-center justify-between px-2 py-2 z-40">
-        {mobileNavItems.map((item) => {
-          const isActive = item.label === "Home";
-          return (
-            <Link key={item.label} href={item.href} className="flex-1">
-              <div
-                className={`flex flex-col items-center gap-1 py-1.5 rounded-xl mx-0.5 ${
-                  isActive ? "bg-white/15" : ""
-                }`}
-              >
-                <item.icon size={18} className="text-white" />
-                {isActive && (
-                  <span className="text-[10px] text-white font-medium">
-                    {item.label}
-                  </span>
-                )}
-              </div>
-            </Link>
-          );
-        })}
       </div>
 
       {/* Desktop / tablet wallet view */}

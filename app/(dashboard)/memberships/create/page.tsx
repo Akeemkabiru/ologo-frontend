@@ -12,6 +12,7 @@ import {
 } from "@/components/forms/FormComponents";
 import { CURRENCIES, FREQUENCY_OPTIONS } from "@/lib/constants";
 import { useForm } from "@/hooks";
+import MobileHeader from "@/components/ui/MobileHeader";
 
 interface MembershipFormValues {
   name: string;
@@ -67,8 +68,15 @@ export default function CreateMembershipPage() {
   });
 
   return (
-    <main className="min-h-screen px-4 sm:px-6 md:px-8 pb-8 max-w-2xl">
-      <div className="mb-5 sm:mb-6 md:mb-8">
+    <main className="min-h-screen pb-8 max-w-2xl">
+      <MobileHeader
+        title="Create Membership"
+        subtitle="Set up a recurring program"
+        showBack
+        backHref="/memberships"
+      />
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
         <Link href="/memberships">
           <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
             ← Back to Memberships
@@ -215,6 +223,7 @@ export default function CreateMembershipPage() {
           <li>• Consider offering an annual option for committed supporters</li>
           <li>• Start building a community around your membership</li>
         </ul>
+      </div>
       </div>
     </main>
   );
