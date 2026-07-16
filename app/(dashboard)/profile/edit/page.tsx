@@ -88,7 +88,7 @@ export default function EditProfile() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Profile Picture
             </h2>
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 md:gap-6 sm:gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8">
               <div className="flex-shrink-0">
                 <div className="w-32 h-32 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                   {profileImage ? (

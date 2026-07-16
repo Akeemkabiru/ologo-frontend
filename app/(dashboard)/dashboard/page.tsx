@@ -607,7 +607,7 @@ export default function UserDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="mt-5 sm:mt-6 md:mt-8 sm:mt-10 md:mt-12"
+        className="mt-8 sm:mt-10 md:mt-12"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6">Your Groups</h3>
 
@@ -655,7 +655,7 @@ export default function UserDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="mt-5 sm:mt-6 md:mt-8 sm:mt-10 md:mt-12"
+        className="mt-8 sm:mt-10 md:mt-12"
       >
         <h3 className="text-xl font-bold text-gray-900 mb-6">
           Analytics & Metrics

@@ -82,14 +82,7 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen pb-8">
       <MobileHeader title="My Profile" subtitle="Account overview" />
-      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-      {/* Header */}
-      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
-        <p className="text-gray-600">
-          View and manage your profile information
-        </p>
-      </div>
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
         {/* Left Column - Profile Card */}
         <div>

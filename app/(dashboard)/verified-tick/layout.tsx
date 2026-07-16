@@ -1,16 +1,19 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { BadgeCheck } from "lucide-react";
 
 const steps = [
-  { id: 1, name: "Type", path: "/kyc" },
-  { id: 2, name: "Identity", path: "/kyc/identity" },
-  { id: 3, name: "Bank", path: "/kyc/bank-account" },
-  { id: 4, name: "BVN", path: "/kyc/bvn" },
-  { id: 5, name: "Address", path: "/kyc/address" },
+  { id: 1, name: "Type", path: "/verified-tick" },
+  { id: 2, name: "Identity", path: "/verified-tick/identity" },
+  { id: 3, name: "Address", path: "/verified-tick/address" },
 ];
 
-export default function KYCLayout({ children }: { children: React.ReactNode }) {
+export default function VerifiedTickLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   const currentStep =
@@ -20,14 +23,20 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="flex items-center w-full justify-center px-4 py-4 sm:py-6 md:py-8">
       <div className="rounded-2xl border-white/10 w-full max-w-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-5 sm:p-6 md:p-8">
-        {/* Back Button */}
+        {/* Badge */}
+        <div className="flex items-center gap-2 mb-6">
+          <BadgeCheck size={20} className="text-violet-600" />
+          <span className="text-sm font-semibold text-violet-700">
+            Verified Tick (Optional)
+          </span>
+        </div>
 
         {/* Progress Section */}
         <div className="mb-6 sm:mb-8 md:mb-10">
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-sm font-semibold text-gray-700">
-                Verification Progress
+                Application Progress
               </h2>
               <span className="text-sm text-gray-600">
                 {currentStep} of {steps.length}
@@ -40,7 +49,7 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
               ></div>
             </div>
           </div>
-          <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-6">
+          <div className="grid grid-cols-3 gap-2 mt-6">
             {steps.map((step) => (
               <div key={step.id} className="text-center">
                 <div

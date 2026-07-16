@@ -3,18 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  WalletCard,
-  TransactionCard,
-  StatsCard,
-  EmptyState,
-} from "@/components/cards/CardComponents";
-import { formatCurrency } from "@/lib/utils";
-import {
-  Download,
-  Upload,
-  DollarSign,
-  Briefcase,
-  BarChart3,
   Bell,
   ChevronDown,
   ChevronRight,
@@ -33,7 +21,7 @@ import {
   Landmark,
 } from "lucide-react";
 
-const mobileContacts = [
+const contacts = [
   { name: "Elijah", avatar: "https://i.pravatar.cc/64?img=13" },
   { name: "Aaron", avatar: "https://i.pravatar.cc/64?img=14" },
   { name: "Abraham", avatar: "https://i.pravatar.cc/64?img=15", badge: CreditCard },
@@ -41,16 +29,16 @@ const mobileContacts = [
   { name: "Ezekiel", avatar: "https://i.pravatar.cc/64?img=17" },
 ];
 
-const mobileActions = [
+const quickActions = [
   { label: "Sent", icon: ArrowUpRight, href: "/wallet/transfer" },
   { label: "Receive", icon: ArrowDownLeft, href: "/wallet" },
   { label: "Exchange", icon: Repeat, href: "/wallet" },
   { label: "Add", icon: Plus, href: "/wallet/topup" },
 ];
 
-const mobileFilters = ["All", "Income", "Expense", "Escrow", "Card Payments"];
+const transactionFilters = ["All", "Income", "Expense", "Escrow", "Card Payments"];
 
-const mobileTransactions = [
+const transactions = [
   {
     id: "m1",
     name: "Ezekiel Foster",
@@ -104,79 +92,15 @@ const mobileTransactions = [
 ];
 
 export default function WalletPage() {
-  // Mock data - replace with API call to walletService.getWallet() and walletService.getTransactionHistory()
-  const mockWallets = [
-    {
-      id: "1",
-      currency: "USD",
-      balance: 1500,
-      totalDeposits: 5000,
-      totalWithdrawals: 3500,
-      totalTransfers: 0,
-    },
-    {
-      id: "2",
-      currency: "EUR",
-      balance: 2000,
-      totalDeposits: 3000,
-      totalWithdrawals: 1000,
-      totalTransfers: 0,
-    },
-    {
-      id: "3",
-      currency: "GBP",
-      balance: 800,
-      totalDeposits: 1000,
-      totalWithdrawals: 200,
-      totalTransfers: 0,
-    },
-  ];
-
-  const mockTransactions = [
-    {
-      id: "1",
-      type: "receive",
-      amount: 100,
-      currency: "USD",
-      senderName: "Alice Johnson",
-      receiverName: "You",
-      date: new Date().toISOString(),
-      status: "completed",
-      description: "Donation for School Event",
-    },
-    {
-      id: "2",
-      type: "send",
-      amount: 50,
-      currency: "USD",
-      senderName: "You",
-      receiverName: "Bob Smith",
-      date: new Date().toISOString(),
-      status: "completed",
-      description: "Transfer",
-    },
-    {
-      id: "3",
-      type: "receive",
-      amount: 200,
-      currency: "EUR",
-      senderName: "Charlie Brown",
-      receiverName: "You",
-      date: new Date().toISOString(),
-      status: "completed",
-      description: "Event Donation",
-    },
-  ];
-
-  const totalBalance = mockWallets.reduce((sum, w) => sum + w.balance, 0);
+  // Mock data - replace with API call to walletService.getWallet()
+  const totalBalance = 4300;
   const [activeFilter, setActiveFilter] = useState("All");
 
   return (
     <main className="min-h-screen pb-8">
-      {/* Mobile-only wallet screen */}
-      <div className="md:hidden mb-6">
-        {/* Purple header */}
-        <div className="bg-linear-to-br from-violet-600 to-violet-800 rounded-b-[32px] px-5 pt-8 pb-6 text-white">
+      <div className="mb-6 md:px-6 lg:px-8 md:max-w-3xl md:mx-auto">
+        {/* Header - full bleed on mobile, contained card on desktop */}
+        <div className="bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:w-auto md:mt-0 md:rounded-2xl px-5 py-8 text-white">
           {/* Top row */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -196,7 +120,7 @@ export default function WalletPage() {
           </div>
 
           {/* Wallet card */}
-          <div className="bg-black/25 backdrop-blur-sm rounded-2xl p-4">
+          <div className="bg-black/25 backdrop-blur-sm rounded-2xl p-4 md:p-6">
             <button className="flex items-center gap-1.5 bg-white/15 rounded-full pl-2 pr-2.5 py-1 text-xs font-medium mb-4">
               <span className="text-sm leading-none">🇺🇸</span>
               USD
@@ -205,7 +129,7 @@ export default function WalletPage() {
             <div className="flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs text-violet-200 mb-1">Wallet</p>
-                <p className="text-2xl font-bold">
+                <p className="text-2xl md:text-3xl font-bold">
                   ${totalBalance.toFixed(2)}
                 </p>
               </div>
@@ -221,11 +145,11 @@ export default function WalletPage() {
           </div>
 
           {/* Quick actions */}
-          <div className="grid grid-cols-4 gap-2 mt-6">
-            {mobileActions.map((action) => (
+          <div className="grid grid-cols-4 gap-2 md:max-w-md mt-6">
+            {quickActions.map((action) => (
               <Link key={action.label} href={action.href}>
                 <div className="flex flex-col items-center gap-2">
-                  <span className="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center">
+                  <span className="w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center">
                     <action.icon size={18} />
                   </span>
                   <span className="text-[11px] font-medium text-violet-100">
@@ -237,8 +161,8 @@ export default function WalletPage() {
           </div>
         </div>
 
-        {/* White content */}
-        <div className="relative px-5 pt-6 pb-8">
+        {/* Content */}
+        <div className="relative px-5 md:px-0 pt-6 pb-8">
           {/* Recent Transfer */}
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 text-[15px]">
@@ -249,7 +173,7 @@ export default function WalletPage() {
             </button>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-1 mb-5 scrollbar-none">
-            {mobileContacts.map((contact) => (
+            {contacts.map((contact) => (
               <div
                 key={contact.name}
                 className="flex flex-col items-center gap-1.5 shrink-0 w-14"
@@ -291,7 +215,7 @@ export default function WalletPage() {
             Transaction Type
           </p>
           <div className="flex gap-2 overflow-x-auto pb-1 mb-5 scrollbar-none">
-            {mobileFilters.map((filter) => (
+            {transactionFilters.map((filter) => (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
@@ -319,7 +243,7 @@ export default function WalletPage() {
             </Link>
           </div>
           <div className="space-y-3">
-            {mobileTransactions.map((tx) => (
+            {transactions.map((tx) => (
               <div
                 key={tx.id}
                 className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-sm"
@@ -363,115 +287,6 @@ export default function WalletPage() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Desktop / tablet wallet view */}
-      <div className="hidden md:block px-6 lg:px-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5 sm:mb-6 md:mb-8">
-        <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Wallet</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your funds across multiple currencies
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Link href="/wallet/topup">
-            <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
-              + Top Up
-            </button>
-          </Link>
-          <Link href="/wallet/transfer">
-            <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
-              Transfer
-            </button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Overall Balance */}
-      <div className="bg-linear-to-br from-violet-600 to-violet-700 text-white rounded-2xl shadow-lg p-5 sm:p-6 md:p-8 mb-5 sm:mb-6 md:mb-8">
-        <p className="text-violet-100 mb-2">Total Balance</p>
-        <h2 className="text-2xl font-bold mb-4">${totalBalance.toFixed(2)}</h2>
-        <p className="text-violet-100">Across all currencies</p>
-      </div>
-
-      {/* My Wallets */}
-      <div className="mb-5 sm:mb-6 md:mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">My Wallets</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {mockWallets.map((wallet) => (
-            <WalletCard
-              key={wallet.id}
-              currency={wallet.currency}
-              balance={wallet.balance}
-              onClick={() => console.log("View wallet", wallet.id)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Wallet Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-5 sm:mb-6 md:mb-8">
-        <StatsCard
-          label="Total Deposited"
-          value={formatCurrency(
-            mockWallets.reduce((sum, w) => sum + w.totalDeposits, 0),
-            "USD",
-          )}
-          icon={<Download size={32} className="text-violet-600" />}
-        />
-        <StatsCard
-          label="Total Withdrawn"
-          value={formatCurrency(
-            mockWallets.reduce((sum, w) => sum + w.totalWithdrawals, 0),
-            "USD",
-          )}
-          icon={<Upload size={32} className="text-violet-600" />}
-        />
-        <StatsCard
-          label="Total Transferred"
-          value={formatCurrency(
-            mockWallets.reduce((sum, w) => sum + w.totalTransfers, 0),
-            "USD",
-          )}
-          icon={<DollarSign size={32} className="text-violet-600" />}
-        />
-        <StatsCard
-          label="Active Wallets"
-          value={mockWallets.length}
-          icon={<Briefcase size={32} className="text-violet-600" />}
-        />
-      </div>
-
-      {/* Transaction History */}
-      <div>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900">
-            Transaction History
-          </h2>
-
-          <Link href="/wallet/history">
-            <button className="text-violet-600 hover:text-violet-700 font-semibold">
-              View All
-            </button>
-          </Link>
-        </div>
-
-        <div className="space-y-4">
-          {mockTransactions.length > 0 ? (
-            mockTransactions.map((transaction) => (
-              <TransactionCard key={transaction.id} transaction={transaction} />
-            ))
-          ) : (
-            <EmptyState
-              icon={<BarChart3 size={48} />}
-              title="No Transactions Yet"
-              description="Your transactions will appear here"
-            />
-          )}
-        </div>
-      </div>
       </div>
     </main>
   );

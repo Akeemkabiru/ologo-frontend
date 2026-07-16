@@ -1,0 +1,127 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormInput,
+  FormSelect,
+  FormButton,
+} from "@/components/forms/FormComponents";
+import { useForm } from "@/hooks";
+import { NIGERIAN_STATES } from "@/lib/constants";
+
+interface AddressValues {
+  streetAddress: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+const initialValues: AddressValues = {
+  streetAddress: "",
+  city: "",
+  state: "",
+  postalCode: "",
+};
+
+interface AddressFormProps {
+  storageKey: string;
+  nextHref: string;
+  backHref: string;
+  submitLabel?: string;
+}
+
+export default function AddressForm({
+  storageKey,
+  nextHref,
+  backHref,
+  submitLabel = "Continue",
+}: AddressFormProps) {
+  const router = useRouter();
+
+  const { values, handleChange, handleSubmit, isSubmitting } =
+    useForm<AddressValues>({
+      initialValues,
+      onSubmit: async (values) => {
+        sessionStorage.setItem(storageKey, JSON.stringify(values));
+        router.push(nextHref);
+      },
+      validate: (values) => {
+        const errors: Partial<AddressValues> = {};
+        if (!values.streetAddress) errors.streetAddress = "Required";
+        if (!values.city) errors.city = "Required";
+        if (!values.state) errors.state = "Required";
+        return errors;
+      },
+    });
+
+  return (
+    <div className="flex flex-col">
+      <h1 className="text-xl font-bold text-gray-900 mb-2">
+        Physical Address
+      </h1>
+      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+        Tell us where you&apos;re physically located
+      </p>
+
+      <Form onSubmit={handleSubmit} loading={isSubmitting}>
+        <FormInput
+          label="Street Address"
+          name="streetAddress"
+          required
+          placeholder="123 Main Street"
+          value={values.streetAddress}
+          onChange={handleChange}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormInput
+            label="City"
+            name="city"
+            required
+            placeholder="e.g., Ikeja"
+            value={values.city}
+            onChange={handleChange}
+          />
+          <FormSelect
+            label="State"
+            name="state"
+            required
+            options={NIGERIAN_STATES.map((state) => ({
+              label: state,
+              value: state,
+            }))}
+            value={values.state}
+            onChange={handleChange}
+          />
+        </div>
+        <FormInput
+          label="Postal Code (optional)"
+          name="postalCode"
+          placeholder="e.g., 100001"
+          value={values.postalCode}
+          onChange={handleChange}
+        />
+
+        <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10 md:mt-12">
+          <FormButton
+            type="button"
+            variant="secondary"
+            size="lg"
+            onClick={() => router.push(backHref)}
+            className="sm:flex-1"
+          >
+            Back
+          </FormButton>
+          <FormButton
+            type="submit"
+            size="lg"
+            loading={isSubmitting}
+            className="sm:flex-1"
+          >
+            {submitLabel}
+          </FormButton>
+        </div>
+      </Form>
+    </div>
+  );
+}

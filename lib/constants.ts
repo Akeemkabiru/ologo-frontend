@@ -92,3 +92,122 @@ export const ESCROW_ROLES = {
   BENEFICIARY: "beneficiary",
   DEPOSITOR: "depositor",
 };
+
+// KYC / Verified Tick
+export const ENTITY_TYPES = [
+  { label: "Individual", value: "individual" },
+  { label: "Organisation", value: "organisation" },
+];
+
+export const INDIVIDUAL_ID_TYPES = [
+  { label: "NIMC (National ID)", value: "nimc" },
+  { label: "International Passport", value: "passport" },
+  { label: "Driver's License", value: "drivers_license" },
+  { label: "Voter's Card", value: "voters_card" },
+];
+
+export const ORGANISATION_ID_TYPES = [
+  { label: "CAC Certificate of Incorporation", value: "cac_certificate" },
+  { label: "Business Premises Permit", value: "business_permit" },
+  { label: "Tax Clearance Certificate", value: "tax_certificate" },
+  { label: "SCUML Certificate", value: "scuml_certificate" },
+];
+
+export const ORGANISATION_TYPES = [
+  { label: "Sole Proprietorship", value: "sole_proprietorship" },
+  { label: "Limited Liability Company", value: "llc" },
+  { label: "Public Limited Company", value: "plc" },
+  { label: "Non-Governmental Organisation (NGO)", value: "ngo" },
+  { label: "Partnership", value: "partnership" },
+  { label: "Cooperative Society", value: "cooperative" },
+];
+
+export const ORGANISATION_SUFFIXES = [
+  { label: "None", value: "" },
+  { label: "Ltd", value: "Ltd" },
+  { label: "PLC", value: "PLC" },
+  { label: "LLC", value: "LLC" },
+  { label: "Inc", value: "Inc" },
+  { label: "Corp", value: "Corp" },
+];
+
+export const NIGERIAN_BANKS = [
+  "Access Bank",
+  "Citibank Nigeria",
+  "Ecobank Nigeria",
+  "Fidelity Bank",
+  "First Bank of Nigeria",
+  "First City Monument Bank (FCMB)",
+  "Globus Bank",
+  "Guaranty Trust Bank (GTBank)",
+  "Heritage Bank",
+  "Keystone Bank",
+  "Kuda Bank",
+  "Moniepoint MFB",
+  "Opay",
+  "Palmpay",
+  "Polaris Bank",
+  "Providus Bank",
+  "Stanbic IBTC Bank",
+  "Standard Chartered Bank",
+  "Sterling Bank",
+  "Union Bank of Nigeria",
+  "United Bank for Africa (UBA)",
+  "Unity Bank",
+  "Wema Bank",
+  "Zenith Bank",
+];
+
+export const NIGERIAN_STATES = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "FCT - Abuja",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+];
+
+export const KYC_STORAGE_KEYS = {
+  entityType: "kycEntityType",
+  identity: "kycIdentity",
+  bankAccount: "kycBankAccount",
+  bvn: "kycBvn",
+  address: "kycAddress",
+};
+
+export const VERIFIED_TICK_STORAGE_KEYS = {
+  entityType: "vtEntityType",
+  identity: "vtIdentity",
+  address: "vtAddress",
+};

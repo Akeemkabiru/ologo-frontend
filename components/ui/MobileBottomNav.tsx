@@ -15,7 +15,8 @@ const navItems = [
 export default function MobileBottomNav() {
   const pathname = usePathname();
 
-  if (pathname.startsWith("/kyc")) return null;
+  if (pathname.startsWith("/kyc") || pathname.startsWith("/verified-tick"))
+    return null;
 
   return (
     <div className="md:hidden fixed bottom-4 left-4 right-4 bg-violet-700 rounded-2xl shadow-xl flex items-center justify-between px-2 py-2 z-40">

@@ -66,21 +66,7 @@ export default function EventsPage() {
         }
       />
 
-      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-      {/* Header */}
-      <div className="hidden md:flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5 sm:mb-6 md:mb-8">
-        <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Events</h1>
-          <p className="text-gray-600 mt-1">
-            Browse and manage fundraising events
-          </p>
-        </div>
-        <Link href="/events/create">
-          <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
-            + Create Event
-          </button>
-        </Link>
-      </div>
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
       {/* Filters */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

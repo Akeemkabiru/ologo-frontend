@@ -90,12 +90,6 @@ export default function CreateEventPage() {
         backHref="/events"
       />
       <div className="px-4 sm:px-6 md:px-8 pt-6">
-      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Create Event</h1>
-        <p className="text-gray-600">
-          Start a fundraising event to reach your goals
-        </p>
-      </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}

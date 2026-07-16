@@ -1,22 +1,18 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { CheckCircle2, Clock, AlertCircle, BadgeCheck } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 export default function Settings() {
   const [kycStatus, setKycStatus] = useState("pending"); // pending, completed, expired
+  const [verifiedTickStatus, setVerifiedTickStatus] = useState("unverified"); // unverified, pending, completed
   return (
     <main className="min-h-screen pb-8">
       <MobileHeader
         title="Settings"
         subtitle="Manage your account and security"
       />
-      <div className="max-w-3xl px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-        {/* Page Title */}
-        <h1 className="hidden md:block text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p className="hidden md:block text-gray-600 mb-5 sm:mb-6 md:mb-8">
-          Manage your account and security settings
-        </p>
+      <div className="max-w-3xl px-4 sm:px-6 md:px-8 pt-6">
         {/* Settings Grid */}
         <div className="space-y-4 sm:space-y-5 md:space-y-6">
           {/* KYC Verification Card */}
@@ -57,80 +53,34 @@ export default function Settings() {
             </div>
             {/* Verification Steps */}
             <div className="space-y-3 mb-6">
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                    kycStatus === "completed"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                >
-                  {kycStatus === "completed" ? <CheckCircle2 size={18} /> : "1"}
+              {[
+                { label: "Identity", desc: "Individual or organisation ID details" },
+                { label: "Bank Account", desc: "Account name, number & bank" },
+                { label: "BVN", desc: "Bank Verification Number" },
+                { label: "Physical Address", desc: "Where you're located" },
+              ].map((step, idx) => (
+                <div key={step.label} className="flex items-start gap-4">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
+                      kycStatus === "completed"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {kycStatus === "completed" ? (
+                      <CheckCircle2 size={18} />
+                    ) : (
+                      idx + 1
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {step.label}
+                    </p>
+                    <p className="text-sm text-gray-600">{step.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Choose ID Type</p>
-                  <p className="text-sm text-gray-600">
-                    Select the type of identification you&apos;ll use
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                    kycStatus === "completed"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                >
-                  {kycStatus === "completed" ? <CheckCircle2 size={18} /> : "2"}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    Personal Information
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Provide your personal details
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                    kycStatus === "completed"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                >
-                  {kycStatus === "completed" ? <CheckCircle2 size={18} /> : "3"}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    Upload Documents
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Submit clear photos of your ID
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                    kycStatus === "completed"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                >
-                  {kycStatus === "completed" ? <CheckCircle2 size={18} /> : "4"}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    Facial Verification
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Take a selfie to verify your identity
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
             {/* Action Button */}
             {kycStatus !== "completed" && (
@@ -147,6 +97,58 @@ export default function Settings() {
                 <p className="text-violet-700 text-sm font-semibold flex items-center gap-2">
                   <CheckCircle2 size={18} /> Your identity has been verified.
                   You have access to all features.
+                </p>
+              </div>
+            )}
+          </div>
+          {/* Verified Tick Card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <BadgeCheck size={20} className="text-violet-600" />
+                  Verified Tick
+                </h2>
+                <p className="text-gray-600">
+                  Optional badge that shows your account is authentic. Apply
+                  with your identity and address details.
+                </p>
+              </div>
+              <div
+                className={`px-4 py-2 rounded-full text-sm font-semibold shrink-0 ${
+                  verifiedTickStatus === "completed"
+                    ? "bg-violet-100 text-violet-700"
+                    : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                {verifiedTickStatus === "completed" ? (
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 size={16} /> Verified
+                  </span>
+                ) : verifiedTickStatus === "pending" ? (
+                  <span className="flex items-center gap-1">
+                    <Clock size={16} /> Pending
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1">
+                    <AlertCircle size={16} /> Not Applied
+                  </span>
+                )}
+              </div>
+            </div>
+            {verifiedTickStatus !== "completed" && (
+              <Link href="/verified-tick">
+                <button className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                  {verifiedTickStatus === "pending"
+                    ? "Continue Application"
+                    : "Apply for Verified Tick"}
+                </button>
+              </Link>
+            )}
+            {verifiedTickStatus === "completed" && (
+              <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
+                <p className="text-violet-700 text-sm font-semibold flex items-center gap-2">
+                  <BadgeCheck size={18} /> Your account has the verified tick.
                 </p>
               </div>
             )}
