@@ -175,20 +175,15 @@ export default function UserDashboard() {
     <main className="min-h-screen pb-16">
       <MobileHeader title="Akbar Hafsyah" subtitle="Welcome back" />
 
-      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-      {/* Welcome Section */}
-      <motion.div
-        className="hidden md:block mb-5 sm:mb-6 md:mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Welcome back!</h1>
-        <p className="text-gray-600 font-medium">
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-8">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Welcome back!
+        </h1>
+        <p className="text-gray-600 mt-1">
           Here&apos;s an overview of your wallet and transactions
         </p>
-      </motion.div>
-
+      </div>
       {/* Quick Stats */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10"

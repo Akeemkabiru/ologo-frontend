@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Upload, ArrowLeft, Save } from "lucide-react";
+import { Upload, Save } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 export default function EditProfile() {
   const [formData, setFormData] = useState({
@@ -58,25 +58,20 @@ export default function EditProfile() {
           showBack
           backHref="/profile"
         />
-        <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-        {/* Header */}
-        <motion.div
-          className="hidden md:block mb-5 sm:mb-6 md:mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="px-4 sm:px-6 md:px-8 pt-6">
+        <div className="hidden md:block mb-8">
           <Link href="/profile">
             <button className="flex items-center gap-2 text-violet-600 hover:text-violet-700 font-medium mb-4">
-              <ArrowLeft size={18} />
-              Back to Profile
+              ← Back to Profile
             </button>
           </Link>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Edit Profile</h1>
-          <p className="text-gray-600 font-medium">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Edit Profile
+          </h1>
+          <p className="text-gray-600 mt-1">
             Update your personal information and documents
           </p>
-        </motion.div>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 md:space-y-8">
           {/* Profile Picture Section */}
           <motion.div

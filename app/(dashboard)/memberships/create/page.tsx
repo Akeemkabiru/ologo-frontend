@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   Form,
   FormInput,
@@ -47,7 +46,6 @@ export default function CreateMembershipPage() {
     initialValues,
     onSubmit: async (values) => {
       try {
-        // TODO: Call membershipService.createMembership()
         console.log("Creating membership:", values);
 
         // Mock success
@@ -76,6 +74,20 @@ export default function CreateMembershipPage() {
         backHref="/memberships"
       />
       <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-8">
+        <button
+          onClick={() => router.push("/memberships")}
+          className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2"
+        >
+          ← Back to Memberships
+        </button>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Create Membership
+        </h1>
+        <p className="text-gray-600 mt-1">
+          Set up a recurring membership program to generate stable revenue
+        </p>
+      </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}

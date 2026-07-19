@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { DonationCard, EmptyState } from "@/components/cards/CardComponents";
 import { formatCurrency, formatDateTime, daysUntilDate } from "@/lib/utils";
 import {
@@ -19,7 +18,7 @@ interface EventDetailPageProps {
     id: string;
   };
 }
-// Mock event data - replace with API call to eventService.getEvent(id)
+// Mock event data
 const mockEvent = {
   id: "1",
   name: "School Fundraiser",
@@ -86,7 +85,6 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // TODO: Call donationService.createDonation()
       console.log("Creating donation:", {
         eventId: mockEvent.id,
         amount: donationAmount,
@@ -110,13 +108,15 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     <main className="min-h-screen pb-8">
       <MobileHeader title={mockEvent.name} subtitle="Event" showBack backHref="/events" />
 
-      <div className="px-4 sm:px-6 md:px-8 pt-6 md:pt-0">
-      {/* Back Button */}
-      <Link href="/events">
-        <button className="hidden md:flex text-violet-600 hover:text-violet-700 font-semibold mb-6 items-center gap-2">
+      <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-6">
+        <Link
+          href="/events"
+          className="text-violet-600 hover:text-violet-700 font-semibold flex items-center gap-2 w-fit"
+        >
           ← Back to Events
-        </button>
-      </Link>
+        </Link>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
         {/* Left Column - Event Details */}
         <div className="lg:col-span-2">

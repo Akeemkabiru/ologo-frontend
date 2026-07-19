@@ -52,7 +52,6 @@ export default function CreateEventPage() {
     initialValues,
     onSubmit: async (values) => {
       try {
-        // TODO: Call eventService.createEvent(values)
         console.log("Creating event:", values);
         // Mock success
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -90,6 +89,20 @@ export default function CreateEventPage() {
         backHref="/events"
       />
       <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-8">
+        <button
+          onClick={() => router.push("/events")}
+          className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2"
+        >
+          ← Back to Events
+        </button>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Create Event
+        </h1>
+        <p className="text-gray-600 mt-1">
+          Start a fundraising event to reach your goals
+        </p>
+      </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
         <Form onSubmit={handleSubmit} loading={isSubmitting}>
           {/* Basic Information */}

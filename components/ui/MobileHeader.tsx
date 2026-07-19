@@ -22,7 +22,7 @@ export default function MobileHeader({
   const router = useRouter();
 
   return (
-    <div className="-mt-6 relative left-1/2 -translate-x-1/2 w-screen md:static md:left-auto md:translate-x-0 md:w-auto md:mt-0 bg-linear-to-br from-violet-600 to-violet-800 rounded-b-[32px] md:rounded-2xl px-5 py-8 md:px-6 md:py-6 text-white">
+    <div className="md:hidden bg-linear-to-br from-violet-600 to-violet-800 rounded-b-[32px] px-5 pt-8 pb-6 text-white">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           {showBack ? (

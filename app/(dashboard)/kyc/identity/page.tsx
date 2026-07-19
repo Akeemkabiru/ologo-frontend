@@ -3,7 +3,7 @@
 import IdentityForm from "@/components/kyc/IdentityForm";
 import { KYC_STORAGE_KEYS } from "@/lib/constants";
 
-// Mock signed-up name - replace with API call to userService.getProfile()
+// Mock signed-up name
 const SIGNED_UP_NAME = "John Doe";
 
 export default function KYCIdentity() {

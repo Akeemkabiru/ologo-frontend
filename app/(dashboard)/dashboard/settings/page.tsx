@@ -13,6 +13,14 @@ export default function Settings() {
         subtitle="Manage your account and security"
       />
       <div className="max-w-3xl px-4 sm:px-6 md:px-8 pt-6">
+        <div className="hidden md:block mb-8">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Settings
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Manage your account and security settings
+          </p>
+        </div>
         {/* Settings Grid */}
         <div className="space-y-4 sm:space-y-5 md:space-y-6">
           {/* KYC Verification Card */}

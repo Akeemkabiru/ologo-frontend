@@ -52,7 +52,6 @@ export default function KYCBankAccount() {
   const handleVerify = async () => {
     if (!values.bankName || values.accountNumber.length !== 10) return;
     setIsVerifying(true);
-    // TODO: Call bankService.resolveAccountName(accountNumber, bankName)
     await new Promise((resolve) => setTimeout(resolve, 1200));
     setValues((prev) => ({ ...prev, accountName: "John Doe" }));
     setIsVerified(true);

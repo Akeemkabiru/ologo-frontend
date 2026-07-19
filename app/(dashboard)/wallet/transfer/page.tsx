@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   Form,
   FormInput,
@@ -47,7 +46,6 @@ export default function WalletTransferPage() {
     initialValues,
     onSubmit: async (values) => {
       try {
-        // TODO: Call walletService.transfer()
         console.log("Transfer funds:", values);
         // Mock success
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -67,7 +65,6 @@ export default function WalletTransferPage() {
     },
   });
   const handleSearchRecipient = async () => {
-    // TODO: Call userService.searchUsers() with email
     console.log("Searching for user:", values.recipientEmail);
     // Mock result
     setRecipientInfo({
@@ -87,14 +84,17 @@ export default function WalletTransferPage() {
         backHref="/wallet"
       />
       <div className="px-4 sm:px-6 md:px-8 pt-6">
-      <div className="hidden md:block mb-5 sm:mb-6 md:mb-8">
-        <Link href="/wallet">
-          <button className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2">
-            ← Back to Wallet
-          </button>
-        </Link>
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">Send Money</h1>
-        <p className="text-gray-600">
+      <div className="hidden md:block mb-8">
+        <button
+          onClick={() => router.push("/wallet")}
+          className="text-violet-600 hover:text-violet-700 font-semibold mb-4 flex items-center gap-2"
+        >
+          ← Back to Wallet
+        </button>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Send Money
+        </h1>
+        <p className="text-gray-600 mt-1">
           Transfer funds to another user or wallet
         </p>
       </div>

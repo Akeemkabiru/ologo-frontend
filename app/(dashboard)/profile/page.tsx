@@ -19,7 +19,7 @@ interface ProfileFormValues {
   phone: string;
   about: string;
 }
-// Mock user data - replace with API call to userService.getProfile()
+// Mock user data
 const mockUser = {
   id: "user-1",
   fullName: "John Doe",
@@ -83,6 +83,14 @@ export default function ProfilePage() {
     <main className="min-h-screen pb-8">
       <MobileHeader title="My Profile" subtitle="Account overview" />
       <div className="px-4 sm:px-6 md:px-8 pt-6">
+      <div className="hidden md:block mb-8">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          My Profile
+        </h1>
+        <p className="text-gray-600 mt-1">
+          View and manage your profile information
+        </p>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
         {/* Left Column - Profile Card */}
         <div>
