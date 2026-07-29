@@ -175,7 +175,7 @@ export default function Login() {
           <span className="text-gray-600 text-sm">
             Don&apos;t have an account?{" "}
             <a
-              href="/auth/register"
+              href="/auth/account-type?next=/auth/register"
               className="font-semibold text-violet-600 hover:text-violet-700 transition-colors"
             >
               Sign up

@@ -278,20 +278,21 @@ export const FormButton: React.FC<FormButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = "font-semibold rounded-lg transition-colors font-medium";
+  const baseStyles =
+    "font-semibold rounded-2xl transition-all duration-200 active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed";
   const sizeStyles = {
-    sm: "px-3 py-1.5 text-sm",
+    sm: "px-4 py-2 text-sm",
     md: "px-6 py-2.5 text-base",
-    lg: "px-8 py-3 text-lg",
+    lg: "px-8 py-3 text-base",
   };
 
   const variantStyles = {
     primary:
-      "bg-violet-600 hover:bg-violet-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed",
+      "bg-violet-600 hover:bg-violet-700 text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:shadow-none",
     secondary:
-      "bg-gray-200 hover:bg-gray-300 text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed",
+      "bg-gray-200 hover:bg-gray-300 text-gray-900 disabled:opacity-50",
     danger:
-      "bg-gray-600 hover:bg-gray-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed",
+      "bg-gray-600 hover:bg-gray-700 text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:shadow-none",
   };
 
   return (

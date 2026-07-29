@@ -198,8 +198,11 @@ export const NIGERIAN_STATES = [
   "Zamfara",
 ];
 
+// Persistent (localStorage) - set once during onboarding, reused by both
+// the KYC and Verified Tick flows so the user is never asked twice.
+export const ACCOUNT_TYPE_KEY = "ologoAccountType";
+
 export const KYC_STORAGE_KEYS = {
-  entityType: "kycEntityType",
   identity: "kycIdentity",
   bankAccount: "kycBankAccount",
   bvn: "kycBvn",
@@ -207,7 +210,6 @@ export const KYC_STORAGE_KEYS = {
 };
 
 export const VERIFIED_TICK_STORAGE_KEYS = {
-  entityType: "vtEntityType",
   identity: "vtIdentity",
   address: "vtAddress",
 };

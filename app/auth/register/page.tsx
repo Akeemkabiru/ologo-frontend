@@ -3,11 +3,12 @@
 import InputField from "@/components/ui/inputField";
 import Checkbox from "@/components/ui/checkbox";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { ACCOUNT_TYPE_KEY } from "@/lib/constants";
 
 // Validation schema
 const RegisterValidationSchema = Yup.object().shape({
@@ -44,6 +45,15 @@ export default function Register() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [accountTypeReady, setAccountTypeReady] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(ACCOUNT_TYPE_KEY)) {
+      setAccountTypeReady(true);
+    } else {
+      router.replace("/auth/account-type?next=/auth/register");
+    }
+  }, [router]);
 
   const formik = useFormik({
     initialValues: {
@@ -65,6 +75,14 @@ export default function Register() {
       }
     },
   });
+
+  if (!accountTypeReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

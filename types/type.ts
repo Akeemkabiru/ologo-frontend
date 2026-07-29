@@ -20,6 +20,7 @@ export interface IInputField {
   required?: boolean;
   error?: boolean;
   errorMessage?: string;
+  helperText?: string;
   className?: string;
   containerClassName?: string;
   autoComplete?: string;
@@ -29,6 +30,7 @@ export interface IInputField {
   readOnly?: boolean;
   icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
 }
 
 export interface IToggle {

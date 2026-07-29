@@ -1,9 +1,29 @@
-import { IInputField } from "@/types/type";
+import { ChevronDown } from "lucide-react";
 
-export default function InputField({
-  type = "text",
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
+interface ISelectField {
+  label?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
+  id?: string;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  className?: string;
+  containerClassName?: string;
+  placeholder?: string;
+  options: SelectOption[];
+}
+
+export default function SelectField({
   label,
-  placeholder = "",
   value,
   onChange,
   onBlur,
@@ -13,25 +33,18 @@ export default function InputField({
   required = false,
   error = false,
   errorMessage,
-  helperText,
   className = "",
   containerClassName = "",
-  autoComplete,
-  maxLength,
-  minLength,
-  pattern,
-  readOnly = false,
-  icon,
-  rightIcon,
-  ...rest
-}: IInputField) {
-  const inputId = id || name || placeholder;
+  placeholder = "Select an option",
+  options,
+}: ISelectField) {
+  const selectId = id || name || label;
 
   return (
     <div className={`flex flex-col gap-2.5 ${containerClassName}`}>
       {label && (
         <label
-          htmlFor={inputId}
+          htmlFor={selectId}
           className={`text-sm font-medium ${
             required ? "after:content-['*'] after:ml-1 after:text-gray-700" : ""
           } ${error ? "text-red-500" : "text-gray-800"}`}
@@ -41,35 +54,22 @@ export default function InputField({
       )}
 
       <div className="relative flex items-center group">
-        {icon && (
-          <div className="absolute left-4 text-[#7f22fe]/70 group-focus-within:text-[#7f22fe] transition-colors flex items-center">
-            {icon}
-          </div>
-        )}
-
-        <input
-          id={inputId}
-          type={type}
+        <select
+          id={selectId}
           name={name}
-          placeholder={placeholder}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
           disabled={disabled}
           required={required}
-          autoComplete={autoComplete}
-          maxLength={maxLength}
-          minLength={minLength}
-          pattern={pattern}
-          readOnly={readOnly}
           className={`
-            w-full px-4 py-2.5 text-sm rounded-lg
+            w-full appearance-none px-4 py-2.5 pr-11 text-sm rounded-lg
 
             /* BASE (VISIBLE BRAND BORDER) */
             bg-white/40 backdrop-blur-xl
             border-[1.5px] ${error ? "border-red-400" : "border-[#7f22fe]/60"}
 
-            text-gray-900 placeholder:text-gray-500
+            text-gray-900
 
             shadow-sm
             transition-all duration-300 ease-out
@@ -90,25 +90,24 @@ export default function InputField({
             disabled:border-gray-300
             disabled:cursor-not-allowed
 
-            ${icon ? "pl-11" : ""}
-            ${rightIcon ? "pr-11" : ""}
             ${className}
           `}
-          {...rest}
-        />
+        >
+          <option value="">{placeholder}</option>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
 
-        {rightIcon && (
-          <div className="absolute right-4 text-[#7f22fe]/70 group-focus-within:text-[#7f22fe] transition-colors flex items-center">
-            {rightIcon}
-          </div>
-        )}
+        <div className="absolute right-4 text-[#7f22fe]/70 group-focus-within:text-[#7f22fe] transition-colors pointer-events-none flex items-center">
+          <ChevronDown size={16} />
+        </div>
       </div>
 
       {error && errorMessage && (
         <p className="text-xs text-red-500">{errorMessage}</p>
-      )}
-      {helperText && !(error && errorMessage) && (
-        <p className="text-xs text-gray-500">{helperText}</p>
       )}
     </div>
   );

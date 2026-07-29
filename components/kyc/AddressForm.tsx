@@ -1,12 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
-  Form,
-  FormInput,
-  FormSelect,
-  FormButton,
-} from "@/components/forms/FormComponents";
+import InputField from "@/components/ui/inputField";
+import SelectField from "@/components/ui/selectField";
+import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
 import { NIGERIAN_STATES } from "@/lib/constants";
 
@@ -39,7 +36,7 @@ export default function AddressForm({
 }: AddressFormProps) {
   const router = useRouter();
 
-  const { values, handleChange, handleSubmit, isSubmitting } =
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } =
     useForm<AddressValues>({
       initialValues,
       onSubmit: async (values) => {
@@ -48,41 +45,47 @@ export default function AddressForm({
       },
       validate: (values) => {
         const errors: Partial<AddressValues> = {};
-        if (!values.streetAddress) errors.streetAddress = "Required";
-        if (!values.city) errors.city = "Required";
-        if (!values.state) errors.state = "Required";
+        if (!values.streetAddress) errors.streetAddress = "Street address is required";
+        if (!values.city) errors.city = "City is required";
+        if (!values.state) errors.state = "State is required";
         return errors;
       },
     });
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-gray-900 mb-2">
+      <h1 className="text-lg font-bold text-gray-900 mb-1">
         Physical Address
       </h1>
-      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
         Tell us where you&apos;re physically located
       </p>
 
-      <Form onSubmit={handleSubmit} loading={isSubmitting}>
-        <FormInput
+      <form onSubmit={handleSubmit} className="grid gap-5">
+        <InputField
           label="Street Address"
           name="streetAddress"
           required
           placeholder="123 Main Street"
           value={values.streetAddress}
           onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.streetAddress && !!errors.streetAddress}
+          errorMessage={errors.streetAddress}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormInput
+          <InputField
             label="City"
             name="city"
             required
             placeholder="e.g., Ikeja"
             value={values.city}
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.city && !!errors.city}
+            errorMessage={errors.city}
           />
-          <FormSelect
+          <SelectField
             label="State"
             name="state"
             required
@@ -92,9 +95,12 @@ export default function AddressForm({
             }))}
             value={values.state}
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.state && !!errors.state}
+            errorMessage={errors.state}
           />
         </div>
-        <FormInput
+        <InputField
           label="Postal Code (optional)"
           name="postalCode"
           placeholder="e.g., 100001"
@@ -121,7 +127,7 @@ export default function AddressForm({
             {submitLabel}
           </FormButton>
         </div>
-      </Form>
+      </form>
     </div>
   );
 }

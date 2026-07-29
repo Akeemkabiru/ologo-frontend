@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
-import { Form, FormInput, FormButton } from "@/components/forms/FormComponents";
+import InputField from "@/components/ui/inputField";
+import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
 import { KYC_STORAGE_KEYS } from "@/lib/constants";
 
@@ -15,7 +16,7 @@ const initialValues: BvnValues = { bvn: "" };
 export default function KYCBvn() {
   const router = useRouter();
 
-  const { values, handleChange, handleSubmit, isSubmitting } =
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } =
     useForm<BvnValues>({
       initialValues,
       onSubmit: async (values) => {
@@ -33,10 +34,10 @@ export default function KYCBvn() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-gray-900 mb-2">
+      <h1 className="text-lg font-bold text-gray-900 mb-1">
         Bank Verification Number
       </h1>
-      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
         Your BVN is used to automatically verify your identity with your bank
       </p>
 
@@ -48,8 +49,8 @@ export default function KYCBvn() {
         </p>
       </div>
 
-      <Form onSubmit={handleSubmit} loading={isSubmitting}>
-        <FormInput
+      <form onSubmit={handleSubmit} className="grid gap-5">
+        <InputField
           label="BVN"
           name="bvn"
           required
@@ -59,6 +60,9 @@ export default function KYCBvn() {
           placeholder="12345678901"
           value={values.bvn}
           onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.bvn && !!errors.bvn}
+          errorMessage={errors.bvn}
           helperText="11-digit number sent to you via *565*0# or your bank's app"
         />
 
@@ -81,7 +85,7 @@ export default function KYCBvn() {
             Continue
           </FormButton>
         </div>
-      </Form>
+      </form>
     </div>
   );
 }

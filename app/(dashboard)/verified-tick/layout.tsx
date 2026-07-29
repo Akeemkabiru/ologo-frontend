@@ -1,12 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BadgeCheck } from "lucide-react";
 
 const steps = [
-  { id: 1, name: "Type", path: "/verified-tick" },
-  { id: 2, name: "Identity", path: "/verified-tick/identity" },
-  { id: 3, name: "Address", path: "/verified-tick/address" },
+  { id: 1, name: "Identity", path: "/verified-tick/identity" },
+  { id: 2, name: "Address", path: "/verified-tick/address" },
 ];
 
 export default function VerifiedTickLayout({
@@ -15,6 +14,7 @@ export default function VerifiedTickLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const currentStep =
     steps.findIndex((step) => step.path === pathname) + 1 || 1;
@@ -38,27 +38,32 @@ export default function VerifiedTickLayout({
               <h2 className="text-sm font-semibold text-gray-700">
                 Application Progress
               </h2>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-500">
                 {currentStep} of {steps.length}
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
               <div
-                className="bg-violet-600 h-2.5 rounded-full transition-all duration-300"
+                className="bg-violet-600 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 mt-6">
+          <div className="grid grid-cols-2 gap-2 mt-6 max-w-xs mx-auto">
             {steps.map((step) => (
-              <div key={step.id} className="text-center">
+              <button
+                key={step.id}
+                type="button"
+                onClick={() => router.push(step.path)}
+                className="text-center cursor-pointer group"
+              >
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all duration-300 ease-out group-hover:scale-105 ${
                     step.id < currentStep
                       ? "bg-violet-600 text-white"
                       : step.id === currentStep
                         ? "bg-violet-100 text-violet-600 border-2 border-violet-600"
-                        : "bg-gray-100 text-gray-400"
+                        : "bg-gray-100 text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600"
                   }`}
                 >
                   {step.id < currentStep ? (
@@ -78,13 +83,15 @@ export default function VerifiedTickLayout({
                   )}
                 </div>
                 <p
-                  className={`text-xs font-medium ${
-                    step.id <= currentStep ? "text-gray-900" : "text-gray-400"
+                  className={`text-xs font-medium transition-colors duration-300 ${
+                    step.id <= currentStep
+                      ? "text-gray-900"
+                      : "text-gray-400 group-hover:text-gray-600"
                   }`}
                 >
                   {step.name}
                 </p>
-              </div>
+              </button>
             ))}
           </div>
         </div>

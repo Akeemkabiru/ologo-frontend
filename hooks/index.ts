@@ -158,7 +158,11 @@ export const useForm = <T extends Record<string, any>>({
   );
 
   const handleBlur = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
+    (
+      e: React.FocusEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
       const { name } = e.target;
       setTouched((prev) => ({
         ...prev,

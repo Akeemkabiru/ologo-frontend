@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User, Building2 } from "lucide-react";
 import { FormButton } from "@/components/forms/FormComponents";
+import { ACCOUNT_TYPE_KEY } from "@/lib/constants";
 
 interface EntityTypeStepProps {
-  storageKey: string;
   nextHref: string;
   title?: string;
   description?: string;
@@ -28,7 +28,6 @@ const options = [
 ];
 
 export default function EntityTypeStep({
-  storageKey,
   nextHref,
   title = "How would you like to verify?",
   description = "Choose whether you're verifying as an individual or on behalf of an organisation.",
@@ -37,20 +36,20 @@ export default function EntityTypeStep({
   const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(storageKey);
+    const saved = localStorage.getItem(ACCOUNT_TYPE_KEY);
     if (saved) setSelected(saved);
-  }, [storageKey]);
+  }, []);
 
   const handleContinue = () => {
     if (!selected) return;
-    sessionStorage.setItem(storageKey, selected);
+    localStorage.setItem(ACCOUNT_TYPE_KEY, selected);
     router.push(nextHref);
   };
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-gray-900 mb-2">{title}</h1>
-      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+      <h1 className="text-lg font-bold text-gray-900 mb-1">{title}</h1>
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
         {description}
       </p>
 

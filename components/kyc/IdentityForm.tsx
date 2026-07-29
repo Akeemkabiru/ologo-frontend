@@ -2,18 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Form,
-  FormInput,
-  FormSelect,
-  FormFileUpload,
-  FormButton,
-} from "@/components/forms/FormComponents";
+import InputField from "@/components/ui/inputField";
+import SelectField from "@/components/ui/selectField";
+import FileUploadField from "@/components/ui/fileUploadField";
+import { FormButton } from "@/components/forms/FormComponents";
 import {
   INDIVIDUAL_ID_TYPES,
   ORGANISATION_ID_TYPES,
   ORGANISATION_TYPES,
   ORGANISATION_SUFFIXES,
+  ACCOUNT_TYPE_KEY,
 } from "@/lib/constants";
 
 interface PersonIdentity {
@@ -49,7 +47,6 @@ const emptyOrg: OrgIdentity = {
 };
 
 interface IdentityFormProps {
-  entityStorageKey: string;
   storageKey: string;
   nextHref: string;
   backHref: string;
@@ -57,7 +54,6 @@ interface IdentityFormProps {
 }
 
 export default function IdentityForm({
-  entityStorageKey,
   storageKey,
   nextHref,
   backHref,
@@ -73,9 +69,11 @@ export default function IdentityForm({
   const [contact, setContact] = useState<PersonIdentity>(emptyPerson);
 
   useEffect(() => {
-    const savedEntity = sessionStorage.getItem(entityStorageKey);
+    // Account type is chosen once at sign-up and persisted so it never
+    // needs to be asked again inside individual flows.
+    const savedEntity = localStorage.getItem(ACCOUNT_TYPE_KEY);
     if (savedEntity) setEntityType(savedEntity);
-  }, [entityStorageKey]);
+  }, []);
 
   const isIndividual = entityType === "individual";
 
@@ -111,16 +109,16 @@ export default function IdentityForm({
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-gray-900 mb-2">
+      <h1 className="text-lg font-bold text-gray-900 mb-1">
         Identity Verification
       </h1>
-      <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
         {isIndividual
           ? "Provide your government-issued ID details"
           : "Provide your organisation's registration details and a contact person's ID"}
       </p>
 
-      <Form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="grid gap-4">
         {isIndividual ? (
           <PersonIdentityFields
             values={person}
@@ -130,12 +128,12 @@ export default function IdentityForm({
         ) : (
           <div className="space-y-8 sm:space-y-10 md:space-y-12">
             <div>
-              <h2 className="text-base font-semibold text-gray-900 mb-4">
+              <h2 className="text-sm font-semibold text-gray-900 mb-4">
                 Organisation Details
               </h2>
-              <div className="space-y-4">
+              <div className="grid gap-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormSelect
+                  <SelectField
                     label="Organisation Type"
                     required
                     options={ORGANISATION_TYPES}
@@ -144,7 +142,7 @@ export default function IdentityForm({
                       setOrg((p) => ({ ...p, organisationType: e.target.value }))
                     }
                   />
-                  <FormSelect
+                  <SelectField
                     label="Suffix (optional)"
                     options={ORGANISATION_SUFFIXES}
                     value={org.organisationSuffix}
@@ -156,7 +154,7 @@ export default function IdentityForm({
                     }
                   />
                 </div>
-                <FormInput
+                <InputField
                   label="Organisation Name"
                   required
                   placeholder="e.g., Acme Foundation"
@@ -166,7 +164,7 @@ export default function IdentityForm({
                   }
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormSelect
+                  <SelectField
                     label="ID Type"
                     required
                     options={ORGANISATION_ID_TYPES}
@@ -175,7 +173,7 @@ export default function IdentityForm({
                       setOrg((p) => ({ ...p, idType: e.target.value }))
                     }
                   />
-                  <FormInput
+                  <InputField
                     label="ID Number"
                     required
                     placeholder="Certificate / RC number"
@@ -185,14 +183,10 @@ export default function IdentityForm({
                     }
                   />
                 </div>
-                <FormFileUpload
+                <FileUploadField
                   label="Upload Document"
                   required
-                  helperText={
-                    org.idDocument
-                      ? org.idDocument.name
-                      : "PDF, PNG, JPG up to 10MB"
-                  }
+                  file={org.idDocument}
                   onFileChange={(file) =>
                     setOrg((p) => ({ ...p, idDocument: file }))
                   }
@@ -201,7 +195,7 @@ export default function IdentityForm({
             </div>
 
             <div className="border-t border-gray-200 pt-8 sm:pt-10 md:pt-12">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">
+              <h2 className="text-sm font-semibold text-gray-900 mb-4">
                 Contact Person&apos;s Identity
               </h2>
               <PersonIdentityFields
@@ -232,7 +226,7 @@ export default function IdentityForm({
             Continue
           </FormButton>
         </div>
-      </Form>
+      </form>
     </div>
   );
 }
@@ -247,8 +241,8 @@ function PersonIdentityFields({
   idTypeOptions: { label: string; value: string }[];
 }) {
   return (
-    <div className="space-y-4">
-      <FormInput
+    <div className="grid gap-5">
+      <InputField
         label="Full Legal Name"
         required
         placeholder="As it appears on your ID"
@@ -257,14 +251,14 @@ function PersonIdentityFields({
         helperText="Confirm or edit the name you signed up with"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <FormSelect
+        <SelectField
           label="ID Type"
           required
           options={idTypeOptions}
           value={values.idType}
           onChange={(e) => onChange((p) => ({ ...p, idType: e.target.value }))}
         />
-        <FormInput
+        <InputField
           label="ID Number"
           required
           placeholder="ID number"
@@ -274,12 +268,10 @@ function PersonIdentityFields({
           }
         />
       </div>
-      <FormFileUpload
+      <FileUploadField
         label="Upload ID"
         required
-        helperText={
-          values.idDocument ? values.idDocument.name : "PDF, PNG, JPG up to 10MB"
-        }
+        file={values.idDocument}
         onFileChange={(file) => onChange((p) => ({ ...p, idDocument: file }))}
       />
     </div>
