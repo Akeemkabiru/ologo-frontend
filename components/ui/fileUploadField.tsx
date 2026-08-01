@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Upload, CheckCircle2 } from "lucide-react";
 
 interface IFileUploadField {
@@ -24,14 +25,19 @@ export default function FileUploadField({
   file,
   onFileChange,
   accept = "image/*,.pdf",
-  id = "file-upload",
+  id,
   containerClassName = "",
 }: IFileUploadField) {
+  // Auto-generate a stable, unique id when the caller doesn't supply one -
+  // multiple upload fields on the same page must never share an id, or the
+  // browser binds every <label htmlFor> to whichever input came first.
+  const autoId = useId();
+  const inputId = id || autoId;
   return (
     <div className={`flex flex-col gap-2.5 ${containerClassName}`}>
       {label && (
         <label
-          htmlFor={id}
+          htmlFor={inputId}
           className={`text-sm font-medium ${
             required ? "after:content-['*'] after:ml-1 after:text-gray-700" : ""
           } ${error ? "text-red-500" : "text-gray-800"}`}
@@ -41,7 +47,7 @@ export default function FileUploadField({
       )}
 
       <label
-        htmlFor={id}
+        htmlFor={inputId}
         className={`
           flex flex-col items-center justify-center w-full py-6 px-4 rounded-lg cursor-pointer text-center
           bg-white/40 backdrop-blur-xl
@@ -52,7 +58,7 @@ export default function FileUploadField({
         `}
       >
         <input
-          id={id}
+          id={inputId}
           type="file"
           accept={accept}
           className="hidden"

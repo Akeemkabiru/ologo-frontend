@@ -1,6 +1,7 @@
 "use client";
 
 import InputField from "@/components/ui/inputField";
+import SelectField from "@/components/ui/selectField";
 import Checkbox from "@/components/ui/checkbox";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -8,47 +9,58 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { ACCOUNT_TYPE_KEY } from "@/lib/constants";
+import { ACCOUNT_TYPE_KEY, ORGANISATION_SUFFIXES } from "@/lib/constants";
 
-// Validation schema
-const RegisterValidationSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, "First name must be at least 2 characters")
-    .required("First name is required"),
+// Validation schema - last name is only required for individuals; vendors
+// (organisations) get an optional suffix select instead.
+const getRegisterValidationSchema = (isVendor: boolean) =>
+  Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "First name must be at least 2 characters")
+      .required("First name is required"),
 
-  lastName: Yup.string()
-    .min(2, "Last name must be at least 2 characters")
-    .required("Last name is required"),
+    lastName: isVendor
+      ? Yup.string().notRequired()
+      : Yup.string()
+          .min(2, "Last name must be at least 2 characters")
+          .required("Last name is required"),
 
-  username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .max(20, "Username must not exceed 20 characters")
-    .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscores allowed")
-    .required("Username is required"),
+    suffix: Yup.string().notRequired(),
 
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+    username: Yup.string()
+      .min(3, "Username must be at least 3 characters")
+      .max(20, "Username must not exceed 20 characters")
+      .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscores allowed")
+      .required("Username is required"),
 
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
 
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Confirm your password"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
 
-  acceptTerms: Yup.boolean().oneOf([true], "You must accept terms").required(),
-});
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords do not match")
+      .required("Confirm your password"),
+
+    acceptTerms: Yup.boolean()
+      .oneOf([true], "You must accept terms")
+      .required(),
+  });
 
 export default function Register() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [accountTypeReady, setAccountTypeReady] = useState(false);
+  const [isVendor, setIsVendor] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem(ACCOUNT_TYPE_KEY)) {
+    const accountType = localStorage.getItem(ACCOUNT_TYPE_KEY);
+    if (accountType) {
+      setIsVendor(accountType === "organisation");
       setAccountTypeReady(true);
     } else {
       router.replace("/auth/account-type?next=/auth/register");
@@ -59,13 +71,15 @@ export default function Register() {
     initialValues: {
       firstName: "",
       lastName: "",
+      suffix: "",
       username: "",
       email: "",
       password: "",
       confirmPassword: "",
       acceptTerms: false,
     },
-    validationSchema: RegisterValidationSchema,
+    validationSchema: getRegisterValidationSchema(isVendor),
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
         console.log(values);
@@ -117,19 +131,36 @@ export default function Register() {
                       : undefined
                   }
                 />
-                {/* Last Name */}
-                <InputField
-                  type="text"
-                  placeholder="Last Name"
-                  name="lastName"
-                  value={formik.values.lastName}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.lastName && !!formik.errors.lastName}
-                  errorMessage={
-                    formik.touched.lastName ? formik.errors.lastName : undefined
-                  }
-                />
+                {/* Last Name (individual) / Suffix (vendor) */}
+                {isVendor ? (
+                  <SelectField
+                    placeholder="Suffix"
+                    name="suffix"
+                    options={ORGANISATION_SUFFIXES.filter((s) => s.value)}
+                    value={formik.values.suffix}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.suffix && !!formik.errors.suffix}
+                    errorMessage={
+                      formik.touched.suffix ? formik.errors.suffix : undefined
+                    }
+                  />
+                ) : (
+                  <InputField
+                    type="text"
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.lastName && !!formik.errors.lastName}
+                    errorMessage={
+                      formik.touched.lastName
+                        ? formik.errors.lastName
+                        : undefined
+                    }
+                  />
+                )}
               </div>
 
               {/* Username */}

@@ -21,6 +21,14 @@ interface PersonIdentity {
   idDocument: File | null;
 }
 
+interface ContactIdentity {
+  idType: string;
+  idNumber: string;
+  firstName: string;
+  lastName: string;
+  idDocument: File | null;
+}
+
 interface OrgIdentity {
   organisationType: string;
   organisationName: string;
@@ -34,6 +42,14 @@ const emptyPerson: PersonIdentity = {
   idType: "",
   idNumber: "",
   fullName: "",
+  idDocument: null,
+};
+
+const emptyContact: ContactIdentity = {
+  idType: "",
+  idNumber: "",
+  firstName: "",
+  lastName: "",
   idDocument: null,
 };
 
@@ -66,7 +82,7 @@ export default function IdentityForm({
     fullName: defaultName,
   });
   const [org, setOrg] = useState<OrgIdentity>(emptyOrg);
-  const [contact, setContact] = useState<PersonIdentity>(emptyPerson);
+  const [contact, setContact] = useState<ContactIdentity>(emptyContact);
 
   useEffect(() => {
     // Account type is chosen once at sign-up and persisted so it never
@@ -87,7 +103,8 @@ export default function IdentityForm({
         org.idDocument &&
         contact.idType &&
         contact.idNumber &&
-        contact.fullName &&
+        contact.firstName &&
+        contact.lastName &&
         contact.idDocument
       );
 
@@ -198,7 +215,7 @@ export default function IdentityForm({
               <h2 className="text-sm font-semibold text-gray-900 mb-4">
                 Contact Person&apos;s Identity
               </h2>
-              <PersonIdentityFields
+              <ContactIdentityFields
                 values={contact}
                 onChange={setContact}
                 idTypeOptions={INDIVIDUAL_ID_TYPES}
@@ -269,6 +286,67 @@ function PersonIdentityFields({
         />
       </div>
       <FileUploadField
+        id="person-id-upload"
+        label="Upload ID"
+        required
+        file={values.idDocument}
+        onFileChange={(file) => onChange((p) => ({ ...p, idDocument: file }))}
+      />
+    </div>
+  );
+}
+
+function ContactIdentityFields({
+  values,
+  onChange,
+  idTypeOptions,
+}: {
+  values: ContactIdentity;
+  onChange: (updater: (prev: ContactIdentity) => ContactIdentity) => void;
+  idTypeOptions: { label: string; value: string }[];
+}) {
+  return (
+    <div className="grid gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <InputField
+          label="First Name"
+          required
+          placeholder="First name"
+          value={values.firstName}
+          onChange={(e) =>
+            onChange((p) => ({ ...p, firstName: e.target.value }))
+          }
+        />
+        <InputField
+          label="Last Name"
+          required
+          placeholder="Last name"
+          value={values.lastName}
+          onChange={(e) =>
+            onChange((p) => ({ ...p, lastName: e.target.value }))
+          }
+        />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <SelectField
+          label="ID Type"
+          required
+          options={idTypeOptions}
+          value={values.idType}
+          onChange={(e) => onChange((p) => ({ ...p, idType: e.target.value }))}
+        />
+        <InputField
+          label="ID Number"
+          required
+          placeholder="ID number"
+          value={values.idNumber}
+          onChange={(e) =>
+            onChange((p) => ({ ...p, idNumber: e.target.value }))
+          }
+        />
+      </div>
+      <FileUploadField
+        id="contact-id-upload"
         label="Upload ID"
         required
         file={values.idDocument}
