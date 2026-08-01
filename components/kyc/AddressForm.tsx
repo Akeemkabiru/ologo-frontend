@@ -5,13 +5,14 @@ import InputField from "@/components/ui/inputField";
 import SelectField from "@/components/ui/selectField";
 import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
-import { NIGERIAN_STATES } from "@/lib/constants";
+import { NIGERIAN_STATES, COUNTRIES } from "@/lib/constants";
 
 interface AddressValues {
   streetAddress: string;
   city: string;
   state: string;
   postalCode: string;
+  country: string;
 }
 
 const initialValues: AddressValues = {
@@ -19,6 +20,7 @@ const initialValues: AddressValues = {
   city: "",
   state: "",
   postalCode: "",
+  country: "Nigeria",
 };
 
 interface AddressFormProps {
@@ -48,6 +50,7 @@ export default function AddressForm({
         if (!values.streetAddress) errors.streetAddress = "Street address is required";
         if (!values.city) errors.city = "City is required";
         if (!values.state) errors.state = "State is required";
+        if (!values.country) errors.country = "Country is required";
         return errors;
       },
     });
@@ -100,13 +103,29 @@ export default function AddressForm({
             errorMessage={errors.state}
           />
         </div>
-        <InputField
-          label="Postal Code (optional)"
-          name="postalCode"
-          placeholder="e.g., 100001"
-          value={values.postalCode}
-          onChange={handleChange}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <SelectField
+            label="Country"
+            name="country"
+            required
+            options={COUNTRIES.map((country) => ({
+              label: country,
+              value: country,
+            }))}
+            value={values.country}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.country && !!errors.country}
+            errorMessage={errors.country}
+          />
+          <InputField
+            label="Postal Code (optional)"
+            name="postalCode"
+            placeholder="e.g., 100001"
+            value={values.postalCode}
+            onChange={handleChange}
+          />
+        </div>
 
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10 md:mt-12">
           <FormButton

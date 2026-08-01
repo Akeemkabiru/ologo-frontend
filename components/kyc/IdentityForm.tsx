@@ -286,7 +286,6 @@ function PersonIdentityFields({
         />
       </div>
       <FileUploadField
-        id="person-id-upload"
         label="Upload ID"
         required
         file={values.idDocument}
@@ -346,7 +345,6 @@ function ContactIdentityFields({
         />
       </div>
       <FileUploadField
-        id="contact-id-upload"
         label="Upload ID"
         required
         file={values.idDocument}
