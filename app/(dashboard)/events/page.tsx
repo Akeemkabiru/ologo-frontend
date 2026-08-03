@@ -17,8 +17,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar,
+  PawPrint,
+  Leaf,
+  LifeBuoy,
+  Trophy,
+  Building2,
 } from "lucide-react";
 import { EmptyState } from "@/components/cards/CardComponents";
+import CreateEventModal from "@/components/events/CreateEventModal";
+
+const MOBILE_VISIBLE_CATEGORIES = 5;
 
 const categories = [
   { label: "Medical", icon: HeartPulse, href: "/events?category=medical" },
@@ -30,13 +38,31 @@ const categories = [
   },
   { label: "Food", icon: UtensilsCrossed, href: "/events?category=food" },
   { label: "Social", icon: Users, href: "/events?category=social" },
+  { label: "Animals", icon: PawPrint, href: "/events?category=animals" },
+  {
+    label: "Environment",
+    icon: Leaf,
+    href: "/events?category=environment",
+  },
+  {
+    label: "Disaster Relief",
+    icon: LifeBuoy,
+    href: "/events?category=disaster-relief",
+  },
+  { label: "Sports", icon: Trophy, href: "/events?category=sports" },
+  {
+    label: "Community",
+    icon: Building2,
+    href: "/events?category=community",
+  },
 ];
 
-const eventFilters: { label: string; value: "mine" | "private" | "public" }[] = [
-  { label: "My Events", value: "mine" },
-  { label: "Private Events", value: "private" },
-  { label: "Public Events", value: "public" },
-];
+const eventFilters: { label: string; value: "mine" | "private" | "public" }[] =
+  [
+    { label: "My Events", value: "mine" },
+    { label: "Private Events", value: "private" },
+    { label: "Public Events", value: "public" },
+  ];
 
 const eventTabs: {
   label: string;
@@ -363,6 +389,8 @@ export default function EventsPage() {
   >("in-progress");
   const [page, setPage] = useState(1);
   const [direction, setDirection] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
 
   const filteredEvents = useMemo(
     () =>
@@ -373,10 +401,7 @@ export default function EventsPage() {
     [activeFilter, activeTab],
   );
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredEvents.length / PAGE_SIZE),
-  );
+  const totalPages = Math.max(1, Math.ceil(filteredEvents.length / PAGE_SIZE));
   const paginatedEvents = filteredEvents.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE,
@@ -394,14 +419,22 @@ export default function EventsPage() {
 
   return (
     <main className="min-h-screen pb-8">
-      {/* Desktop-only page title */}
-      <h1 className="hidden md:block text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
-        Events
-      </h1>
+      {/* Desktop-only page title + Create Event, in line */}
+      <div className="hidden md:flex md:items-center md:justify-between mb-6">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Events</h1>
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(true)}
+          className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full shrink-0 transition-colors shadow-sm"
+        >
+          <Plus size={16} />
+          Create Event
+        </button>
+      </div>
 
       <div className="mb-6">
         {/* Header - full bleed on mobile, contained card on desktop */}
-        <div className="bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:inline-block md:w-fit md:mt-0 md:rounded-2xl px-5 py-6 md:py-6 text-white">
+        <div className="bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:w-full md:mt-0 md:rounded-2xl px-5 py-6 md:py-6 text-white">
           {/* Top row - mobile only, desktop already has profile/notifications in the fixed header */}
           <div className="md:hidden flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -423,14 +456,25 @@ export default function EventsPage() {
           {/* Categories */}
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-semibold text-violet-50">Categories</p>
-            <button className="text-xs text-violet-200 font-medium">
-              See All
+            <button
+              onClick={() => setShowAllCategories((prev) => !prev)}
+              className="md:hidden text-xs text-violet-200 font-medium"
+            >
+              {showAllCategories ? "Show Less" : "See All"}
             </button>
           </div>
-          <div className="grid grid-cols-5 md:flex md:flex-wrap gap-2 md:gap-6">
-            {categories.map((category) => (
-              <Link key={category.label} href={category.href}>
-                <div className="flex flex-col items-center gap-2 md:w-16">
+          <div className="grid grid-cols-5 md:grid-cols-10 gap-2 md:gap-4 md:justify-items-center">
+            {categories.map((category, idx) => (
+              <Link
+                key={category.label}
+                href={category.href}
+                className={`${
+                  idx >= MOBILE_VISIBLE_CATEGORIES && !showAllCategories
+                    ? "hidden"
+                    : "block"
+                } md:block`}
+              >
+                <div className="flex flex-col items-center gap-2">
                   <span className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center">
                     <category.icon size={17} />
                   </span>
@@ -445,63 +489,46 @@ export default function EventsPage() {
 
         {/* Content */}
         <div className="relative px-5 md:px-0 pt-6 pb-8">
-          {/* Toolbar: search + visibility filter + create button */}
-          <div className="md:flex md:flex-wrap md:items-center md:gap-4 mb-6">
-            {/* Search */}
-            <div className="relative mb-5 md:mb-0 md:flex-1 md:min-w-[220px] md:max-w-md">
-              <Search
-                size={16}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full bg-white rounded-full pl-10 pr-4 py-3 text-sm shadow-sm border border-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-200"
-              />
-            </div>
+          {/* Search */}
+          <div className="relative mb-5 md:mb-6">
+            <Search
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full bg-white rounded-full pl-10 pr-4 py-3 text-sm shadow-sm border border-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-200"
+            />
+          </div>
 
-            {/* Filters + create button - wrap together as one unit */}
-            <div className="md:flex md:flex-wrap md:items-center md:gap-3 md:shrink-0">
-              {/* Event visibility filter */}
-              <div>
-                <p className="text-[13px] font-semibold text-gray-900 mb-2 md:hidden">
-                  Show
-                </p>
-                <div className="flex gap-2 overflow-x-auto pb-1 mb-5 md:mb-0 scrollbar-none">
-                  {eventFilters.map((filter) => (
-                    <button
-                      key={filter.value}
-                      onClick={() => setActiveFilter(filter.value)}
-                      className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors ${
-                        activeFilter === filter.value
-                          ? "bg-violet-600 text-white"
-                          : "bg-violet-100/70 text-violet-400"
-                      }`}
-                    >
-                      {filter.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Create Event - desktop only */}
-              <Link
-                href="/events/create"
-                className="hidden md:inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full shrink-0 transition-colors shadow-sm"
-              >
-                <Plus size={16} />
-                Create Event
-              </Link>
+          {/* Mobile: visibility filter */}
+          <div className="md:hidden">
+            <p className="text-[13px] font-semibold text-gray-900 mb-2">Show</p>
+            <div className="flex gap-2 overflow-x-auto pb-1 mb-5 scrollbar-none">
+              {eventFilters.map((filter) => (
+                <button
+                  key={filter.value}
+                  onClick={() => setActiveFilter(filter.value)}
+                  className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors ${
+                    activeFilter === filter.value
+                      ? "bg-violet-600 text-white"
+                      : "bg-violet-100/70 text-violet-400"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Events header */}
+          {/* Events heading */}
           <h3 className="font-semibold text-gray-900 text-[15px] md:text-lg mb-3">
             Events
           </h3>
 
-          {/* Tabs */}
-          <div className="flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-none">
+          {/* Mobile: status tabs */}
+          <div className="md:hidden flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-none">
             {eventTabs.map((tab) => (
               <button
                 key={tab.value}
@@ -517,6 +544,40 @@ export default function EventsPage() {
             ))}
           </div>
 
+          {/* Desktop: visibility filter + status tabs, in line */}
+          <div className="hidden md:flex md:items-center md:justify-between mb-6">
+            <div className="flex gap-2">
+              {eventFilters.map((filter) => (
+                <button
+                  key={filter.value}
+                  onClick={() => setActiveFilter(filter.value)}
+                  className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors ${
+                    activeFilter === filter.value
+                      ? "bg-violet-600 text-white"
+                      : "bg-violet-100/70 text-violet-400"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              {eventTabs.map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors ${
+                    activeTab === tab.value
+                      ? "bg-white shadow-sm text-gray-900 border border-gray-100"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Event cards */}
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -530,106 +591,100 @@ export default function EventsPage() {
               {paginatedEvents.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                   {paginatedEvents.map((event) => {
-                const progress = Math.round(
-                  (event.current / event.goal) * 100,
-                );
-                return (
-                  <Link key={event.id} href={`/events/${event.id}`}>
-                    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-                      {/* Image with overlay badges */}
-                      <div className="relative h-32">
-                        <img
-                          src={event.image}
-                          alt={event.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
-                        <button className="absolute top-3 right-3 flex items-center gap-1 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold pl-3 pr-2 py-1.5 rounded-full transition-colors">
-                          Donate
-                          <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
-                            <Plus size={10} />
-                          </span>
-                        </button>
-                        <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                          <div className="flex items-center gap-1">
-                            <Clock size={11} />
-                            <div>
-                              <p className="opacity-80 leading-tight">
-                                Deposit deadline
-                              </p>
-                              <p className="font-medium leading-tight">
-                                {event.depositDeadline}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="opacity-80 leading-tight">
-                              Request time
-                            </p>
-                            <p className="font-medium leading-tight">
-                              {event.requestTime}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Body */}
-                      <div className="p-4">
-                        <div className="flex items-center gap-1.5 mb-3">
-                          <span className="text-base leading-none">🐾</span>
-                          <p className="text-sm font-semibold text-gray-900">
-                            {event.name}
-                          </p>
-                          {event.verified && (
-                            <CheckCircle2
-                              size={14}
-                              className="text-violet-600"
+                    const progress = Math.round(
+                      (event.current / event.goal) * 100,
+                    );
+                    return (
+                      <Link key={event.id} href={`/events/${event.id}`}>
+                        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                          {/* Image with overlay badges */}
+                          <div className="relative h-32">
+                            <img
+                              src={event.image}
+                              alt={event.name}
+                              className="w-full h-full object-cover"
                             />
-                          )}
-                        </div>
-
-                        <p className="text-xs text-gray-500 mb-1">Current</p>
-                        <p className="text-lg font-bold text-violet-600 mb-3">
-                          $
-                          {event.current.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                          })}
-                        </p>
-
-                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-3">
-                          <div
-                            className="h-full bg-violet-500 transition-all"
-                            style={{ width: `${Math.min(progress, 100)}%` }}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1 text-xs text-gray-500">
-                            <Clock size={12} />
-                            {event.daysLeft} days left
-                          </div>
-                          {event.donorCount > 0 && (
-                            <div className="flex items-center gap-1.5">
-                              <div className="flex -space-x-2">
-                                {event.donors.map((avatar, idx) => (
-                                  <img
-                                    key={idx}
-                                    src={avatar}
-                                    alt=""
-                                    className="w-5 h-5 rounded-full border-2 border-white object-cover"
-                                  />
-                                ))}
-                              </div>
-                              <span className="text-xs text-gray-500">
-                                +{event.donorCount} people donated
+                            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+                            <button className="absolute top-3 right-3 flex items-center gap-1 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold pl-3 pr-2 py-1.5 rounded-full transition-colors">
+                              Donate
+                              <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
+                                <Plus size={10} />
                               </span>
+                            </button>
+                            <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-white text-[11px]">
+                              <div className="flex items-center gap-1">
+                                <Clock size={11} />
+                                <div>
+                                  <p className="opacity-80 leading-tight">
+                                    Deposit deadline
+                                  </p>
+                                  <p className="font-medium leading-tight">
+                                    {event.depositDeadline}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                          )}
+                          </div>
+
+                          {/* Body */}
+                          <div className="p-4">
+                            <div className="flex items-center gap-1.5 mb-3">
+                              <span className="text-base leading-none">🐾</span>
+                              <p className="text-sm font-semibold text-gray-900">
+                                {event.name}
+                              </p>
+                              {event.verified && (
+                                <CheckCircle2
+                                  size={14}
+                                  className="text-violet-600"
+                                />
+                              )}
+                            </div>
+
+                            <p className="text-xs text-gray-500 mb-1">
+                              Current
+                            </p>
+                            <p className="text-lg font-bold text-violet-600 mb-3">
+                              $
+                              {event.current.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                              })}
+                            </p>
+
+                            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-3">
+                              <div
+                                className="h-full bg-violet-500 transition-all"
+                                style={{ width: `${Math.min(progress, 100)}%` }}
+                              />
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 text-xs text-gray-500">
+                                <Clock size={12} />
+                                {event.daysLeft} days left
+                              </div>
+                              {event.donorCount > 0 && (
+                                <div className="flex items-center gap-1.5">
+                                  <div className="flex -space-x-2">
+                                    {event.donors.map((avatar, idx) => (
+                                      <img
+                                        key={idx}
+                                        src={avatar}
+                                        alt=""
+                                        className="w-5 h-5 rounded-full border-2 border-white object-cover"
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="text-xs text-gray-500">
+                                    +{event.donorCount} people donated
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
+                      </Link>
+                    );
                   })}
                 </div>
               ) : (
@@ -682,6 +737,11 @@ export default function EventsPage() {
           )}
         </div>
       </div>
+
+      <CreateEventModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </main>
   );
 }
