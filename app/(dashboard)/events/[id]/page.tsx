@@ -46,21 +46,21 @@ const mockDonations = [
     id: "1",
     donorName: "Anonymous",
     amount: 100,
-    timeAgo: "2 days ago",
+    timeAgo: new Date().getDate(),
     note: "Wishing you all the best with the shelter drive, keep up the great work!",
   },
   {
     id: "2",
     donorName: "Anonymous",
     amount: 250,
-    timeAgo: "2 days ago",
+    timeAgo: new Date().getDate(),
     note: "Glad to help however I can this winter.",
   },
   {
     id: "3",
     donorName: "Michael Owens",
     amount: 100,
-    timeAgo: "3 days ago",
+    timeAgo: new Date().getDate(),
     note: "Every bit counts. Stay strong, New York.",
   },
 ];
@@ -107,7 +107,7 @@ const fundDetails = {
 
 const tabs = [
   { label: "About", value: "about" },
-  { label: "Development", value: "development" },
+  { label: "Updates", value: "development" },
   { label: "Fund Details", value: "fund-details" },
 ] as const;
 
@@ -117,9 +117,7 @@ export default function EventDetailPage({}: EventDetailPageProps) {
   const [activeTab, setActiveTab] = useState<TabValue>("about");
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
 
-  const progress = Math.round(
-    (mockEvent.amountRaised / mockEvent.goal) * 100,
-  );
+  const progress = Math.round((mockEvent.amountRaised / mockEvent.goal) * 100);
 
   return (
     <main className="min-h-screen pb-32 md:pb-8">
@@ -289,9 +287,7 @@ export default function EventDetailPage({}: EventDetailPageProps) {
               <div className="space-y-8">
                 {developmentUpdates.map((update) => (
                   <div key={update.id}>
-                    <p className="text-xs text-gray-400 mb-2">
-                      {update.date}
-                    </p>
+                    <p className="text-xs text-gray-400 mb-2">{update.date}</p>
                     <h4 className="font-semibold text-gray-900 mb-2">
                       {update.title}
                     </h4>
@@ -337,9 +333,7 @@ export default function EventDetailPage({}: EventDetailPageProps) {
                 <div className="space-y-6">
                   {fundDetails.breakdown.map((entry, idx) => (
                     <div key={idx}>
-                      <p className="text-xs text-gray-400 mb-2">
-                        {entry.date}
-                      </p>
+                      <p className="text-xs text-gray-400 mb-2">{entry.date}</p>
                       <p className="text-sm font-semibold text-gray-900 mb-2">
                         {entry.purpose}
                       </p>
@@ -347,10 +341,7 @@ export default function EventDetailPage({}: EventDetailPageProps) {
                         <div className="flex justify-between">
                           <span className="text-gray-500">Withdraw</span>
                           <span className="text-gray-900 font-medium">
-                            {formatCurrency(
-                              entry.withdraw,
-                              mockEvent.currency,
-                            )}
+                            {formatCurrency(entry.withdraw, mockEvent.currency)}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -405,10 +396,7 @@ export default function EventDetailPage({}: EventDetailPageProps) {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Raised</span>
                   <span className="font-bold text-violet-600">
-                    {formatCurrency(
-                      mockEvent.amountRaised,
-                      mockEvent.currency,
-                    )}
+                    {formatCurrency(mockEvent.amountRaised, mockEvent.currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">

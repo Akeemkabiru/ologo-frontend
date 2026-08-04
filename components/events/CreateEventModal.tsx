@@ -359,6 +359,7 @@ export default function CreateEventModal({
         {/* Visibility toggle */}
         <ToggleSwitch
           label="Event Visibility"
+          variant="pill"
           value={values.visibility}
           onChange={(visibility) => setValues((prev) => ({ ...prev, visibility }))}
           options={[
