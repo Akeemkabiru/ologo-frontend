@@ -31,6 +31,8 @@ export interface IInputField {
   icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  autoFocus?: boolean;
 }
 
 export interface IToggle {
