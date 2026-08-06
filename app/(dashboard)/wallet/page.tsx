@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { CashFlowChart } from "@/components/wallet/WalletCharts";
+import SendMoneyModal from "@/components/wallet/SendMoneyModal";
+import TopUpModal from "@/components/wallet/TopUpModal";
 import {
   Bell,
   ChevronDown,
@@ -130,10 +131,10 @@ const contacts = [
 ];
 
 const quickActions = [
-  { label: "Send", icon: ArrowUpRight, href: "/wallet/transfer" },
-  { label: "Receive", icon: ArrowDownLeft, href: "/wallet" },
-  { label: "Exchange", icon: Repeat, href: "/wallet" },
-  { label: "Add", icon: Plus, href: "/wallet/topup" },
+  { label: "Send", icon: ArrowUpRight, action: "send" as const },
+  { label: "Receive", icon: ArrowDownLeft, action: "topup" as const },
+  { label: "Exchange", icon: Repeat, action: "none" as const },
+  { label: "Add", icon: Plus, action: "topup" as const },
 ];
 
 const transactionFilters = [
@@ -142,6 +143,7 @@ const transactionFilters = [
   "Expense",
   "Escrow",
   "Card Payments",
+  "Future Funds",
 ];
 
 const transactions = [
@@ -150,7 +152,7 @@ const transactions = [
     name: "Ezekiel Foster",
     avatar: "https://i.pravatar.cc/64?img=17",
     subtitle: "Transfer",
-    time: "Today, 02:32 PM",
+    time: "August 6 2026, 02:32 PM",
     amount: -500,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -161,7 +163,7 @@ const transactions = [
     name: "Abraham Collins",
     avatar: "https://i.pravatar.cc/64?img=15",
     subtitle: "Transfer",
-    time: "Today, 02:40 PM",
+    time: "August 6 2026, 02:40 PM",
     amount: -500,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -172,7 +174,7 @@ const transactions = [
     name: "Apple Store",
     icon: ShoppingBag,
     subtitle: "Card Payment",
-    time: "Today, 10:24 AM",
+    time: "August 6 2026, 10:24 AM",
     amount: -142.5,
     tag: "Japan Trip",
     tagIcon: Plane,
@@ -183,7 +185,7 @@ const transactions = [
     name: "Salary Deposit",
     icon: Landmark,
     subtitle: "Bank Transfer",
-    time: "Yesterday, 10:24 AM",
+    time: "August 5 2026, 10:24 AM",
     amount: 4200,
     tag: "Tesla Model S",
     tagIcon: Car,
@@ -194,7 +196,7 @@ const transactions = [
     name: "Blue Bottle Coffee",
     icon: Coffee,
     subtitle: "Card Payment",
-    time: "Jun 14, 10:24 AM",
+    time: "June 14 2026, 10:24 AM",
     amount: -8.4,
     tag: "New Dream House",
     tagIcon: Home,
@@ -205,7 +207,7 @@ const transactions = [
     name: "Isaac Nwosu",
     avatar: "https://i.pravatar.cc/64?img=16",
     subtitle: "Transfer",
-    time: "Jun 13, 09:15 AM",
+    time: "June 13 2026, 09:15 AM",
     amount: -250,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -216,7 +218,7 @@ const transactions = [
     name: "Freelance Payment",
     icon: Landmark,
     subtitle: "Bank Transfer",
-    time: "Jun 12, 03:00 PM",
+    time: "June 12 2026, 03:00 PM",
     amount: 800,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -227,7 +229,7 @@ const transactions = [
     name: "Elijah Mensah",
     avatar: "https://i.pravatar.cc/64?img=13",
     subtitle: "Transfer",
-    time: "Jun 11, 11:00 AM",
+    time: "June 11 2026, 11:00 AM",
     amount: -100,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -238,7 +240,7 @@ const transactions = [
     name: "Airbnb",
     icon: Home,
     subtitle: "Card Payment",
-    time: "Jun 10, 08:40 AM",
+    time: "June 10 2026, 08:40 AM",
     amount: -320,
     tag: "Japan Trip",
     tagIcon: Plane,
@@ -249,7 +251,7 @@ const transactions = [
     name: "Dividend Income",
     icon: Landmark,
     subtitle: "Bank Transfer",
-    time: "Jun 08, 01:00 PM",
+    time: "June 8 2026, 01:00 PM",
     amount: 150,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -260,7 +262,7 @@ const transactions = [
     name: "Aaron Bello",
     avatar: "https://i.pravatar.cc/64?img=14",
     subtitle: "Transfer",
-    time: "Jun 07, 04:20 PM",
+    time: "June 7 2026, 04:20 PM",
     amount: -75,
     tag: "Main Balance",
     tagIcon: WalletIcon,
@@ -271,11 +273,33 @@ const transactions = [
     name: "Stripe Escrow",
     icon: CreditCard,
     subtitle: "Escrow Release",
-    time: "Jun 06, 12:00 PM",
+    time: "June 6 2026, 12:00 PM",
     amount: 600,
     tag: "Main Balance",
     tagIcon: WalletIcon,
     type: "Escrow",
+  },
+  {
+    id: "m13",
+    name: "Scheduled Payout Release",
+    icon: Landmark,
+    subtitle: "Pending Escrow",
+    time: "August 20 2026, 12:00 PM",
+    amount: 1200,
+    tag: "Main Balance",
+    tagIcon: WalletIcon,
+    type: "Future Funds",
+  },
+  {
+    id: "m14",
+    name: "Recurring Pledge — Grace O.",
+    icon: CreditCard,
+    subtitle: "Monthly Pledge",
+    time: "September 1 2026, 09:00 AM",
+    amount: 500,
+    tag: "Main Balance",
+    tagIcon: WalletIcon,
+    type: "Future Funds",
   },
 ];
 
@@ -283,12 +307,19 @@ export default function WalletPage() {
   // Mock data
   const totalBalance = 4300;
   const [currency, setCurrency] = useState("USD");
+  const [sendOpen, setSendOpen] = useState(false);
+  const [topUpOpen, setTopUpOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
+
+  const handleQuickAction = (action: "send" | "topup" | "none") => {
+    if (action === "send") setSendOpen(true);
+    else if (action === "topup") setTopUpOpen(true);
+  };
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 5;
 
   const income = transactions
-    .filter((t) => t.amount > 0)
+    .filter((t) => t.amount > 0 && t.type !== "Future Funds")
     .reduce((sum, t) => sum + t.amount, 0);
   const expenses = transactions
     .filter((t) => t.amount < 0)
@@ -351,30 +382,35 @@ export default function WalletPage() {
                 {formatBalance(totalBalance, currency)}
               </p>
             </div>
-            <Link href="/wallet/topup">
-              <button className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold pl-3.5 pr-2 py-2 rounded-full transition-colors">
-                Top Up
-                <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
-                  <Plus size={10} />
-                </span>
-              </button>
-            </Link>
+            <button
+              type="button"
+              onClick={() => setTopUpOpen(true)}
+              className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold pl-3.5 pr-2 py-2 rounded-full transition-colors"
+            >
+              Top Up
+              <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
+                <Plus size={10} />
+              </span>
+            </button>
           </div>
         </div>
 
         {/* Quick actions */}
         <div className="grid grid-cols-4 gap-2 mt-6">
           {quickActions.map((action) => (
-            <Link key={action.label} href={action.href}>
-              <div className="flex flex-col items-center gap-2">
-                <span className="w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center">
-                  <action.icon size={18} />
-                </span>
-                <span className="text-[11px] font-medium text-violet-100">
-                  {action.label}
-                </span>
-              </div>
-            </Link>
+            <button
+              key={action.label}
+              type="button"
+              onClick={() => handleQuickAction(action.action)}
+              className="flex flex-col items-center gap-2"
+            >
+              <span className="w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center">
+                <action.icon size={18} />
+              </span>
+              <span className="text-[11px] font-medium text-violet-100">
+                {action.label}
+              </span>
+            </button>
           ))}
         </div>
       </div>
@@ -535,14 +571,16 @@ export default function WalletPage() {
             <p className="text-3xl font-bold mb-5">
               {formatBalance(totalBalance, currency)}
             </p>
-            <Link href="/wallet/topup">
-              <button className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
-                Top Up
-                <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
-                  <Plus size={10} />
-                </span>
-              </button>
-            </Link>
+            <button
+              type="button"
+              onClick={() => setTopUpOpen(true)}
+              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors"
+            >
+              Top Up
+              <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
+                <Plus size={10} />
+              </span>
+            </button>
           </div>
 
           {/* Income */}
@@ -585,59 +623,20 @@ export default function WalletPage() {
         {/* Quick actions */}
         <div className="grid grid-cols-4 gap-4 mb-8">
           {quickActions.map((action) => (
-            <Link key={action.label} href={action.href}>
-              <button className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 shadow-sm rounded-xl py-3.5 text-sm font-semibold text-gray-700 hover:border-violet-200 hover:text-violet-600 transition-colors">
-                <action.icon size={16} />
-                {action.label}
-              </button>
-            </Link>
+            <button
+              key={action.label}
+              type="button"
+              onClick={() => handleQuickAction(action.action)}
+              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 shadow-sm rounded-xl py-3.5 text-sm font-semibold text-gray-700 hover:border-violet-200 hover:text-violet-600 transition-colors"
+            >
+              <action.icon size={16} />
+              {action.label}
+            </button>
           ))}
         </div>
 
-        {/* Analytics + Send Again */}
-        <div className="grid grid-cols-3 gap-6 mb-6">
-          <div className="col-span-2">
-            <CashFlowChart />
-          </div>
-
-          {/* Send Again */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-full flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900">Send Again</h3>
-              <button className="text-gray-400 hover:text-gray-600">
-                <MoreHorizontal size={18} />
-              </button>
-            </div>
-            <div className="flex-1 flex flex-col justify-center gap-3">
-              {contacts.map((contact) => (
-                <div
-                  key={contact.name}
-                  className="flex items-center gap-3 -mx-2 px-2 py-2 rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  <img
-                    src={contact.avatar}
-                    alt={contact.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate">
-                      {contact.name}
-                    </p>
-                    <p className="text-xs text-gray-400">Recent</p>
-                  </div>
-                  <Link href="/wallet/transfer">
-                    <button className="w-8 h-8 rounded-full bg-violet-50 hover:bg-violet-100 flex items-center justify-center text-violet-600 transition-colors">
-                      <Send size={14} />
-                    </button>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* Transactions table */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold text-gray-900">Transactions</h3>
             </div>
@@ -791,7 +790,54 @@ export default function WalletPage() {
               </div>
             </div>
           </div>
+
+        {/* Analytics + Send Again */}
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-2">
+            <CashFlowChart />
+          </div>
+
+          {/* Send Again */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-gray-900">Send Again</h3>
+              <button className="text-gray-400 hover:text-gray-600">
+                <MoreHorizontal size={18} />
+              </button>
+            </div>
+            <div className="flex-1 flex flex-col justify-center gap-3">
+              {contacts.map((contact) => (
+                <div
+                  key={contact.name}
+                  className="flex items-center gap-3 -mx-2 px-2 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  <img
+                    src={contact.avatar}
+                    alt={contact.name}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {contact.name}
+                    </p>
+                    <p className="text-xs text-gray-400">Recent</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSendOpen(true)}
+                    className="w-8 h-8 rounded-full bg-violet-50 hover:bg-violet-100 flex items-center justify-center text-violet-600 transition-colors"
+                  >
+                    <Send size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
+
+      <SendMoneyModal isOpen={sendOpen} onClose={() => setSendOpen(false)} />
+      <TopUpModal isOpen={topUpOpen} onClose={() => setTopUpOpen(false)} />
     </main>
   );
 }

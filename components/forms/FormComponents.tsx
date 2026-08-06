@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+import InputField from "@/components/ui/inputField";
+import SelectField from "@/components/ui/selectField";
+import TextareaField from "@/components/ui/textareaField";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
@@ -59,6 +62,12 @@ export const FormLabel: React.FC<FormLabelProps> = ({
   );
 };
 
+/**
+ * FormInput / FormTextarea / FormSelect are thin wrappers around the shared,
+ * customized field components in `components/ui/*Field`. They exist so older
+ * call sites keep their API while rendering the single, branded field design.
+ */
+
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: boolean;
@@ -66,127 +75,41 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
   required?: boolean;
   icon?: React.ReactNode;
+  containerClassName?: string;
 }
 
-export const FormInput: React.FC<FormInputProps> = ({
-  label,
-  error,
-  errorMessage,
-  helperText,
-  required,
-  icon,
-  ...props
-}) => {
-  return (
-    <FormGroup>
-      {label && <FormLabel required={required}>{label}</FormLabel>}
-      <div className="relative">
-        {icon && (
-          <div className="absolute left-3 top-3 text-gray-400">{icon}</div>
-        )}
-        <input
-          {...props}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-            icon ? "pl-10" : ""
-          } ${
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-200 focus:ring-violet-500"
-          } ${props.className || ""}`}
-        />
-      </div>
-      {error && errorMessage && (
-        <p className="text-sm text-gray-700">{errorMessage}</p>
-      )}
-      {helperText && !error && (
-        <p className="text-sm text-gray-500">{helperText}</p>
-      )}
-    </FormGroup>
-  );
-};
+export const FormInput: React.FC<FormInputProps> = (props) => (
+  <InputField {...props} />
+);
 
-interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface FormTextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: boolean;
   errorMessage?: string;
   helperText?: string;
   required?: boolean;
+  containerClassName?: string;
 }
 
-export const FormTextarea: React.FC<FormTextareaProps> = ({
-  label,
-  error,
-  errorMessage,
-  helperText,
-  required,
-  ...props
-}) => {
-  return (
-    <FormGroup>
-      {label && <FormLabel required={required}>{label}</FormLabel>}
-      <textarea
-        {...props}
-        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors resize-none ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-200 focus:ring-violet-500"
-        } ${props.className || ""}`}
-      />
-      {error && errorMessage && (
-        <p className="text-sm text-gray-700">{errorMessage}</p>
-      )}
-      {helperText && !error && (
-        <p className="text-sm text-gray-500">{helperText}</p>
-      )}
-    </FormGroup>
-  );
-};
+export const FormTextarea: React.FC<FormTextareaProps> = (props) => (
+  <TextareaField {...props} />
+);
 
-interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface FormSelectProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: boolean;
   errorMessage?: string;
   helperText?: string;
   required?: boolean;
   options: { label: string; value: string }[];
+  containerClassName?: string;
 }
 
-export const FormSelect: React.FC<FormSelectProps> = ({
-  label,
-  error,
-  errorMessage,
-  helperText,
-  required,
-  options,
-  ...props
-}) => {
-  return (
-    <FormGroup>
-      {label && <FormLabel required={required}>{label}</FormLabel>}
-      <select
-        {...props}
-        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-200 focus:ring-violet-500"
-        } ${props.className || ""}`}
-      >
-        <option value="">Select an option</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {error && errorMessage && (
-        <p className="text-sm text-gray-700">{errorMessage}</p>
-      )}
-      {helperText && !error && (
-        <p className="text-sm text-gray-500">{helperText}</p>
-      )}
-    </FormGroup>
-  );
-};
+export const FormSelect: React.FC<FormSelectProps> = (props) => (
+  <SelectField {...props} />
+);
 
 interface FormCheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;

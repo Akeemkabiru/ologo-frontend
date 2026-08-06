@@ -6,141 +6,171 @@ import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   MoreHorizontal,
-  CheckCircle2,
+  ShieldCheck,
   Clock,
-  User,
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 import { formatCurrency } from "@/lib/utils";
-import DonateModal from "@/components/events/DonateModal";
-import { getEventById } from "@/data/events";
+import DepositModal from "@/components/escrow/DepositModal";
+import RequestReleaseModal from "@/components/escrow/RequestReleaseModal";
+import DeciderFormModal from "@/components/escrow/DeciderFormModal";
+import { getEscrowById } from "@/data/escrows";
 
-const fallbackEvent = {
-  name: "Shelter Support for Homeless in NYC",
-  verified: true,
-  image:
-    "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=800&fit=crop",
-  currency: "USD",
-  amountRaised: 40000,
-  goal: 80000,
-  timeLeft: "19h left",
-  donorCount: 120,
-  totalDonations: 12,
-  donorAvatars: [
-    "https://i.pravatar.cc/64?img=11",
-    "https://i.pravatar.cc/64?img=12",
-    "https://i.pravatar.cc/64?img=13",
-  ],
-  description:
-    "This campaign aims to provide warm clothing, food, and shelter assistance to the homeless population in New York City as winter approaches. Funds will go toward temporary housing solutions, essential supplies, and outreach programs to connect individuals with long-term support services.",
+type Designation = "Host" | "Decider" | "Beneficiary" | "Witness";
+
+const designationStyles: Record<Designation, string> = {
+  Host: "bg-violet-100 text-violet-700",
+  Decider: "bg-amber-100 text-amber-700",
+  Beneficiary: "bg-emerald-100 text-emerald-700",
+  Witness: "bg-gray-100 text-gray-600",
 };
 
-const mockDonations = [
+const fallbackEscrow = {
+  name: "Website Redesign Project",
+  secured: true,
+  image:
+    "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&h=800&fit=crop",
+  currency: "USD",
+  inEscrow: 4200,
+  total: 6000,
+  timeLeft: "142 days left",
+  partyCount: 5,
+  description:
+    "Funds are held in escrow and released to the beneficiaries only when a Decider approves. The Host deposits money and appoints a Decider (or themselves) to distribute it, invites Witnesses to observe and verify, and beneficiaries can raise Request Forms that every member can see. A neutral Decider can step in before any funds move.",
+  members: [
+    {
+      id: "1",
+      name: "David Mensah",
+      role: "Host" as Designation,
+      avatar: "https://i.pravatar.cc/64?img=21",
+      note: "Created the escrow & deposits funds",
+    },
+    {
+      id: "2",
+      name: "Frank Adeyemi",
+      role: "Decider" as Designation,
+      avatar: "https://i.pravatar.cc/64?img=23",
+      note: "Appointed to approve & distribute funds",
+    },
+    {
+      id: "3",
+      name: "Paulo Santos",
+      role: "Beneficiary" as Designation,
+      avatar: "https://i.pravatar.cc/64?img=25",
+      note: "Receives approved payments",
+    },
+    {
+      id: "4",
+      name: "Shaggy Bello",
+      role: "Beneficiary" as Designation,
+      avatar: "https://i.pravatar.cc/64?img=26",
+      note: "Receives approved payments",
+    },
+    {
+      id: "5",
+      name: "Grace Okafor",
+      role: "Witness" as Designation,
+      avatar: "https://i.pravatar.cc/64?img=24",
+      note: "Invited to observe & verify",
+    },
+  ],
+};
+
+const deciderBeneficiaries = [
   {
-    id: "1",
-    donorName: "Anonymous",
-    amount: 100,
-    timeAgo: new Date().getDate(),
-    note: "Wishing you all the best with the shelter drive, keep up the great work!",
+    id: "b1",
+    name: "Paulo Santos",
+    avatar: "https://i.pravatar.cc/64?img=25",
+    requestedAmount: 1000,
   },
   {
-    id: "2",
-    donorName: "Anonymous",
-    amount: 250,
-    timeAgo: new Date().getDate(),
-    note: "Glad to help however I can this winter.",
-  },
-  {
-    id: "3",
-    donorName: "Michael Owens",
-    amount: 100,
-    timeAgo: new Date().getDate(),
-    note: "Every bit counts. Stay strong, New York.",
+    id: "b2",
+    name: "Shaggy Bello",
+    avatar: "https://i.pravatar.cc/64?img=26",
+    requestedAmount: 1500,
   },
 ];
 
-const developmentUpdates = [
+const escrowUpdates = [
   {
     id: "1",
-    date: "December 20, 2024",
-    title: "Winter Coat Distribution",
+    date: "December 20, 2026",
+    title: "Milestone 1 Approved — Design Sign-off",
     description:
-      "Thanks to your generous donations, we've distributed over 300 winter coats and thermal blankets across three outreach sites. The response from the community has been overwhelming, and we're on track to reach our full distribution goal by mid-January.",
+      "The buyer approved the final design mockups. $1,500 was released from escrow to the developer for the completed design phase.",
     image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800&h=500&fit=crop",
   },
   {
     id: "2",
-    date: "November 8, 2024",
-    title: "Shelter Capacity Expansion",
+    date: "November 8, 2026",
+    title: "Escrow Funded",
     description:
-      "We've secured an additional 40 beds at our partner shelter, allowing us to house more individuals during the coldest months. Funds raised have also covered essential kitchen upgrades to serve hot meals daily.",
+      "The depositor secured $4,200 in escrow to cover the first two project milestones. Work has officially begun on the front-end build.",
     image:
-      "https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=800&h=500&fit=crop",
+      "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=800&h=500&fit=crop",
   },
 ];
 
 const fundDetails = {
-  disbursed: 28000,
-  pending: 12000,
+  released: 1500,
+  held: 4200,
   breakdown: [
     {
-      date: "December 20, 2024",
-      purpose: "Winter supplies and outreach",
-      withdraw: 24000,
-      platformFee: 480,
+      date: "December 20, 2026",
+      purpose: "Milestone 1 — Design sign-off",
+      release: 1500,
+      platformFee: 30,
     },
     {
-      date: "November 8, 2024",
-      purpose: "Shelter bed expansion",
-      withdraw: 4000,
-      platformFee: 80,
+      date: "November 8, 2026",
+      purpose: "Initial deposit into escrow",
+      release: 0,
+      platformFee: 84,
     },
   ],
 };
 
 const tabs = [
   { label: "About", value: "about" },
-  { label: "Updates", value: "development" },
+  { label: "Updates", value: "updates" },
   { label: "Fund Details", value: "fund-details" },
 ] as const;
 
 type TabValue = (typeof tabs)[number]["value"];
 
-export default function EventDetailPage() {
+export default function EscrowDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const listEvent = getEventById(id);
+  const listEscrow = getEscrowById(id);
 
-  const event = {
-    ...fallbackEvent,
-    ...(listEvent && {
-      name: listEvent.name,
-      verified: listEvent.verified,
-      image: listEvent.image,
-      amountRaised: listEvent.current,
-      goal: listEvent.goal,
-      timeLeft: `${listEvent.daysLeft} days left`,
-      donorCount: listEvent.donorCount,
-      donorAvatars:
-        listEvent.donors.length > 0
-          ? listEvent.donors
-          : fallbackEvent.donorAvatars,
+  const escrow = {
+    ...fallbackEscrow,
+    ...(listEscrow && {
+      name: listEscrow.name,
+      secured: listEscrow.verified,
+      image: listEscrow.image,
+      inEscrow: listEscrow.inEscrow,
+      total: listEscrow.total,
+      timeLeft: `${listEscrow.daysLeft} days left`,
     }),
   };
 
   const [activeTab, setActiveTab] = useState<TabValue>("about");
-  const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
+  const [isReleaseOpen, setIsReleaseOpen] = useState(false);
+  const [isDeciderOpen, setIsDeciderOpen] = useState(false);
 
-  const progress = Math.round((event.amountRaised / event.goal) * 100);
+  const progress = Math.round((escrow.inEscrow / escrow.total) * 100);
+  const memberAvatars = escrow.members.map((m) => m.avatar);
 
   return (
-    <main className="min-h-screen pb-32 md:pb-8">
+    <main className="min-h-screen pb-40 md:pb-8">
       <MobileHeader
-        title="Fundraising"
+        title="Escrow"
         showBack
-        backHref="/events"
+        backHref="/escrow"
         rightSlot={
           <button
             className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
@@ -155,11 +185,11 @@ export default function EventDetailPage() {
         {/* Desktop back link */}
         <div className="hidden md:block mb-6">
           <Link
-            href="/events"
+            href="/escrow"
             className="text-violet-600 hover:text-violet-700 font-semibold flex items-center gap-2 w-fit"
           >
             <ArrowLeft size={18} />
-            Back to Events
+            Back to Escrow
           </Link>
         </div>
 
@@ -169,37 +199,37 @@ export default function EventDetailPage() {
             {/* Hero image */}
             <div className="mb-5 md:mb-6 rounded-2xl overflow-hidden">
               <img
-                src={event.image}
-                alt={event.name}
+                src={escrow.image}
+                alt={escrow.name}
                 className="w-full h-56 md:h-80 object-cover"
               />
             </div>
 
-            {event.verified && (
+            {escrow.secured && (
               <div className="flex items-center gap-1.5 mb-3">
-                <CheckCircle2 size={16} className="text-violet-600" />
+                <ShieldCheck size={16} className="text-violet-600" />
                 <span className="text-sm font-medium text-violet-600">
-                  This campaign is verified
+                  This escrow is secured
                 </span>
               </div>
             )}
 
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-5">
-              {event.name}
+              {escrow.name}
             </h1>
 
-            {/* Raised / Target */}
+            {/* In Escrow / Total */}
             <div className="flex items-center justify-between mb-2">
               <div>
-                <p className="text-xs text-gray-500 mb-0.5">Raised</p>
+                <p className="text-xs text-gray-500 mb-0.5">In Escrow</p>
                 <p className="text-lg font-bold text-gray-900">
-                  {formatCurrency(event.amountRaised, event.currency)}
+                  {formatCurrency(escrow.inEscrow, escrow.currency)}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-gray-500 mb-0.5">Target</p>
+                <p className="text-xs text-gray-500 mb-0.5">Total Value</p>
                 <p className="text-lg font-bold text-gray-900">
-                  {formatCurrency(event.goal, event.currency)}
+                  {formatCurrency(escrow.total, escrow.currency)}
                 </p>
               </div>
             </div>
@@ -212,17 +242,17 @@ export default function EventDetailPage() {
             </div>
             <div className="flex items-center justify-between mb-6">
               <span className="text-xs font-semibold text-violet-600">
-                {progress}% target reached
+                {progress}% funded
               </span>
               <span className="text-xs text-gray-500">
-                {event.timeLeft}
+                {escrow.timeLeft}
               </span>
             </div>
 
-            {/* Donor avatars */}
+            {/* Member avatars */}
             <div className="flex items-center gap-2 mb-6 pb-6 border-b border-gray-200">
               <div className="flex -space-x-2">
-                {event.donorAvatars.map((avatar, idx) => (
+                {memberAvatars.map((avatar, idx) => (
                   <img
                     key={idx}
                     src={avatar}
@@ -232,7 +262,7 @@ export default function EventDetailPage() {
                 ))}
               </div>
               <span className="text-sm text-gray-600">
-                {event.donorCount}+ People Donated
+                {escrow.partyCount} parties involved
               </span>
             </div>
 
@@ -253,44 +283,42 @@ export default function EventDetailPage() {
               ))}
             </div>
 
-            {/* Tab content */}
+            {/* About */}
             {activeTab === "about" && (
               <div>
                 <p className="text-gray-700 leading-relaxed mb-8">
-                  {event.description}
+                  {escrow.description}
                 </p>
 
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-gray-900">
-                    Donators ({event.totalDonations})
+                    Members & Designations ({escrow.members.length})
                   </h3>
-                  <button className="text-xs text-violet-600 font-medium">
-                    See All
-                  </button>
                 </div>
                 <div>
-                  {mockDonations.map((donation) => (
+                  {escrow.members.map((member) => (
                     <div
-                      key={donation.id}
+                      key={member.id}
                       className="flex items-start gap-3 py-4 border-b border-gray-100 last:border-0"
                     >
-                      <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
-                        <User size={18} className="text-violet-600" />
-                      </div>
+                      <img
+                        src={member.avatar}
+                        alt={member.name}
+                        className="w-10 h-10 rounded-full object-cover shrink-0"
+                      />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <p className="text-sm font-semibold text-gray-900">
-                            {donation.donorName}
+                            {member.name}
                           </p>
-                          <span className="text-xs text-gray-400 shrink-0">
-                            {donation.timeAgo}
+                          <span
+                            className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${designationStyles[member.role]}`}
+                          >
+                            {member.role}
                           </span>
                         </div>
-                        <p className="text-sm font-bold text-violet-600 mt-0.5">
-                          ${donation.amount} donation
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                          {donation.note}
+                        <p className="text-xs text-gray-500 mt-1">
+                          {member.note}
                         </p>
                       </div>
                     </div>
@@ -299,9 +327,10 @@ export default function EventDetailPage() {
               </div>
             )}
 
-            {activeTab === "development" && (
+            {/* Updates */}
+            {activeTab === "updates" && (
               <div className="space-y-8">
-                {developmentUpdates.map((update) => (
+                {escrowUpdates.map((update) => (
                   <div key={update.id}>
                     <p className="text-xs text-gray-400 mb-2">{update.date}</p>
                     <h4 className="font-semibold text-gray-900 mb-2">
@@ -320,28 +349,26 @@ export default function EventDetailPage() {
               </div>
             )}
 
+            {/* Fund Details */}
             {activeTab === "fund-details" && (
               <div>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-violet-50 rounded-xl p-4">
                     <p className="text-xs text-violet-600 font-medium mb-1 flex items-center gap-1">
-                      <ArrowDownRight size={14} />
-                      Has been disbursed
+                      <ArrowUpRight size={14} />
+                      Released
                     </p>
                     <p className="text-lg font-bold text-gray-900">
-                      {formatCurrency(
-                        fundDetails.disbursed,
-                        event.currency,
-                      )}
+                      {formatCurrency(fundDetails.released, escrow.currency)}
                     </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-4">
                     <p className="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1">
-                      <ArrowUpRight size={14} />
-                      Not yet disbursed
+                      <ArrowDownRight size={14} />
+                      Held in escrow
                     </p>
                     <p className="text-lg font-bold text-gray-900">
-                      {formatCurrency(fundDetails.pending, event.currency)}
+                      {formatCurrency(fundDetails.held, escrow.currency)}
                     </p>
                   </div>
                 </div>
@@ -355,9 +382,9 @@ export default function EventDetailPage() {
                       </p>
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Withdraw</span>
+                          <span className="text-gray-500">Released</span>
                           <span className="text-gray-900 font-medium">
-                            {formatCurrency(entry.withdraw, event.currency)}
+                            {formatCurrency(entry.release, escrow.currency)}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -365,7 +392,7 @@ export default function EventDetailPage() {
                           <span className="text-gray-900 font-medium">
                             {formatCurrency(
                               entry.platformFee,
-                              event.currency,
+                              escrow.currency,
                             )}
                           </span>
                         </div>
@@ -375,8 +402,8 @@ export default function EventDetailPage() {
                           </span>
                           <span className="text-violet-600 font-bold">
                             {formatCurrency(
-                              entry.withdraw + entry.platformFee,
-                              event.currency,
+                              entry.release + entry.platformFee,
+                              escrow.currency,
                             )}
                           </span>
                         </div>
@@ -394,7 +421,7 @@ export default function EventDetailPage() {
               <div className="mb-6">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm font-semibold text-gray-900">
-                    Progress
+                    Funded
                   </span>
                   <span className="text-sm font-semibold text-violet-600">
                     {progress}%
@@ -410,34 +437,37 @@ export default function EventDetailPage() {
 
               <div className="space-y-3 mb-6 pb-6 border-b border-gray-200">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Raised</span>
+                  <span className="text-gray-600">In Escrow</span>
                   <span className="font-bold text-violet-600">
-                    {formatCurrency(event.amountRaised, event.currency)}
+                    {formatCurrency(escrow.inEscrow, escrow.currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Target</span>
+                  <span className="text-gray-600">Total Value</span>
                   <span className="font-bold text-gray-900">
-                    {formatCurrency(event.goal, event.currency)}
+                    {formatCurrency(escrow.total, escrow.currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Donors</span>
+                  <span className="text-gray-600">Parties</span>
                   <span className="font-bold text-gray-900">
-                    {event.donorCount}+
+                    {escrow.partyCount}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Time Left</span>
+                  <span className="text-gray-600">
+                    <Clock size={14} className="inline mr-1 -mt-0.5" />
+                    Time Left
+                  </span>
                   <span className="font-bold text-gray-900">
-                    {event.timeLeft}
+                    {escrow.timeLeft}
                   </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex -space-x-2">
-                  {event.donorAvatars.map((avatar, idx) => (
+                  {memberAvatars.map((avatar, idx) => (
                     <img
                       key={idx}
                       src={avatar}
@@ -447,37 +477,79 @@ export default function EventDetailPage() {
                   ))}
                 </div>
                 <span className="text-sm text-gray-600">
-                  {event.donorCount}+ People Donated
+                  {escrow.partyCount} parties involved
                 </span>
               </div>
 
               <button
                 type="button"
-                onClick={() => setIsDonateModalOpen(true)}
-                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-3.5 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+                onClick={() => setIsDeciderOpen(true)}
+                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-3.5 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 mb-3"
               >
-                Donate Now
+                Fill Decider Form
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDepositOpen(true)}
+                className="w-full bg-white border border-violet-200 text-violet-600 hover:bg-violet-50 font-semibold rounded-full py-3.5 transition-all duration-200 active:scale-95 mb-3"
+              >
+                Deposit Funds
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsReleaseOpen(true)}
+                className="w-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold rounded-full py-3.5 transition-all duration-200 active:scale-95"
+              >
+                Request Release
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile sticky Donate Now */}
-      <div className="md:hidden fixed bottom-24 inset-x-0 px-5 z-30">
+      {/* Mobile sticky actions */}
+      <div className="md:hidden fixed bottom-24 inset-x-0 px-5 z-30 flex flex-col gap-2">
         <button
           type="button"
-          onClick={() => setIsDonateModalOpen(true)}
-          className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-4 shadow-lg transition-all duration-200 active:scale-95"
+          onClick={() => setIsDeciderOpen(true)}
+          className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-3.5 shadow-lg transition-all duration-200 active:scale-95"
         >
-          Donate Now
+          Fill Decider Form
         </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setIsReleaseOpen(true)}
+            className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold rounded-full py-3 shadow-lg transition-all duration-200 active:scale-95"
+          >
+            Request
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsDepositOpen(true)}
+            className="flex-1 bg-white border border-violet-200 text-violet-600 font-semibold rounded-full py-3 shadow-lg transition-all duration-200 active:scale-95"
+          >
+            Deposit
+          </button>
+        </div>
       </div>
 
-      <DonateModal
-        isOpen={isDonateModalOpen}
-        onClose={() => setIsDonateModalOpen(false)}
-        eventName={event.name}
+      <DepositModal
+        isOpen={isDepositOpen}
+        onClose={() => setIsDepositOpen(false)}
+        escrowName={escrow.name}
+      />
+      <RequestReleaseModal
+        isOpen={isReleaseOpen}
+        onClose={() => setIsReleaseOpen(false)}
+        escrowName={escrow.name}
+      />
+      <DeciderFormModal
+        isOpen={isDeciderOpen}
+        onClose={() => setIsDeciderOpen(false)}
+        escrowName={escrow.name}
+        available={escrow.inEscrow}
+        beneficiaries={deciderBeneficiaries}
       />
     </main>
   );

@@ -48,14 +48,14 @@ export function CashFlowChart() {
 
       <div className="flex gap-3 flex-1 items-center min-h-70">
         {/* Y axis labels */}
-        <div className="flex flex-col justify-between text-[10px] text-gray-300 h-full py-0.5">
+        <div className="flex flex-col justify-between text-[10px] text-gray-300 h-56 py-0.5">
           {[...gridLines].reverse().map((value) => (
             <span key={value}>{value >= 1000 ? `${value / 1000}k` : value}</span>
           ))}
         </div>
 
         {/* Plot area */}
-        <div className="relative flex-1 h-full">
+        <div className="relative flex-1 h-56">
           {/* Grid lines */}
           <div className="absolute inset-0 flex flex-col justify-between">
             {gridLines.map((value) => (
@@ -64,13 +64,13 @@ export function CashFlowChart() {
           </div>
 
           {/* Bars */}
-          <div className="relative flex items-end justify-between h-full gap-2">
+          <div className="relative flex items-end justify-between h-56 gap-2">
             {CASH_FLOW.map((point) => (
               <div
                 key={point.month}
                 className="group flex-1 flex flex-col items-center gap-2"
               >
-                <div className="relative flex items-end justify-center gap-1 w-full h-full">
+                <div className="relative flex items-end justify-center gap-1 w-full h-56">
                   <Bar
                     heightPct={(point.income / ceiling) * 100}
                     className="bg-violet-600"

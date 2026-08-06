@@ -1,30 +1,21 @@
-interface ITextareaField {
+import React from "react";
+
+type TextareaFieldProps = Omit<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  "className"
+> & {
   label?: string;
-  placeholder?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-  id?: string;
-  name?: string;
-  disabled?: boolean;
-  required?: boolean;
   error?: boolean;
   errorMessage?: string;
   helperText?: string;
   className?: string;
   containerClassName?: string;
-  rows?: number;
-}
+};
 
 export default function TextareaField({
   label,
-  placeholder = "",
-  value,
-  onChange,
-  onBlur,
   id,
   name,
-  disabled = false,
   required = false,
   error = false,
   errorMessage,
@@ -32,7 +23,8 @@ export default function TextareaField({
   className = "",
   containerClassName = "",
   rows = 4,
-}: ITextareaField) {
+  ...rest
+}: TextareaFieldProps) {
   const textareaId = id || name || label;
 
   return (
@@ -51,11 +43,6 @@ export default function TextareaField({
       <textarea
         id={textareaId}
         name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        disabled={disabled}
         required={required}
         rows={rows}
         className={`
@@ -84,6 +71,7 @@ export default function TextareaField({
 
           ${className}
         `}
+        {...rest}
       />
 
       {error && errorMessage && (

@@ -1,3 +1,4 @@
+import React from "react";
 import { ChevronDown } from "lucide-react";
 
 interface SelectOption {
@@ -5,39 +6,34 @@ interface SelectOption {
   value: string;
 }
 
-interface ISelectField {
+type SelectFieldProps = Omit<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  "className"
+> & {
   label?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
-  id?: string;
-  name?: string;
-  disabled?: boolean;
-  required?: boolean;
   error?: boolean;
   errorMessage?: string;
+  helperText?: string;
   className?: string;
   containerClassName?: string;
   placeholder?: string;
   options: SelectOption[];
-}
+};
 
 export default function SelectField({
   label,
-  value,
-  onChange,
-  onBlur,
   id,
   name,
-  disabled = false,
   required = false,
   error = false,
   errorMessage,
+  helperText,
   className = "",
   containerClassName = "",
   placeholder = "Select an option",
   options,
-}: ISelectField) {
+  ...rest
+}: SelectFieldProps) {
   const selectId = id || name || label;
 
   return (
@@ -57,10 +53,6 @@ export default function SelectField({
         <select
           id={selectId}
           name={name}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          disabled={disabled}
           required={required}
           className={`
             w-full appearance-none px-4 py-2.5 pr-11 text-sm rounded-lg
@@ -92,6 +84,7 @@ export default function SelectField({
 
             ${className}
           `}
+          {...rest}
         >
           <option value="">{placeholder}</option>
           {options.map((option) => (
@@ -108,6 +101,9 @@ export default function SelectField({
 
       {error && errorMessage && (
         <p className="text-xs text-red-500">{errorMessage}</p>
+      )}
+      {helperText && !(error && errorMessage) && (
+        <p className="text-xs text-gray-500">{helperText}</p>
       )}
     </div>
   );

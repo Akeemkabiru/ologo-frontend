@@ -1,31 +1,35 @@
-import { IInputField } from "@/types/type";
+import React from "react";
+
+type InputFieldProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "className"
+> & {
+  label?: string;
+  error?: boolean;
+  errorMessage?: string;
+  helperText?: string;
+  icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  className?: string;
+  containerClassName?: string;
+};
 
 export default function InputField({
   type = "text",
   label,
-  placeholder = "",
-  value,
-  onChange,
-  onBlur,
   id,
   name,
-  disabled = false,
   required = false,
   error = false,
   errorMessage,
   helperText,
   className = "",
   containerClassName = "",
-  autoComplete,
-  maxLength,
-  minLength,
-  pattern,
-  readOnly = false,
   icon,
   rightIcon,
   ...rest
-}: IInputField) {
-  const inputId = id || name || placeholder;
+}: InputFieldProps) {
+  const inputId = id || name;
 
   return (
     <div className={`flex flex-col gap-2.5 ${containerClassName}`}>
@@ -51,17 +55,7 @@ export default function InputField({
           id={inputId}
           type={type}
           name={name}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          disabled={disabled}
           required={required}
-          autoComplete={autoComplete}
-          maxLength={maxLength}
-          minLength={minLength}
-          pattern={pattern}
-          readOnly={readOnly}
           className={`
             w-full px-4 py-2.5 text-sm rounded-lg
 
