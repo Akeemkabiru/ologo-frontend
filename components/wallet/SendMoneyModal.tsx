@@ -13,6 +13,7 @@ import {
 } from "@/components/forms/FormComponents";
 import { CURRENCIES } from "@/lib/constants";
 import { useForm } from "@/hooks";
+import ConvertOption from "@/components/wallet/ConvertOption";
 
 interface TransferFormValues {
   recipientEmail: string;
@@ -176,6 +177,12 @@ export default function SendMoneyModal({
             onChange={handleChange}
           />
         </div>
+
+        {/* Currency conversion */}
+        <ConvertOption
+          amount={Number(values.amount) || 0}
+          targetCurrency={values.currency}
+        />
 
         {/* Recurring */}
         <div>

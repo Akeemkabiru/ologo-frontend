@@ -24,3 +24,13 @@ export const formatMoney = (amount: number, code: string) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+
+// Conversion fee rates — in the real product these are set/edited by Admin.
+export const GATEWAY_FEE_RATE = 0.015; // 1.5%
+export const PLATFORM_FEE_RATE = 0.005; // 0.5%
+
+export const conversionCharges = (amount: number) => {
+  const gateway = amount * GATEWAY_FEE_RATE;
+  const platform = amount * PLATFORM_FEE_RATE;
+  return { gateway, platform, total: gateway + platform };
+};

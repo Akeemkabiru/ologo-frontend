@@ -4,57 +4,32 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/cards/CardComponents";
 import { formatCurrency } from "@/lib/utils";
-import {
-  Form,
-  FormInput,
-  FormSelect,
-  FormButton,
-} from "@/components/forms/FormComponents";
+import { FormInput, FormSelect } from "@/components/forms/FormComponents";
 import MobileHeader from "@/components/ui/MobileHeader";
-import { Plus } from "lucide-react";
+import { Plus, Share2 } from "lucide-react";
+import JoinMembershipModal, {
+  type JoinMembershipTarget,
+} from "@/components/memberships/JoinMembershipModal";
+import CreateMembershipModal from "@/components/memberships/CreateMembershipModal";
+import InviteMembershipModal from "@/components/memberships/InviteMembershipModal";
+import { mockMemberships, type Membership } from "@/data/memberships";
 
 export default function MembershipsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterFrequency, setFilterFrequency] = useState("all");
+  const [memberships, setMemberships] =
+    useState<Membership[]>(mockMemberships);
+  const [joinTarget, setJoinTarget] = useState<JoinMembershipTarget | null>(
+    null,
+  );
+  const [createOpen, setCreateOpen] = useState(false);
+  const [inviteTarget, setInviteTarget] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+  const [joinedIds, setJoinedIds] = useState<string[]>([]);
 
-  // Mock data
-  const mockMemberships = [
-    {
-      id: "1",
-      name: "Basic Member",
-      description: "Get access to member-only content and events",
-      membershipAmount: 9.99,
-      frequency: "monthly",
-      currency: "USD",
-      memberCount: 245,
-      createdBy: "Organization A",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Premium Member",
-      description: "Premium access with exclusive benefits",
-      membershipAmount: 19.99,
-      frequency: "monthly",
-      currency: "USD",
-      memberCount: 120,
-      createdBy: "Organization A",
-      status: "active",
-    },
-    {
-      id: "3",
-      name: "Annual Pass",
-      description: "Full year access at a discounted rate",
-      membershipAmount: 99.99,
-      frequency: "yearly",
-      currency: "USD",
-      memberCount: 80,
-      createdBy: "Organization B",
-      status: "active",
-    },
-  ];
-
-  const filteredMemberships = mockMemberships.filter((membership) => {
+  const filteredMemberships = memberships.filter((membership) => {
     const matchesSearch = membership.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -69,14 +44,13 @@ export default function MembershipsPage() {
         title="Memberships"
         subtitle="Browse and join membership programs"
         rightSlot={
-          <Link href="/memberships/create">
-            <button
-              className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
-              aria-label="Create Membership"
-            >
-              <Plus size={18} />
-            </button>
-          </Link>
+          <button
+            onClick={() => setCreateOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
+            aria-label="Create Membership"
+          >
+            <Plus size={18} />
+          </button>
         }
       />
 
@@ -90,11 +64,13 @@ export default function MembershipsPage() {
             Browse and join membership programs
           </p>
         </div>
-        <Link href="/memberships/create">
-          <button className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors">
-            + Create Membership
-          </button>
-        </Link>
+        <button
+          onClick={() => setCreateOpen(true)}
+          className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-5 py-2.5 rounded-full transition-colors"
+        >
+          <Plus size={16} />
+          Create Membership
+        </button>
       </div>
       {/* Filters */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8">
@@ -169,9 +145,53 @@ export default function MembershipsPage() {
                 By {membership.createdBy}
               </p>
 
-              <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors">
-                Join Membership
-              </button>
+              <div className="flex gap-2">
+                {joinedIds.includes(membership.id) ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setJoinedIds((p) =>
+                        p.filter((id) => id !== membership.id),
+                      );
+                    }}
+                    className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold px-4 py-2 rounded-lg transition-colors"
+                  >
+                    Leave
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setJoinTarget({
+                        id: membership.id,
+                        name: membership.name,
+                        membershipAmount: membership.membershipAmount,
+                        frequency: membership.frequency,
+                        currency: membership.currency,
+                      });
+                    }}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors"
+                  >
+                    Join Membership
+                  </button>
+                )}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setInviteTarget({
+                      id: membership.id,
+                      name: membership.name,
+                    });
+                  }}
+                  aria-label="Invite people"
+                  className="shrink-0 w-10 rounded-lg border border-violet-200 text-violet-600 hover:bg-violet-50 flex items-center justify-center transition-colors"
+                >
+                  <Share2 size={16} />
+                </button>
+              </div>
             </Card>
           </Link>
         ))}
@@ -183,6 +203,23 @@ export default function MembershipsPage() {
         </div>
       )}
       </div>
+
+      <JoinMembershipModal
+        isOpen={joinTarget !== null}
+        onClose={() => setJoinTarget(null)}
+        membership={joinTarget}
+        onJoined={(id) => setJoinedIds((p) => [...p, id])}
+      />
+      <CreateMembershipModal
+        isOpen={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onCreate={(m) => setMemberships((prev) => [m, ...prev])}
+      />
+      <InviteMembershipModal
+        isOpen={inviteTarget !== null}
+        onClose={() => setInviteTarget(null)}
+        membership={inviteTarget}
+      />
     </main>
   );
 }

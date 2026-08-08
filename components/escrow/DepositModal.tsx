@@ -6,6 +6,7 @@ import TextareaField from "@/components/ui/textareaField";
 import SelectField from "@/components/ui/selectField";
 import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
+import ConvertOption from "@/components/wallet/ConvertOption";
 
 interface DepositFormValues {
   amount: string;
@@ -23,12 +24,14 @@ interface DepositModalProps {
   isOpen: boolean;
   onClose: () => void;
   escrowName: string;
+  currency?: string;
 }
 
 export default function DepositModal({
   isOpen,
   onClose,
   escrowName,
+  currency = "USD",
 }: DepositModalProps) {
   const {
     values,
@@ -94,6 +97,11 @@ export default function DepositModal({
           ]}
           value={values.paymentMethod}
           onChange={handleChange}
+        />
+
+        <ConvertOption
+          amount={Number(values.amount) || 0}
+          targetCurrency={currency}
         />
 
         <TextareaField

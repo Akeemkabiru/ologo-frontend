@@ -3,6 +3,7 @@
 import React from "react";
 import { Star, Repeat } from "lucide-react";
 import type { ViewMode } from "@/components/ui/ViewToggle";
+import LinkText from "@/components/ui/LinkText";
 import type { Contribution, ContributionType } from "@/data/contributions";
 
 const typeBadge: Record<ContributionType, string> = {
@@ -80,7 +81,9 @@ export default function ContributionCard({ item, view }: ContributionCardProps) 
             </div>
           )}
           {item.text && (
-            <p className="text-sm text-gray-600 mt-1.5">{item.text}</p>
+            <p className="text-sm text-gray-600 mt-1.5">
+              <LinkText text={item.text} />
+            </p>
           )}
         </div>
         <div className="shrink-0">
@@ -112,7 +115,11 @@ export default function ContributionCard({ item, view }: ContributionCardProps) 
           <Stars rating={item.rating} />
         )}
       </div>
-      {item.text && <p className="text-sm text-gray-600">{item.text}</p>}
+      {item.text && (
+        <p className="text-sm text-gray-600">
+          <LinkText text={item.text} />
+        </p>
+      )}
     </div>
   );
 }

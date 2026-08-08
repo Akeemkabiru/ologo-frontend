@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { CashFlowChart } from "@/components/wallet/WalletCharts";
 import SendMoneyModal from "@/components/wallet/SendMoneyModal";
 import TopUpModal from "@/components/wallet/TopUpModal";
+import ExchangeModal from "@/components/wallet/ExchangeModal";
 import {
   Bell,
   ChevronDown,
@@ -132,8 +134,8 @@ const contacts = [
 
 const quickActions = [
   { label: "Send", icon: ArrowUpRight, action: "send" as const },
-  { label: "Receive", icon: ArrowDownLeft, action: "topup" as const },
-  { label: "Exchange", icon: Repeat, action: "none" as const },
+  { label: "Request", icon: ArrowDownLeft, action: "request" as const },
+  { label: "Convert", icon: Repeat, action: "exchange" as const },
   { label: "Add", icon: Plus, action: "topup" as const },
 ];
 
@@ -305,15 +307,21 @@ const transactions = [
 
 export default function WalletPage() {
   // Mock data
+  const router = useRouter();
   const totalBalance = 4300;
   const [currency, setCurrency] = useState("USD");
   const [sendOpen, setSendOpen] = useState(false);
   const [topUpOpen, setTopUpOpen] = useState(false);
+  const [exchangeOpen, setExchangeOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const handleQuickAction = (action: "send" | "topup" | "none") => {
+  const handleQuickAction = (
+    action: "send" | "topup" | "request" | "exchange" | "none",
+  ) => {
     if (action === "send") setSendOpen(true);
     else if (action === "topup") setTopUpOpen(true);
+    else if (action === "request") router.push("/wallet/payment-links");
+    else if (action === "exchange") setExchangeOpen(true);
   };
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 5;
@@ -838,6 +846,10 @@ export default function WalletPage() {
 
       <SendMoneyModal isOpen={sendOpen} onClose={() => setSendOpen(false)} />
       <TopUpModal isOpen={topUpOpen} onClose={() => setTopUpOpen(false)} />
+      <ExchangeModal
+        isOpen={exchangeOpen}
+        onClose={() => setExchangeOpen(false)}
+      />
     </main>
   );
 }

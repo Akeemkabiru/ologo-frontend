@@ -649,6 +649,7 @@ export default function EscrowDetailPage() {
         isOpen={isDepositOpen}
         onClose={() => setIsDepositOpen(false)}
         escrowName={escrow.name}
+        currency={escrow.currency}
       />
       <RequestReleaseModal
         isOpen={isReleaseOpen}
