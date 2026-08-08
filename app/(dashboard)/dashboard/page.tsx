@@ -176,549 +176,553 @@ export default function UserDashboard() {
       <MobileHeader title="Dashboard" />
 
       <div className="px-4 sm:px-6 md:px-8 pt-6">
-      <div className="hidden md:block mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-          Welcome back!
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Here&apos;s an overview of your wallet and transactions
-        </p>
-      </div>
-      {/* Quick Stats */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1, staggerChildren: 0.05 }}
-      >
-        {stats.map((stat, idx) => (
+        <div className="hidden md:block mb-8">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Welcome back!
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Here&apos;s an overview of your wallet and transaction
+          </p>
+        </div>
+        {/* Quick Stats */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1, staggerChildren: 0.05 }}
+        >
+          {stats.map((stat, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + idx * 0.1 }}
+              className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-600 text-sm font-medium mb-1">
+                    {stat.label}
+                  </p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
+                </div>
+                <div className="text-gray-400">{stat.icon}</div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Wallet Card */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 w-full">
           <motion.div
-            key={idx}
+            className="mb-6 sm:mb-8 md:mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + idx * 0.1 }}
-            className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6"
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium mb-1">
-                  {stat.label}
-                </p>
-                <p className="text-xl font-bold text-gray-900">{stat.value}</p>
+            <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+              <p className="text-violet-100 text-sm font-medium mb-2">
+                Wallet Balance
+              </p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">
+                    ${walletBalance.toFixed(2)}
+                  </h2>
+                  <p className="text-violet-100">{walletCurrency}</p>
+                </div>
+
+                <button className="bg-white/20 hover:bg-white/30 text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
+                  + Top Up
+                </button>
               </div>
-              <div className="text-gray-400">{stat.icon}</div>
             </div>
           </motion.div>
-        ))}
-      </motion.div>
 
-      {/* Wallet Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 w-full">
-        <motion.div
-          className="mb-6 sm:mb-8 md:mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-            <p className="text-violet-100 text-sm font-medium mb-2">
-              Wallet Balance
-            </p>
-            <div className="flex items-end justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-1">
-                  ${walletBalance.toFixed(2)}
-                </h2>
-                <p className="text-violet-100">{walletCurrency}</p>
-              </div>
+          <motion.div
+            className="mb-6 sm:mb-8 md:mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+              <p className="text-violet-100 text-sm font-medium mb-2">Escrow</p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">
+                    ${walletBalance.toFixed(2)}
+                  </h2>
+                  <p className="text-violet-100">{walletCurrency}</p>
+                </div>
 
-              <button className="bg-white/20 hover:bg-white/30 text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
-                + Top Up
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="mb-6 sm:mb-8 md:mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-            <p className="text-violet-100 text-sm font-medium mb-2">Escrow</p>
-            <div className="flex items-end justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-1">
-                  ${walletBalance.toFixed(2)}
-                </h2>
-                <p className="text-violet-100">{walletCurrency}</p>
-              </div>
-
-              <button className="bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
-                + Create Escrow
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="mb-6 sm:mb-8 md:mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-            <p className="text-violet-100 text-sm font-medium mb-2">
-              Future Fund
-            </p>
-            <div className="flex items-end justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-1">
-                  ${walletBalance.toFixed(2)}
-                </h2>
-                <p className="text-violet-100">{walletCurrency}</p>
-              </div>
-
-              <button className="bg-white/20 hover:bg-white/30 w-fit text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
-                + Create Escrow
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Transactions Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mb-6 sm:mb-8 md:mb-10"
-      >
-        <div className="mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-            <div className="flex items-center gap-x-6">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Transaction History
-              </h3>
-              <h3 className="text-lg font-semibold text-gray-900">Future</h3>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setViewMode("list")}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  viewMode === "list"
-                    ? "bg-violet-600 text-white"
-                    : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700"
-                }`}
-              >
-                List
-              </button>
-              <button
-                onClick={() => setViewMode("calendar")}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  viewMode === "calendar"
-                    ? "bg-violet-600 text-white"
-                    : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700 "
-                }`}
-              >
-                Calendar
-              </button>
-            </div>
-          </div>
-
-          {/* Search & Filter */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
-            <div className="flex-1 relative">
-              <Search
-                size={18}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              />
-              <input
-                type="text"
-                placeholder="Search transactions, groups, users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
-              />
-            </div>
-            <div className="flex gap-3">
-              <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
-                <Filter size={18} />
-                Filter
-              </button>
-              <button
-                onClick={() => handleExport("csv")}
-                className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
-              >
-                <Download size={18} />
-                Export
-              </button>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          {viewMode === "list" && (
-            <div className="flex gap-2 mb-6 border-b border-gray-200">
-              {["all", "income", "expense"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-3 font-medium capitalize border-b-2 transition-colors ${
-                    activeTab === tab
-                      ? "border-violet-600 text-violet-600"
-                      : "border-transparent text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  {tab}
+                <button className="bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                  + Create Escrow
                 </button>
-              ))}
+              </div>
             </div>
-          )}
+          </motion.div>
+
+          <motion.div
+            className="mb-6 sm:mb-8 md:mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
+              <p className="text-violet-100 text-sm font-medium mb-2">
+                Future Fund
+              </p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">
+                    ${walletBalance.toFixed(2)}
+                  </h2>
+                  <p className="text-violet-100">{walletCurrency}</p>
+                </div>
+
+                <button className="bg-white/20 hover:bg-white/30 w-fit text-sm text-white font-semibold px-4 py-2 rounded-lg transition-colors">
+                  + Create Escrow
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* List View */}
-        {viewMode === "list" && (
-          <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
-            {filteredTransactions.length > 0 ? (
-              <div className="divide-y-2 divide-white">
-                {filteredTransactions.map((tx) => (
-                  <motion.div
-                    key={tx.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="p-5 hover: transition-colors cursor-pointer group"
+        {/* Transactions Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-6 sm:mb-8 md:mb-10"
+        >
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div className="flex items-center gap-x-6">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Transaction History
+                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Future</h3>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    viewMode === "list"
+                      ? "bg-violet-600 text-white"
+                      : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700"
+                  }`}
+                >
+                  List
+                </button>
+                <button
+                  onClick={() => setViewMode("calendar")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    viewMode === "calendar"
+                      ? "bg-violet-600 text-white"
+                      : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700 "
+                  }`}
+                >
+                  Calendar
+                </button>
+              </div>
+            </div>
+
+            {/* Search & Filter */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
+              <div className="flex-1 relative">
+                <Search
+                  size={18}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Search transactions, groups, users..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
+                />
+              </div>
+              <div className="flex gap-3">
+                <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
+                  <Filter size={18} />
+                  Filter
+                </button>
+                <button
+                  onClick={() => handleExport("csv")}
+                  className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
+                >
+                  <Download size={18} />
+                  Export
+                </button>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            {viewMode === "list" && (
+              <div className="flex gap-2 mb-6 border-b border-gray-200">
+                {["all", "income", "expense"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-4 py-3 font-medium capitalize border-b-2 transition-colors ${
+                      activeTab === tab
+                        ? "border-violet-600 text-violet-600"
+                        : "border-transparent text-gray-600 hover:text-gray-900"
+                    }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 flex-1">
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">
-                            {tx.description}
-                          </p>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {tx.date}
-                          </p>
-                          {parseFloat(tx.commission) > 0 && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              Commission: {tx.commission} {tx.currency}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-900">
-                          -{tx.amount} {tx.currency}
-                        </p>
-                        <p className="text-xs text-violet-600 font-medium mt-1">
-                          {tx.status}
-                        </p>
-                      </div>
-                      <button className="opacity-0 group-hover:opacity-100 transition-opacity p-2 ml-2">
-                        <MoreVertical size={18} className="text-gray-400" />
-                      </button>
-                    </div>
-                  </motion.div>
+                    {tab}
+                  </button>
                 ))}
               </div>
+            )}
+          </div>
+
+          {/* List View */}
+          {viewMode === "list" && (
+            <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
+              {filteredTransactions.length > 0 ? (
+                <div className="divide-y-2 divide-white">
+                  {filteredTransactions.map((tx) => (
+                    <motion.div
+                      key={tx.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="p-5 hover: transition-colors cursor-pointer group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="flex-1">
+                            <p className="font-semibold text-gray-900">
+                              {tx.description}
+                            </p>
+                            <p className="text-sm text-gray-600 mt-1">
+                              {tx.date}
+                            </p>
+                            {parseFloat(tx.commission) > 0 && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                Commission: {tx.commission} {tx.currency}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-semibold text-gray-900">
+                            -{tx.amount} {tx.currency}
+                          </p>
+                          <p className="text-xs text-violet-600 font-medium mt-1">
+                            {tx.status}
+                          </p>
+                        </div>
+                        <button className="opacity-0 group-hover:opacity-100 transition-opacity p-2 ml-2">
+                          <MoreVertical size={18} className="text-gray-400" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-12 text-center">
+                  <Wallet size={48} className="mx-auto text-gray-300 mb-4" />
+                  <p className="text-gray-600 font-medium text-base">
+                    No transactions yet
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Calendar View */}
+          {viewMode === "calendar" && (
+            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-lg font-bold text-gray-900">
+                  {selectedMonth.toLocaleDateString("en-US", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </h4>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() =>
+                      setSelectedMonth(
+                        new Date(
+                          selectedMonth.getFullYear(),
+                          selectedMonth.getMonth() - 1,
+                        ),
+                      )
+                    }
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={() =>
+                      setSelectedMonth(
+                        new Date(
+                          selectedMonth.getFullYear(),
+                          selectedMonth.getMonth() + 1,
+                        ),
+                      )
+                    }
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-7 gap-2">
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                  (day) => (
+                    <div
+                      key={day}
+                      className="text-center font-semibold text-gray-600 py-2"
+                    >
+                      {day}
+                    </div>
+                  ),
+                )}
+                {Array.from({
+                  length: new Date(
+                    selectedMonth.getFullYear(),
+                    selectedMonth.getMonth(),
+                    1,
+                  ).getDay(),
+                }).map((_, idx) => (
+                  <div key={`empty-${idx}`} className="p-2" />
+                ))}
+                {Array.from({ length: getDaysInMonth(selectedMonth) }).map(
+                  (_, idx) => {
+                    const date = new Date(
+                      selectedMonth.getFullYear(),
+                      selectedMonth.getMonth(),
+                      idx + 1,
+                    );
+                    const dayTransactions = getTransactionsByDate(date);
+                    return (
+                      <div
+                        key={idx}
+                        className={`p-2 rounded-lg border ${
+                          dayTransactions.length > 0
+                            ? "border-violet-200 bg-violet-50"
+                            : "border-gray-200 "
+                        }`}
+                      >
+                        <p className="text-sm font-semibold text-gray-900">
+                          {idx + 1}
+                        </p>
+                        {dayTransactions.length > 0 && (
+                          <p className="text-xs text-violet-600 font-medium">
+                            {dayTransactions.length} transaction
+                            {dayTransactions.length > 1 ? "s" : ""}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Future Transactions Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-6">
+            Upcoming Transactions
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+            {futureTransactions.length > 0 ? (
+              futureTransactions.map((tx) => (
+                <motion.div
+                  key={tx.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <Link href={`/groups/${tx.groupId}`}>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600 font-medium mb-1">
+                          {tx.type === "membership"
+                            ? "Membership"
+                            : tx.type === "escrow"
+                              ? "Escrow"
+                              : "Recurring Payment"}
+                        </p>
+                        <p className="font-semibold text-gray-900 hover:text-violet-600">
+                          {tx.description}
+                        </p>
+                      </div>
+                    </Link>
+                    <span className="text-xs font-semibold px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
+                      {tx.frequency}
+                    </span>
+                  </div>
+                  <div className="border-t border-gray-200 pt-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Amount</span>
+                      <span className="font-bold text-gray-900">
+                        {tx.amount} {tx.currency}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-gray-600 flex items-center gap-2">
+                        Date
+                      </span>
+                      <span className="font-semibold text-gray-900">
+                        {tx.nextDate}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-gray-600">Group</span>
+                      <span className="font-semibold text-violet-600">
+                        {tx.groupName}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
             ) : (
-              <div className="p-12 text-center">
-                <Wallet size={48} className="mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-600 font-medium text-base">
-                  No transactions yet
+              <div className="md:col-span-2 bg-white rounded-2xl border border-gray-200 p-12 text-center">
+                <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
+                <p className="text-gray-600 font-medium">
+                  No upcoming transactions
                 </p>
               </div>
             )}
           </div>
-        )}
+        </motion.div>
 
-        {/* Calendar View */}
-        {viewMode === "calendar" && (
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h4 className="text-lg font-bold text-gray-900">
-                {selectedMonth.toLocaleDateString("en-US", {
-                  month: "long",
-                  year: "numeric",
-                })}
-              </h4>
-              <div className="flex gap-2">
-                <button
-                  onClick={() =>
-                    setSelectedMonth(
-                      new Date(
-                        selectedMonth.getFullYear(),
-                        selectedMonth.getMonth() - 1,
-                      ),
-                    )
-                  }
-                  className="p-2 hover:bg-gray-100 rounded-lg"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  onClick={() =>
-                    setSelectedMonth(
-                      new Date(
-                        selectedMonth.getFullYear(),
-                        selectedMonth.getMonth() + 1,
-                      ),
-                    )
-                  }
-                  className="p-2 hover:bg-gray-100 rounded-lg"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
-            </div>
+        {/* Your Groups Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-8 sm:mt-10 md:mt-12"
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Your Groups</h3>
 
-            <div className="grid grid-cols-7 gap-2">
-              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                <div
-                  key={day}
-                  className="text-center font-semibold text-gray-600 py-2"
-                >
-                  {day}
-                </div>
-              ))}
-              {Array.from({
-                length: new Date(
-                  selectedMonth.getFullYear(),
-                  selectedMonth.getMonth(),
-                  1,
-                ).getDay(),
-              }).map((_, idx) => (
-                <div key={`empty-${idx}`} className="p-2" />
-              ))}
-              {Array.from({ length: getDaysInMonth(selectedMonth) }).map(
-                (_, idx) => {
-                  const date = new Date(
-                    selectedMonth.getFullYear(),
-                    selectedMonth.getMonth(),
-                    idx + 1,
-                  );
-                  const dayTransactions = getTransactionsByDate(date);
-                  return (
-                    <div
-                      key={idx}
-                      className={`p-2 rounded-lg border ${
-                        dayTransactions.length > 0
-                          ? "border-violet-200 bg-violet-50"
-                          : "border-gray-200 "
-                      }`}
-                    >
-                      <p className="text-sm font-semibold text-gray-900">
-                        {idx + 1}
-                      </p>
-                      {dayTransactions.length > 0 && (
-                        <p className="text-xs text-violet-600 font-medium">
-                          {dayTransactions.length} transaction
-                          {dayTransactions.length > 1 ? "s" : ""}
-                        </p>
-                      )}
-                    </div>
-                  );
-                },
-              )}
-            </div>
-          </div>
-        )}
-      </motion.div>
-
-      {/* Future Transactions Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">
-          Upcoming Transactions
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-          {futureTransactions.length > 0 ? (
-            futureTransactions.map((tx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+            {userGroups.map((group) => (
               <motion.div
-                key={tx.id}
+                key={group.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <Link href={`/groups/${tx.groupId}`}>
+                  <Link href={`/groups/${group.id}`}>
                     <div className="flex-1">
                       <p className="text-sm text-gray-600 font-medium mb-1">
-                        {tx.type === "membership"
-                          ? "Membership"
-                          : tx.type === "escrow"
-                            ? "Escrow"
-                            : "Recurring Payment"}
+                        {group.type}
                       </p>
                       <p className="font-semibold text-gray-900 hover:text-violet-600">
-                        {tx.description}
+                        {group.name}
                       </p>
                     </div>
                   </Link>
-                  <span className="text-xs font-semibold px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
-                    {tx.frequency}
-                  </span>
+                  <button
+                    onClick={() => handleDeleteGroup(group.id)}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <Trash2 size={18} />
+                  </button>
                 </div>
                 <div className="border-t border-gray-200 pt-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Amount</span>
-                    <span className="font-bold text-gray-900">
-                      {tx.amount} {tx.currency}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-gray-600 flex items-center gap-2">
-                      Date
-                    </span>
+                  <p className="text-sm text-gray-600">
                     <span className="font-semibold text-gray-900">
-                      {tx.nextDate}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-gray-600">Group</span>
-                    <span className="font-semibold text-violet-600">
-                      {tx.groupName}
-                    </span>
-                  </div>
+                      {group.members}
+                    </span>{" "}
+                    members
+                  </p>
                 </div>
               </motion.div>
-            ))
-          ) : (
-            <div className="md:col-span-2 bg-white rounded-2xl border border-gray-200 p-12 text-center">
-              <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-600 font-medium">
-                No upcoming transactions
-              </p>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Analytics Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-8 sm:mt-10 md:mt-12"
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-6">
+            Analytics & Metrics
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+            {/* Spending Chart */}
+            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+              <h4 className="font-semibold text-gray-900 mb-4">
+                Spending by Category
+              </h4>
+              <div className="space-y-4">
+                {[
+                  { name: "Top-ups", amount: 500, percentage: 27 },
+                  { name: "Donations", amount: 350, percentage: 19 },
+                  { name: "Transfers", amount: 400, percentage: 22 },
+                  { name: "Memberships", amount: 600, percentage: 32 },
+                ].map((item, idx) => (
+                  <div key={idx}>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">
+                        {item.name}
+                      </span>
+                      <span className="text-sm font-bold text-gray-900">
+                        ${item.amount}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-violet-600 h-2 rounded-full"
+                        style={{ width: `${item.percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
-      </motion.div>
 
-      {/* Your Groups Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="mt-8 sm:mt-10 md:mt-12"
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Your Groups</h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {userGroups.map((group) => (
-            <motion.div
-              key={group.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 hover:shadow-lg transition-shadow"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <Link href={`/groups/${group.id}`}>
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-600 font-medium mb-1">
-                      {group.type}
-                    </p>
-                    <p className="font-semibold text-gray-900 hover:text-violet-600">
-                      {group.name}
-                    </p>
-                  </div>
-                </Link>
-                <button
-                  onClick={() => handleDeleteGroup(group.id)}
-                  className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-              <div className="border-t border-gray-200 pt-4">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold text-gray-900">
-                    {group.members}
-                  </span>{" "}
-                  members
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Analytics Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        className="mt-8 sm:mt-10 md:mt-12"
-      >
-        <h3 className="text-xl font-bold text-gray-900 mb-6">
-          Analytics & Metrics
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-          {/* Spending Chart */}
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
-            <h4 className="font-semibold text-gray-900 mb-4">
-              Spending by Category
-            </h4>
-            <div className="space-y-4">
-              {[
-                { name: "Top-ups", amount: 500, percentage: 27 },
-                { name: "Donations", amount: 350, percentage: 19 },
-                { name: "Transfers", amount: 400, percentage: 22 },
-                { name: "Memberships", amount: 600, percentage: 32 },
-              ].map((item, idx) => (
-                <div key={idx}>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">
-                      {item.name}
-                    </span>
-                    <span className="text-sm font-bold text-gray-900">
-                      ${item.amount}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-violet-600 h-2 rounded-full"
-                      style={{ width: `${item.percentage}%` }}
-                    ></div>
-                  </div>
+            {/* Activity Stats */}
+            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+              <h4 className="font-semibold text-gray-900 mb-4">
+                Activity Summary
+              </h4>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Total Transactions</span>
+                  <span className=" font-semibold text-gray-900">24</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Activity Stats */}
-          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
-            <h4 className="font-semibold text-gray-900 mb-4">
-              Activity Summary
-            </h4>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Total Transactions</span>
-                <span className=" font-semibold text-gray-900">24</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">This Month Spent</span>
-                <span className=" font-semibold text-gray-900">$1,850</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Commission Paid</span>
-                <span className="font-semibold text-gray-900">
-                  ${((750 * 2.5) / 100).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Avg Transaction</span>
-                <span className="font-bold text-gray-900">
-                  ${(1850 / 24).toFixed(2)}
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">This Month Spent</span>
+                  <span className=" font-semibold text-gray-900">$1,850</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Commission Paid</span>
+                  <span className="font-semibold text-gray-900">
+                    ${((750 * 2.5) / 100).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Avg Transaction</span>
+                  <span className="font-bold text-gray-900">
+                    ${(1850 / 24).toFixed(2)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
       </div>
     </main>
   );
