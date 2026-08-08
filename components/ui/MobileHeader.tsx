@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Bell } from "lucide-react";
 import type { ReactNode } from "react";
+import { MobileMenuButton } from "@/components/ui/MobileNav";
 
 interface MobileHeaderProps {
   title: string;
@@ -34,11 +35,7 @@ export default function MobileHeader({
               <ArrowLeft size={18} />
             </button>
           ) : (
-            <img
-              src="https://i.pravatar.cc/64?img=12"
-              alt="Profile"
-              className="w-11 h-11 rounded-full border-2 border-white/30 object-cover shrink-0"
-            />
+            <MobileMenuButton className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center text-white shrink-0" />
           )}
           <div className="min-w-0">
             {subtitle && (

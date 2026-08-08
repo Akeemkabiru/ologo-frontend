@@ -173,7 +173,7 @@ export default function UserDashboard() {
 
   return (
     <main className="min-h-screen pb-16">
-      <MobileHeader title="Akbar Hafsyah" subtitle="Welcome back" />
+      <MobileHeader title="Dashboard" />
 
       <div className="px-4 sm:px-6 md:px-8 pt-6">
       <div className="hidden md:block mb-8">

@@ -24,6 +24,7 @@ import {
 import { EmptyState } from "@/components/cards/CardComponents";
 import FundingCard from "@/components/cards/FundingCard";
 import ViewToggle, { type ViewMode } from "@/components/ui/ViewToggle";
+import { MobileMenuButton } from "@/components/ui/MobileNav";
 import CreateEscrowModal from "@/components/escrow/CreateEscrowModal";
 import { escrows } from "@/data/escrows";
 
@@ -119,17 +120,7 @@ export default function EscrowPage() {
         <div className="bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:w-full md:mt-0 md:rounded-2xl px-5 py-6 md:py-6 text-white">
           {/* Top row - mobile only */}
           <div className="md:hidden flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/64?img=12"
-                alt="Akbar Hafsyah"
-                className="w-11 h-11 rounded-full border-2 border-white/30 object-cover"
-              />
-              <div>
-                <p className="text-xs text-violet-200">Welcome back</p>
-                <p className="font-semibold text-sm">Akbar Hafsyah</p>
-              </div>
-            </div>
+            <MobileMenuButton className="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center text-white shrink-0" />
             <button className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
               <Bell size={18} />
             </button>

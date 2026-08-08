@@ -7,6 +7,7 @@ import { CashFlowChart } from "@/components/wallet/WalletCharts";
 import SendMoneyModal from "@/components/wallet/SendMoneyModal";
 import TopUpModal from "@/components/wallet/TopUpModal";
 import ExchangeModal from "@/components/wallet/ExchangeModal";
+import { MobileMenuButton } from "@/components/ui/MobileNav";
 import {
   Bell,
   ChevronDown,
@@ -364,17 +365,7 @@ export default function WalletPage() {
       <div className="md:hidden bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] px-5 py-8 text-white mb-6">
         {/* Top row */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://i.pravatar.cc/64?img=12"
-              alt="Akbar Hafsyah"
-              className="w-11 h-11 rounded-full border-2 border-white/30 object-cover"
-            />
-            <div>
-              <p className="text-xs text-violet-200">Welcome back</p>
-              <p className="font-semibold text-sm">Akbar Hafsyah</p>
-            </div>
-          </div>
+          <MobileMenuButton className="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center text-white shrink-0" />
           <button className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
             <Bell size={18} />
           </button>
