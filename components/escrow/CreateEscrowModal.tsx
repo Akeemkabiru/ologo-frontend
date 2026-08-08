@@ -9,6 +9,7 @@ import ToggleSwitch from "@/components/ui/toggleSwitch";
 import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
 import { CURRENCIES } from "@/lib/constants";
+import { events } from "@/data/events";
 
 const ESCROW_CATEGORIES = [
   "Freelance",
@@ -26,6 +27,8 @@ const ESCROW_CATEGORIES = [
 interface EscrowFormValues {
   title: string;
   description: string;
+  linkType: "standalone" | "event";
+  eventId: string;
   category: string;
   amount: string;
   currency: string;
@@ -38,6 +41,8 @@ interface EscrowFormValues {
 const initialValues: EscrowFormValues = {
   title: "",
   description: "",
+  linkType: "standalone",
+  eventId: "",
   category: "Freelance",
   amount: "",
   currency: "USD",

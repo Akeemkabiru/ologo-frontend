@@ -16,12 +16,20 @@ export interface DeciderBeneficiary {
   requestedAmount: number;
 }
 
+export interface DeciderPaymentSummary {
+  recipients: { name: string; amount: number }[];
+  total: number;
+  description: string;
+  recurring: boolean;
+}
+
 interface DeciderFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   escrowName: string;
   available: number;
   beneficiaries: DeciderBeneficiary[];
+  onSubmitted?: (summary: DeciderPaymentSummary) => void;
 }
 
 const money = (n: number) =>
@@ -38,6 +46,7 @@ export default function DeciderFormModal({
   escrowName,
   available,
   beneficiaries,
+  onSubmitted,
 }: DeciderFormModalProps) {
   const [view, setView] = useState<ViewMode>("list");
   const [payments, setPayments] = useState<Record<string, string>>({});
@@ -75,6 +84,9 @@ export default function DeciderFormModal({
     e.preventDefault();
     if (overBudget || totalToPay <= 0) return;
     setSubmitting(true);
+    const recipients = beneficiaries
+      .filter((b) => (Number(payments[b.id]) || 0) > 0)
+      .map((b) => ({ name: b.name, amount: Number(payments[b.id]) || 0 }));
     console.log("Decider Form submitted:", {
       escrowName,
       payments,
@@ -87,6 +99,12 @@ export default function DeciderFormModal({
     });
     await new Promise((r) => setTimeout(r, 1000));
     setSubmitting(false);
+    onSubmitted?.({
+      recipients,
+      total: totalToPay,
+      description,
+      recurring: isRecurring,
+    });
     onClose();
   };
 
