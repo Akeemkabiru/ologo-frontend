@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "@/components/ui/modal";
 import InputField from "@/components/ui/inputField";
 import SelectField from "@/components/ui/selectField";
@@ -56,12 +56,14 @@ interface CreateEscrowModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCreated?: () => void;
+  presetEventId?: string;
 }
 
 export default function CreateEscrowModal({
   isOpen,
   onClose,
   onCreated,
+  presetEventId,
 }: CreateEscrowModalProps) {
   const [releaseTerms, setReleaseTerms] = useState("both");
 
@@ -94,6 +96,16 @@ export default function CreateEscrowModal({
       return errors;
     },
   });
+
+  useEffect(() => {
+    if (isOpen && presetEventId) {
+      setValues((prev) => ({
+        ...prev,
+        linkType: "event",
+        eventId: presetEventId,
+      }));
+    }
+  }, [isOpen, presetEventId, setValues]);
 
   const handleClose = () => {
     if (isSubmitting) return;
@@ -130,6 +142,28 @@ export default function CreateEscrowModal({
           onBlur={handleBlur}
           rows={4}
         />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <SelectField
+            label="Escrow type"
+            name="linkType"
+            options={[
+              { label: "Standalone group", value: "standalone" },
+              { label: "Part of an event", value: "event" },
+            ]}
+            value={values.linkType}
+            onChange={handleChange}
+          />
+          {values.linkType === "event" && (
+            <SelectField
+              label="Linked event"
+              name="eventId"
+              options={events.map((ev) => ({ label: ev.name, value: ev.id }))}
+              value={values.eventId}
+              onChange={handleChange}
+            />
+          )}
+        </div>
 
         <SelectField
           label="Category"

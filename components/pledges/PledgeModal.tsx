@@ -1,63 +1,48 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Modal from "@/components/ui/modal";
 import InputField from "@/components/ui/inputField";
 import SelectField from "@/components/ui/selectField";
 import TextareaField from "@/components/ui/textareaField";
-import Checkbox from "@/components/ui/checkbox";
 import ToggleSwitch from "@/components/ui/toggleSwitch";
 import { FormButton } from "@/components/forms/FormComponents";
-import {
-  CURRENCY_INFO,
-  convertCurrency,
-  formatMoney,
-  getCurrency,
-} from "@/lib/currency";
+import type { MyPledge } from "@/data/myPledges";
 
-interface DonateModalProps {
+interface PledgeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  eventName: string;
-  hostCurrency?: string;
+  onCreate: (pledge: MyPledge) => void;
 }
 
-type Mode = "once" | "recurring";
+type Mode = "one-time" | "recurring";
 
-export default function DonateModal({
+export default function PledgeModal({
   isOpen,
   onClose,
-  eventName,
-  hostCurrency = "USD",
-}: DonateModalProps) {
-  const [mode, setMode] = useState<Mode>("once");
-  const [amount, setAmount] = useState("");
-  const [convert, setConvert] = useState(false);
-  const [payFrom, setPayFrom] = useState(
-    CURRENCY_INFO.find((c) => c.code !== hostCurrency)?.code ?? "NGN",
-  );
+  onCreate,
+}: PledgeModalProps) {
+  const [mode, setMode] = useState<Mode>("one-time");
+  const [description, setDescription] = useState("");
+  const [performanceDate, setPerformanceDate] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [identity, setIdentity] = useState("name");
   const [alias, setAlias] = useState("");
-  const [note, setNote] = useState("");
   const [freqAmount, setFreqAmount] = useState("1");
   const [freqUnit, setFreqUnit] = useState("months");
   const [endAt, setEndAt] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
 
-  const numericAmount = Number(amount) || 0;
-  const converted = useMemo(
-    () => convertCurrency(numericAmount, hostCurrency, payFrom),
-    [numericAmount, hostCurrency, payFrom],
-  );
-
   const reset = () => {
-    setMode("once");
-    setAmount("");
-    setConvert(false);
+    setMode("one-time");
+    setDescription("");
+    setPerformanceDate("");
+    setEmail("");
+    setPhone("");
     setIdentity("name");
     setAlias("");
-    setNote("");
     setFreqAmount("1");
     setFreqUnit("months");
     setEndAt("");
@@ -72,37 +57,51 @@ export default function DonateModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (numericAmount <= 0) {
+    if (!description.trim()) {
       setError(true);
       return;
     }
     setSubmitting(true);
-    console.log("Donation:", {
+    console.log("Pledge:", {
       mode,
-      amount: numericAmount,
-      currency: hostCurrency,
-      payWith: convert ? { from: payFrom, converted } : hostCurrency,
+      description,
+      performanceDate,
+      email,
+      phone,
       identity: identity === "alias" ? { alias } : identity,
-      note,
       recurring:
         mode === "recurring"
           ? { every: freqAmount, unit: freqUnit, endsAt: endAt }
           : null,
     });
     await new Promise((r) => setTimeout(r, 1000));
+    onCreate({
+      id: `p-${Date.now()}`,
+      description: description.trim(),
+      type: mode,
+      frequency:
+        mode === "recurring" ? `Every ${freqAmount} ${freqUnit}` : undefined,
+      performanceDate: performanceDate || "To be scheduled",
+      status: "active",
+      anonymous: identity !== "name",
+      contactEmail: email || undefined,
+      date: new Date().toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    });
     setSubmitting(false);
     reset();
     onClose();
   };
 
-  const hostSymbol = getCurrency(hostCurrency).symbol;
-
   return (
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Donate"
-      description={`Support ${eventName}`}
+      title="Make a Pledge"
+      description="Commit to a cause with a performance-based pledge"
       maxWidthClassName="max-w-md"
     >
       <form onSubmit={handleSubmit} className="grid gap-5">
@@ -112,63 +111,52 @@ export default function DonateModal({
           value={mode}
           onChange={(v) => setMode(v as Mode)}
           options={[
-            { label: "One-time", value: "once" },
+            { label: "One-time", value: "one-time" },
             { label: "Recurring", value: "recurring" },
           ]}
         />
 
-        {/* Amount */}
-        <InputField
-          label={`Amount (${hostCurrency})`}
-          placeholder="e.g., 100"
-          type="number"
-          inputMode="decimal"
-          icon={<span className="text-sm text-gray-500">{hostSymbol}</span>}
-          value={amount}
+        {/* Description */}
+        <TextareaField
+          label="Description"
+          placeholder="Describe what you're pledging and for which cause"
+          value={description}
           onChange={(e) => {
-            setAmount(e.target.value);
+            setDescription(e.target.value);
             setError(false);
           }}
-          error={error && numericAmount <= 0}
+          error={error && !description.trim()}
           errorMessage={
-            error && numericAmount <= 0 ? "Enter a valid amount" : undefined
+            error && !description.trim() ? "Describe your pledge" : undefined
           }
+          rows={3}
           required
         />
 
-        {/* Currency conversion */}
-        <div>
-          <Checkbox
-            label={`Don't have enough ${hostCurrency}? Convert from another wallet`}
-            name="convert"
-            checked={convert}
-            onChange={setConvert}
+        {/* Performance date */}
+        <InputField
+          label="Performance date"
+          type="date"
+          value={performanceDate}
+          onChange={(e) => setPerformanceDate(e.target.value)}
+        />
+
+        {/* Contact */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputField
+            label="Contact email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          {convert && (
-            <div className="mt-4 p-4 rounded-xl border border-gray-200 grid gap-3">
-              <SelectField
-                label="Pay from"
-                value={payFrom}
-                onChange={(e) => setPayFrom(e.target.value)}
-                options={CURRENCY_INFO.filter(
-                  (c) => c.code !== hostCurrency,
-                ).map((c) => ({
-                  label: `${c.flag} ${c.code} wallet`,
-                  value: c.code,
-                }))}
-              />
-              <div className="rounded-lg bg-violet-50 border border-violet-100 p-3 text-sm">
-                <span className="text-gray-600">You&apos;ll pay about </span>
-                <span className="font-bold text-violet-700">
-                  {formatMoney(converted, payFrom)}
-                </span>
-                <span className="text-gray-600">
-                  {" "}
-                  from your {payFrom} wallet
-                </span>
-              </div>
-            </div>
-          )}
+          <InputField
+            label="Contact phone"
+            type="tel"
+            placeholder="+1 555 000 0000"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
         </div>
 
         {/* Recurring options */}
@@ -229,15 +217,6 @@ export default function DonateModal({
           )}
         </div>
 
-        {/* Note */}
-        <TextareaField
-          label="Post a note (optional)"
-          placeholder="Share why you're supporting this cause"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          rows={3}
-        />
-
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-1">
           <FormButton
             type="button"
@@ -255,9 +234,7 @@ export default function DonateModal({
             loading={submitting}
             className="sm:flex-1"
           >
-            {numericAmount > 0
-              ? `Donate ${formatMoney(numericAmount, hostCurrency)}`
-              : "Donate"}
+            Pledge
           </FormButton>
         </div>
       </form>

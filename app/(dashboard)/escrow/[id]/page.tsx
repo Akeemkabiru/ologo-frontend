@@ -21,6 +21,7 @@ import RaiseRequestModal from "@/components/escrow/RaiseRequestModal";
 import GroupActivityModal from "@/components/escrow/GroupActivityModal";
 import ShareReportModal from "@/components/escrow/ShareReportModal";
 import PaymentSuccessModal from "@/components/escrow/PaymentSuccessModal";
+import AcceptAppointmentModal from "@/components/escrow/AcceptAppointmentModal";
 import type { DeciderPaymentSummary } from "@/components/escrow/DeciderFormModal";
 import { getEscrowById } from "@/data/escrows";
 import {
@@ -36,7 +37,14 @@ import {
   type EscrowMember,
   type RequestForm,
 } from "@/data/escrowDetail";
-import { UserPlus, MessagesSquare, Share2, Plus } from "lucide-react";
+import {
+  UserPlus,
+  MessagesSquare,
+  Share2,
+  Plus,
+  Layers,
+  CalendarClock,
+} from "lucide-react";
 
 const tabs = [
   { label: "About", value: "about" },
@@ -79,6 +87,8 @@ export default function EscrowDetailPage() {
   const [paymentSummary, setPaymentSummary] =
     useState<DeciderPaymentSummary | null>(null);
   const [isPaymentSuccessOpen, setIsPaymentSuccessOpen] = useState(false);
+  const [isAcceptOpen, setIsAcceptOpen] = useState(false);
+  const [appointmentAccepted, setAppointmentAccepted] = useState(false);
 
   const addMember = (member: EscrowMember) =>
     setMembers((prev) => [...prev, member]);
@@ -135,6 +145,28 @@ export default function EscrowDetailPage() {
         <div className="md:grid md:grid-cols-3 md:gap-8 md:items-start">
           {/* Main column */}
           <div className="md:col-span-2">
+            {/* Pending Decider appointment */}
+            {!appointmentAccepted && (
+              <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-amber-900">
+                    You&apos;ve been appointed as a Decider
+                  </p>
+                  <p className="text-xs text-amber-700 mt-0.5">
+                    Accept to review requests and distribute funds. You can
+                    choose to stay anonymous or use an alias.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsAcceptOpen(true)}
+                  className="shrink-0 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors"
+                >
+                  Accept appointment
+                </button>
+              </div>
+            )}
+
             {/* Hero image */}
             <div className="mb-5 md:mb-6 rounded-2xl overflow-hidden">
               <img
@@ -153,9 +185,27 @@ export default function EscrowDetailPage() {
               </div>
             )}
 
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-5">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
               {escrow.name}
             </h1>
+
+            {/* Standalone group vs part of an event */}
+            <div className="mb-5">
+              {escrow.event ? (
+                <Link
+                  href={`/events/${escrow.event.id}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium bg-violet-100 text-violet-700 hover:bg-violet-200 px-3 py-1.5 rounded-full transition-colors"
+                >
+                  <CalendarClock size={13} />
+                  Part of event: {escrow.event.name}
+                </Link>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">
+                  <Layers size={13} />
+                  Standalone escrow group
+                </span>
+              )}
+            </div>
 
             {/* In Escrow / Total */}
             <div className="flex items-center justify-between mb-2">
@@ -624,6 +674,15 @@ export default function EscrowDetailPage() {
         remaining={escrow.inEscrow - (paymentSummary?.total ?? 0)}
         requestForms={requestForms}
         groupPath={`/escrow/${id}`}
+      />
+      <AcceptAppointmentModal
+        isOpen={isAcceptOpen}
+        onClose={() => setIsAcceptOpen(false)}
+        onAccept={() => {
+          setAppointmentAccepted(true);
+          setIsAcceptOpen(false);
+        }}
+        appointedBy="David Mensah"
       />
       <AddMemberModal
         isOpen={isAddMemberOpen}

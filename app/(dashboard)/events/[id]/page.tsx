@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -11,11 +11,29 @@ import {
   User,
   ArrowUpRight,
   ArrowDownRight,
+  ChevronLeft,
+  ChevronRight,
+  Lock,
 } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 import { formatCurrency } from "@/lib/utils";
 import DonateModal from "@/components/events/DonateModal";
+import CreateEscrowModal from "@/components/escrow/CreateEscrowModal";
+import ViewToggle, { type ViewMode } from "@/components/ui/ViewToggle";
+import ContributionCard from "@/components/events/ContributionCard";
 import { getEventById } from "@/data/events";
+import { contributions, type ContributionType } from "@/data/contributions";
+
+const contributionFilters: { label: string; value: "all" | ContributionType }[] =
+  [
+    { label: "All", value: "all" },
+    { label: "Donations", value: "donation" },
+    { label: "Notes", value: "note" },
+    { label: "Pledges", value: "pledge" },
+    { label: "Reviews", value: "review" },
+  ];
+
+const CONTRIB_PAGE_SIZE = 6;
 
 const fallbackEvent = {
   name: "Shelter Support for Homeless in NYC",
@@ -103,6 +121,7 @@ const fundDetails = {
 
 const tabs = [
   { label: "About", value: "about" },
+  { label: "Donations", value: "donations" },
   { label: "Updates", value: "development" },
   { label: "Fund Details", value: "fund-details" },
 ] as const;
@@ -132,6 +151,33 @@ export default function EventDetailPage() {
 
   const [activeTab, setActiveTab] = useState<TabValue>("about");
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
+  const [isEscrowModalOpen, setIsEscrowModalOpen] = useState(false);
+
+  const [contribFilter, setContribFilter] = useState<"all" | ContributionType>(
+    "all",
+  );
+  const [contribView, setContribView] = useState<ViewMode>("list");
+  const [contribPage, setContribPage] = useState(1);
+
+  const filteredContributions = useMemo(
+    () =>
+      contribFilter === "all"
+        ? contributions
+        : contributions.filter((c) => c.type === contribFilter),
+    [contribFilter],
+  );
+  const contribTotalPages = Math.max(
+    1,
+    Math.ceil(filteredContributions.length / CONTRIB_PAGE_SIZE),
+  );
+  const paginatedContributions = filteredContributions.slice(
+    (contribPage - 1) * CONTRIB_PAGE_SIZE,
+    contribPage * CONTRIB_PAGE_SIZE,
+  );
+
+  useEffect(() => {
+    setContribPage(1);
+  }, [contribFilter]);
 
   const progress = Math.round((event.amountRaised / event.goal) * 100);
 
@@ -299,6 +345,96 @@ export default function EventDetailPage() {
               </div>
             )}
 
+            {activeTab === "donations" && (
+              <div>
+                {/* Filter + view toggle */}
+                <div className="flex items-center justify-between gap-3 mb-5">
+                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {contributionFilters.map((filter) => (
+                      <button
+                        key={filter.value}
+                        onClick={() => setContribFilter(filter.value)}
+                        className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                          contribFilter === filter.value
+                            ? "bg-violet-600 text-white"
+                            : "bg-violet-100/70 text-violet-500 hover:bg-violet-100"
+                        }`}
+                      >
+                        {filter.label}
+                      </button>
+                    ))}
+                  </div>
+                  <ViewToggle value={contribView} onChange={setContribView} />
+                </div>
+
+                {paginatedContributions.length > 0 ? (
+                  <div
+                    className={
+                      contribView === "grid"
+                        ? "grid grid-cols-1 sm:grid-cols-2 gap-3"
+                        : "flex flex-col gap-3"
+                    }
+                  >
+                    {paginatedContributions.map((item) => (
+                      <ContributionCard
+                        key={item.id}
+                        item={item}
+                        view={contribView}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-sm text-gray-400 py-10">
+                    Nothing here yet.
+                  </p>
+                )}
+
+                {/* Pagination */}
+                {contribTotalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-6">
+                    <button
+                      onClick={() =>
+                        setContribPage((p) => Math.max(1, p - 1))
+                      }
+                      disabled={contribPage === 1}
+                      className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-gray-500 hover:text-violet-600 hover:border-violet-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    {Array.from(
+                      { length: contribTotalPages },
+                      (_, i) => i + 1,
+                    ).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        onClick={() => setContribPage(pageNum)}
+                        className={`w-9 h-9 rounded-full text-sm font-medium transition-all duration-200 ${
+                          contribPage === pageNum
+                            ? "bg-violet-600 text-white shadow-sm scale-105"
+                            : "bg-white text-gray-600 border border-gray-100 hover:border-violet-200 hover:text-violet-600"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() =>
+                        setContribPage((p) =>
+                          Math.min(contribTotalPages, p + 1),
+                        )
+                      }
+                      disabled={contribPage === contribTotalPages}
+                      className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-gray-500 hover:text-violet-600 hover:border-violet-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      aria-label="Next page"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {activeTab === "development" && (
               <div className="space-y-8">
                 {developmentUpdates.map((update) => (
@@ -454,9 +590,17 @@ export default function EventDetailPage() {
               <button
                 type="button"
                 onClick={() => setIsDonateModalOpen(true)}
-                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-3.5 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95"
+                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-full py-3.5 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 mb-3"
               >
                 Donate Now
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsEscrowModalOpen(true)}
+                className="w-full bg-white border border-violet-200 text-violet-600 hover:bg-violet-50 font-semibold rounded-full py-3.5 transition-all duration-200 active:scale-95 inline-flex items-center justify-center gap-2"
+              >
+                <Lock size={16} />
+                Set up Escrow
               </button>
             </div>
           </div>
@@ -478,6 +622,12 @@ export default function EventDetailPage() {
         isOpen={isDonateModalOpen}
         onClose={() => setIsDonateModalOpen(false)}
         eventName={event.name}
+        hostCurrency={event.currency}
+      />
+      <CreateEscrowModal
+        isOpen={isEscrowModalOpen}
+        onClose={() => setIsEscrowModalOpen(false)}
+        presetEventId={id}
       />
     </main>
   );

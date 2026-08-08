@@ -237,6 +237,7 @@ export const fallbackEscrow = {
   total: 4200,
   timeLeft: "142 days left",
   partyCount: escrowMembers.length,
+  event: null as null | { id: string; name: string },
   description:
     "Funds are held in escrow and released to the beneficiaries only when a Decider approves. The Host deposits money and appoints a Decider (or themselves) to distribute it, invites Witnesses to observe and verify, and beneficiaries can raise Request Forms that every member can see. A neutral Decider can step in before any funds move.",
 };

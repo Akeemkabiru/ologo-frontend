@@ -1,18 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Handshake,
-  Plus,
-  Repeat,
-  CalendarClock,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import Link from "next/link";
+import { Gift, Repeat, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 import ViewToggle, { type ViewMode } from "@/components/ui/ViewToggle";
-import PledgeModal from "@/components/pledges/PledgeModal";
-import { myPledges, type MyPledge } from "@/data/myPledges";
+import { formatCurrency } from "@/lib/utils";
+import { myDonations, type MyDonation } from "@/data/myDonations";
 
 const filters: { label: string; value: "all" | "one-time" | "recurring" }[] = [
   { label: "All", value: "all" },
@@ -20,26 +14,21 @@ const filters: { label: string; value: "all" | "one-time" | "recurring" }[] = [
   { label: "Recurring", value: "recurring" },
 ];
 
-const statusStyles: Record<MyPledge["status"], string> = {
-  active: "bg-emerald-100 text-emerald-700",
-  fulfilled: "bg-violet-100 text-violet-700",
-  upcoming: "bg-amber-100 text-amber-700",
-};
-
 const PAGE_SIZE = 6;
 
-export default function PledgesPage() {
-  const [pledges, setPledges] = useState<MyPledge[]>(myPledges);
+export default function DonationsPage() {
   const [filter, setFilter] = useState<"all" | "one-time" | "recurring">("all");
   const [view, setView] = useState<ViewMode>("list");
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filtered = useMemo(
     () =>
-      filter === "all" ? pledges : pledges.filter((p) => p.type === filter),
-    [filter, pledges],
+      filter === "all"
+        ? myDonations
+        : myDonations.filter((d) => d.type === filter),
+    [filter],
   );
+
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -47,28 +36,34 @@ export default function PledgesPage() {
     setPage(1);
   }, [filter]);
 
-  const activeCount = pledges.filter((p) => p.status === "active").length;
-  const recurringCount = pledges.filter((p) => p.type === "recurring").length;
+  const totalDonated = myDonations
+    .filter((d) => d.status === "completed")
+    .reduce((sum, d) => sum + d.amount, 0);
+  const campaigns = new Set(myDonations.map((d) => d.eventId)).size;
+  const recurringCount = myDonations.filter(
+    (d) => d.type === "recurring",
+  ).length;
 
   const stats = [
-    { label: "Total Pledges", value: String(pledges.length) },
-    { label: "Active", value: String(activeCount) },
-    { label: "Recurring", value: String(recurringCount) },
+    { label: "Total Donated", value: formatCurrency(totalDonated, "USD") },
+    { label: "Campaigns", value: String(campaigns) },
+    { label: "Active Recurring", value: String(recurringCount) },
   ];
 
   return (
     <main className="min-h-screen pb-8">
       <MobileHeader
-        title="Pledges"
-        subtitle="Commit to causes with performance-based pledges"
+        title="Donations"
+        subtitle="Everything you've given"
         rightSlot={
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
-            aria-label="Make a pledge"
-          >
-            <Plus size={18} />
-          </button>
+          <Link href="/events">
+            <button
+              className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
+              aria-label="Browse campaigns"
+            >
+              <Heart size={18} />
+            </button>
+          </Link>
         }
       />
 
@@ -77,19 +72,16 @@ export default function PledgesPage() {
         <div className="hidden md:flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-              Pledges
+              Donations
             </h1>
-            <p className="text-gray-600 mt-1">
-              Commit to causes with performance-based pledges
-            </p>
+            <p className="text-gray-600 mt-1">Track everything you&apos;ve given</p>
           </div>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-sm"
-          >
-            <Plus size={16} />
-            Make a Pledge
-          </button>
+          <Link href="/events">
+            <button className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-sm">
+              <Heart size={16} />
+              Browse campaigns
+            </button>
+          </Link>
         </div>
 
         {/* Stats */}
@@ -136,14 +128,14 @@ export default function PledgesPage() {
                 : "flex flex-col gap-3"
             }
           >
-            {paginated.map((p) => (
-              <PledgeCard key={p.id} item={p} view={view} />
+            {paginated.map((d) => (
+              <DonationCard key={d.id} item={d} view={view} />
             ))}
           </div>
         ) : (
           <div className="text-center py-16">
-            <Handshake size={40} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-400">No pledges in this filter.</p>
+            <Gift size={40} className="text-gray-300 mx-auto mb-3" />
+            <p className="text-sm text-gray-400">No donations in this filter.</p>
           </div>
         )}
 
@@ -182,17 +174,11 @@ export default function PledgesPage() {
           </div>
         )}
       </div>
-
-      <PledgeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onCreate={(pledge) => setPledges((prev) => [pledge, ...prev])}
-      />
     </main>
   );
 }
 
-function TypeBadge({ item }: { item: MyPledge }) {
+function TypeBadge({ item }: { item: MyDonation }) {
   return (
     <span
       className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
@@ -207,58 +193,92 @@ function TypeBadge({ item }: { item: MyPledge }) {
   );
 }
 
-function PledgeCard({ item, view }: { item: MyPledge; view: ViewMode }) {
-  const statusChip = (
-    <span
-      className={`text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${statusStyles[item.status]}`}
-    >
-      {item.status}
+function DonationCard({ item, view }: { item: MyDonation; view: ViewMode }) {
+  const amount = (
+    <span className="text-base font-bold text-violet-600 whitespace-nowrap">
+      {formatCurrency(item.amount, item.currency)}
     </span>
   );
 
   if (view === "list") {
     return (
-      <div className="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-white">
-        <span className="w-11 h-11 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
-          <Handshake size={18} className="text-violet-600" />
-        </span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <TypeBadge item={item} />
-            {statusChip}
-            {item.anonymous && (
-              <span className="text-[11px] text-gray-400">· Anonymous</span>
+      <Link href={`/events/${item.eventId}`} className="block">
+        <div className="flex items-center gap-3 p-3 rounded-2xl border border-gray-100 bg-white hover:border-violet-200 transition-colors">
+          <img
+            src={item.image}
+            alt={item.eventName}
+            className="w-14 h-14 rounded-xl object-cover shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-gray-900 truncate">
+              {item.eventName}
+            </p>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <TypeBadge item={item} />
+              <span className="text-xs text-gray-400">{item.date}</span>
+              {item.anonymous && (
+                <span className="text-[11px] text-gray-400">· Anonymous</span>
+              )}
+            </div>
+            {item.note && (
+              <p className="text-xs text-gray-500 mt-1 truncate">{item.note}</p>
             )}
           </div>
-          <p className="text-sm text-gray-800">{item.description}</p>
-          <div className="flex items-center gap-1.5 mt-2 text-xs text-gray-500">
-            <CalendarClock size={13} />
-            Performance: {item.performanceDate}
+          <div className="text-right shrink-0">
+            {amount}
+            <p
+              className={`text-[11px] mt-0.5 capitalize ${
+                item.status === "scheduled"
+                  ? "text-amber-600"
+                  : "text-emerald-600"
+              }`}
+            >
+              {item.status}
+            </p>
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <span className="w-11 h-11 rounded-xl bg-violet-50 flex items-center justify-center">
-          <Handshake size={18} className="text-violet-600" />
-        </span>
-        {statusChip}
+    <Link href={`/events/${item.eventId}`} className="block h-full">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full hover:border-violet-200 transition-colors">
+        <img
+          src={item.image}
+          alt={item.eventName}
+          className="w-full h-28 object-cover"
+        />
+        <div className="p-4">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <TypeBadge item={item} />
+            <span
+              className={`text-[11px] font-medium capitalize ${
+                item.status === "scheduled"
+                  ? "text-amber-600"
+                  : "text-emerald-600"
+              }`}
+            >
+              {item.status}
+            </span>
+          </div>
+          <p className="text-sm font-semibold text-gray-900 truncate">
+            {item.eventName}
+          </p>
+          <div className="flex items-center justify-between mt-2">
+            {amount}
+            <span className="text-xs text-gray-400 inline-flex items-center gap-0.5">
+              View
+              <ChevronRight size={13} />
+            </span>
+          </div>
+          {item.note && (
+            <p className="text-xs text-gray-500 mt-2 line-clamp-2">
+              {item.note}
+            </p>
+          )}
+        </div>
       </div>
-      <div className="flex items-center gap-2 mb-2">
-        <TypeBadge item={item} />
-        {item.anonymous && (
-          <span className="text-[11px] text-gray-400">Anonymous</span>
-        )}
-      </div>
-      <p className="text-sm text-gray-800 flex-1">{item.description}</p>
-      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
-        <CalendarClock size={13} />
-        {item.performanceDate}
-      </div>
-    </div>
+    </Link>
   );
 }
