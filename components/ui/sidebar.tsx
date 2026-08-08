@@ -69,7 +69,7 @@ export default function Sidebar() {
       {/* KYC Verification Banner */}
       {!kycCompleted && (
         <div className="m-4 mt-auto border-t border-gray-200 pt-4 whitespace-break-spaces">
-          <Link href="/kyc">
+          <Link href="/get-verified">
             <div className="bg-violet-50 border-2 border-violet-300 rounded-xl p-4 cursor-pointer hover:shadow-md transition-all">
               <div className="flex items-center gap-2 mb-2">
                 <svg

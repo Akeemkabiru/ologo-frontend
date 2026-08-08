@@ -1,6 +1,73 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Bell,
+  User,
+  Settings,
+  LogOut,
+  Heart,
+  Handshake,
+  Lock,
+  MessageCircle,
+  Users,
+} from "lucide-react";
+
+const notifications = [
+  {
+    id: "n1",
+    icon: Heart,
+    color: "bg-violet-100 text-violet-600",
+    title: "You received a $250 donation on “Ohayo Animal Shelter”.",
+    time: "2m ago",
+    unread: true,
+  },
+  {
+    id: "n2",
+    icon: Lock,
+    color: "bg-amber-100 text-amber-600",
+    title: "Frank released $2,000 from the escrow to Paulo & Shaggy.",
+    time: "1h ago",
+    unread: true,
+  },
+  {
+    id: "n3",
+    icon: MessageCircle,
+    color: "bg-emerald-100 text-emerald-600",
+    title: "New message in “Premium Donors Circle”.",
+    time: "3h ago",
+    unread: true,
+  },
+  {
+    id: "n4",
+    icon: Users,
+    color: "bg-sky-100 text-sky-600",
+    title: "Grace joined your “Monthly Giving Circle” membership.",
+    time: "Yesterday",
+    unread: false,
+  },
+  {
+    id: "n5",
+    icon: Handshake,
+    color: "bg-rose-100 text-rose-600",
+    title: "Your pledge to “Clean Water Project” was fulfilled.",
+    time: "2 days ago",
+    unread: false,
+  },
+];
+
+const panelTransition = { duration: 0.16, ease: [0.16, 1, 0.3, 1] as const };
+
 export default function DashboardHeader() {
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+
+  const unreadCount = notifications.filter((n) => n.unread).length;
+
   return (
     <header className="hidden md:block border-white/10 bg-white/20 backdrop-blur-xl shadow-2xl sticky top-0 z-40 w-full">
       <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 md:py-5 gap-4 min-h-[60px]">
@@ -8,63 +75,186 @@ export default function DashboardHeader() {
         <h1 className="text-base md:text-lg font-bold text-gray-900"></h1>
 
         {/* Right Section */}
-        <div className="flex items-center gap-3 md:gap-6">
-          {/* Icons */}
-          <div className="flex items-center gap-2 md:gap-5">
-            {/* Settings */}
-            <button className="text-gray-500 hover:text-gray-800 transition-colors p-2 hover:bg-gray-100 rounded-lg">
-              <svg
-                className="w-5 md:w-6 h-5 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+        <div className="flex items-center gap-3 md:gap-5">
+          {/* Notifications */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setNotifOpen((o) => !o);
+                setMenuOpen(false);
+              }}
+              aria-haspopup="menu"
+              aria-expanded={notifOpen}
+              aria-label="Notifications"
+              className={`relative text-gray-500 hover:text-gray-800 transition-colors p-2 rounded-lg ${
+                notifOpen ? "bg-gray-100 text-gray-800" : "hover:bg-gray-100"
+              }`}
+            >
+              <Bell className="w-5 md:w-6 h-5 md:h-6" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold leading-none text-white bg-violet-600 rounded-full">
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
-            {/* Notifications */}
-            <button className="relative text-gray-500 hover:text-gray-800 transition-colors p-2 hover:bg-gray-100 rounded-lg">
-              <svg
-                className="w-5 md:w-6 h-5 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-              <span className="absolute top-1 right-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-gray-700 rounded-full">
-                1
-              </span>
-            </button>
+            <AnimatePresence>
+              {notifOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setNotifOpen(false)}
+                    aria-hidden
+                  />
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={panelTransition}
+                    style={{ transformOrigin: "top right" }}
+                    className="absolute right-0 top-full mt-2 z-50 w-80 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                      <p className="text-sm font-bold text-gray-900">
+                        Notifications
+                      </p>
+                      <button className="text-xs font-medium text-violet-600 hover:text-violet-700">
+                        Mark all read
+                      </button>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.map((n) => (
+                        <button
+                          key={n.id}
+                          onClick={() => setNotifOpen(false)}
+                          className={`w-full flex items-start gap-3 px-4 py-3 text-left border-b border-gray-50 transition-colors ${
+                            n.unread ? "bg-violet-50/40" : ""
+                          } hover:bg-gray-50`}
+                        >
+                          <span
+                            className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${n.color}`}
+                          >
+                            <n.icon size={16} />
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-gray-800 leading-snug">
+                              {n.title}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {n.time}
+                            </p>
+                          </div>
+                          {n.unread && (
+                            <span className="w-2 h-2 rounded-full bg-violet-600 mt-1.5 shrink-0" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => setNotifOpen(false)}
+                      className="w-full text-center py-3 text-sm font-semibold text-violet-600 hover:bg-gray-50 transition-colors"
+                    >
+                      View all
+                    </button>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
 
-            {/* Divider - Hidden on mobile */}
-            <div className="h-6 w-px bg-gray-200 hidden md:block"></div>
+          {/* Divider */}
+          <div className="h-6 w-px bg-gray-200"></div>
 
-            {/* Profile */}
-            <button className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold overflow-hidden">
+          {/* Profile + dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setMenuOpen((o) => !o);
+                setNotifOpen(false);
+              }}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-label="Account menu"
+              className={`w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold overflow-hidden transition-shadow ${
+                menuOpen ? "ring-2 ring-violet-400 ring-offset-2" : ""
+              }`}
+            >
               <img
                 src="https://i.pravatar.cc/40?img=1"
                 alt="Profile"
                 className="w-10 h-10 rounded-full"
               />
             </button>
+
+            <AnimatePresence>
+              {menuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setMenuOpen(false)}
+                    aria-hidden
+                  />
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={panelTransition}
+                    style={{ transformOrigin: "top right" }}
+                    className="absolute right-0 top-full mt-2 z-50 w-60 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden"
+                  >
+                    <div className="flex items-center gap-3 p-4 border-b border-gray-100">
+                      <img
+                        src="https://i.pravatar.cc/40?img=1"
+                        alt=""
+                        className="w-11 h-11 rounded-full object-cover"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">
+                          Akbar Hafsyah
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          akbar.hafsyah@example.com
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-1.5">
+                      <Link
+                        href="/profile"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <User size={16} className="text-gray-400" />
+                        Profile
+                      </Link>
+                      <Link
+                        href="/dashboard/settings"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Settings size={16} className="text-gray-400" />
+                        Settings
+                      </Link>
+                    </div>
+
+                    <div className="p-1.5 border-t border-gray-100">
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          router.push("/auth/login");
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut size={16} />
+                        Log out
+                      </button>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
