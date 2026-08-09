@@ -20,7 +20,10 @@ import {
   type Message,
 } from "@/data/messages";
 import LinkText from "@/components/ui/LinkText";
-import { MobileMenuButton } from "@/components/ui/MobileNav";
+import {
+  MobileMenuButton,
+  MobileHeaderActions,
+} from "@/components/ui/MobileNav";
 
 function domainOf(url: string) {
   try {
@@ -140,7 +143,10 @@ export default function ChatPage() {
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center gap-3 mb-3">
               <MobileMenuButton className="md:hidden w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 shrink-0" />
-              <h1 className="font-bold text-gray-900 text-lg">Messages</h1>
+              <h1 className="font-bold text-gray-900 text-lg flex-1">Messages</h1>
+              <div className="md:hidden">
+                <MobileHeaderActions variant="plain" />
+              </div>
             </div>
             <div className="relative">
               <Search

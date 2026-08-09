@@ -16,18 +16,16 @@ import {
 } from "lucide-react";
 import FundingCard from "@/components/cards/FundingCard";
 import { formatCurrency } from "@/lib/utils";
-import {
-  profileUser,
-  profileEvents,
-  profileReviews,
-} from "@/data/profile";
+import { profileUser, profileEvents, profileReviews } from "@/data/profile";
 import { escrows } from "@/data/escrows";
 import { mockMemberships } from "@/data/memberships";
 
 type Tab = "events" | "memberships" | "escrows" | "reviews";
 type EventFilter = "all" | "public" | "private" | "recurring" | "one-time";
 
-const publicEscrows = escrows.filter((e) => e.visibility === "public").slice(0, 4);
+const publicEscrows = escrows
+  .filter((e) => e.visibility === "public")
+  .slice(0, 4);
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -232,8 +230,7 @@ export default function ProfileView({
                 : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
-            {t.label}{" "}
-            <span className="text-xs text-gray-400">({t.count})</span>
+            {t.label} <span className="text-xs text-gray-400">({t.count})</span>
           </button>
         ))}
       </div>
@@ -268,7 +265,8 @@ export default function ProfileView({
                     verified: false,
                     image: e.image,
                     emoji: e.recurring ? "🔁" : "🎯",
-                    deadlineLabel: e.visibility === "private" ? "Private" : "Public",
+                    deadlineLabel:
+                      e.visibility === "private" ? "Private" : "Public",
                     deadline: e.recurring ? "Recurring" : "One-time",
                     amountLabel: "Raised",
                     amount: e.current,
@@ -303,9 +301,7 @@ export default function ProfileView({
                   <span className="text-2xl font-bold text-violet-600">
                     {formatCurrency(m.membershipAmount, m.currency)}
                   </span>
-                  <span className="text-sm text-gray-500">
-                    / {m.frequency}
-                  </span>
+                  <span className="text-sm text-gray-500">/ {m.frequency}</span>
                 </div>
                 <div className="flex items-center gap-1.5 mt-3 text-xs text-gray-500">
                   <Users size={13} />

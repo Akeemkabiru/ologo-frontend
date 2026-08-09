@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Bell,
   Search,
   Plus,
   HeartPulse,
@@ -24,7 +23,10 @@ import {
 import { EmptyState } from "@/components/cards/CardComponents";
 import FundingCard from "@/components/cards/FundingCard";
 import ViewToggle, { type ViewMode } from "@/components/ui/ViewToggle";
-import { MobileMenuButton } from "@/components/ui/MobileNav";
+import {
+  MobileMenuButton,
+  MobileHeaderActions,
+} from "@/components/ui/MobileNav";
 import CreateEventModal from "@/components/events/CreateEventModal";
 import { events } from "@/data/events";
 
@@ -133,13 +135,11 @@ export default function EventsPage() {
 
       <div className="mb-6">
         {/* Header - full bleed on mobile, contained card on desktop */}
-        <div className="bg-linear-to-br from-violet-600 to-violet-800 -mt-6 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:w-full md:mt-0 md:rounded-2xl px-5 py-6 md:py-6 text-white">
+        <div className="bg-linear-to-br from-violet-600 to-violet-800 relative left-1/2 -translate-x-1/2 w-screen rounded-b-[32px] md:static md:left-auto md:translate-x-0 md:w-full md:rounded-2xl px-5 pt-8 pb-6 md:py-6 text-white">
           {/* Top row - mobile only, desktop already has profile/notifications in the fixed header */}
           <div className="md:hidden flex items-center justify-between mb-6">
             <MobileMenuButton className="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center text-white shrink-0" />
-            <button className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
-              <Bell size={18} />
-            </button>
+            <MobileHeaderActions variant="violet" />
           </div>
 
           {/* Categories */}

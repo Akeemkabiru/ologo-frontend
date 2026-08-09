@@ -1,9 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Bell } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
-import { MobileMenuButton } from "@/components/ui/MobileNav";
+import {
+  MobileMenuButton,
+  MobileHeaderActions,
+} from "@/components/ui/MobileNav";
 
 interface MobileHeaderProps {
   title: string;
@@ -45,14 +48,10 @@ export default function MobileHeader({
           </div>
         </div>
 
-        {rightSlot ?? (
-          <button
-            className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
-            aria-label="Notifications"
-          >
-            <Bell size={18} />
-          </button>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {rightSlot}
+          <MobileHeaderActions variant="violet" />
+        </div>
       </div>
     </div>
   );

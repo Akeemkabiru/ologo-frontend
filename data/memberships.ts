@@ -17,7 +17,7 @@ export const mockMemberships: Membership[] = [
   {
     id: "1",
     name: "Basic Member",
-    description: "Get access to member-only content and events",
+    description: "Get access to member-only content ",
     membershipAmount: 9.99,
     frequency: "monthly",
     currency: "USD",

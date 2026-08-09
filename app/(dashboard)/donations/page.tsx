@@ -2,7 +2,14 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Gift, Repeat, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Gift,
+  Repeat,
+  Heart,
+  Layers,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
 import ViewToggle, { type ViewMode } from "@/components/ui/ViewToggle";
 import { formatCurrency } from "@/lib/utils";
@@ -44,10 +51,15 @@ export default function DonationsPage() {
     (d) => d.type === "recurring",
   ).length;
 
-  const stats = [
-    { label: "Total Donated", value: formatCurrency(totalDonated, "USD") },
-    { label: "Campaigns", value: String(campaigns) },
-    { label: "Active Recurring", value: String(recurringCount) },
+  const statCards = [
+    {
+      label: "Total Donated",
+      value: formatCurrency(totalDonated, "USD"),
+      icon: Heart,
+      span: true,
+    },
+    { label: "Campaigns", value: String(campaigns), icon: Layers },
+    { label: "Recurring", value: String(recurringCount), icon: Repeat },
   ];
 
   return (
@@ -74,7 +86,9 @@ export default function DonationsPage() {
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
               Donations
             </h1>
-            <p className="text-gray-600 mt-1">Track everything you&apos;ve given</p>
+            <p className="text-gray-600 mt-1">
+              Track everything you&apos;ve given
+            </p>
           </div>
           <Link href="/events">
             <button className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-sm">
@@ -85,16 +99,23 @@ export default function DonationsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
-          {stats.map((stat) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6">
+          {statCards.map((stat) => (
             <div
               key={stat.label}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-5"
+              className={`bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-5 flex items-center justify-between ${
+                stat.span ? "col-span-2 md:col-span-1" : ""
+              }`}
             >
-              <p className="text-xs text-gray-500">{stat.label}</p>
-              <p className="text-lg md:text-2xl font-bold text-gray-900 mt-1">
-                {stat.value}
-              </p>
+              <div>
+                <p className="text-xs text-gray-500">{stat.label}</p>
+                <p className="text-lg md:text-2xl font-bold text-gray-900 mt-1">
+                  {stat.value}
+                </p>
+              </div>
+              <span className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center text-violet-600 shrink-0">
+                <stat.icon size={18} />
+              </span>
             </div>
           ))}
         </div>
@@ -135,7 +156,9 @@ export default function DonationsPage() {
         ) : (
           <div className="text-center py-16">
             <Gift size={40} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-400">No donations in this filter.</p>
+            <p className="text-sm text-gray-400">
+              No donations in this filter.
+            </p>
           </div>
         )}
 
@@ -188,7 +211,7 @@ function TypeBadge({ item }: { item: MyDonation }) {
       }`}
     >
       {item.type === "recurring" && <Repeat size={11} />}
-      {item.type === "recurring" ? item.frequency ?? "Recurring" : "One-time"}
+      {item.type === "recurring" ? (item.frequency ?? "Recurring") : "One-time"}
     </span>
   );
 }

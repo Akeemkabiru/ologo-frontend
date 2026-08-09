@@ -197,7 +197,7 @@ export default function UserDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + idx * 0.1 }}
-              className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6"
+              className=" rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -242,7 +242,7 @@ export default function UserDashboard() {
           </motion.div>
 
           <motion.div
-            className="mb-6 sm:mb-8 md:mb-10"
+            className="mb-6 sm:mb-8 md:mb-10 hidden md:block"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -265,7 +265,7 @@ export default function UserDashboard() {
           </motion.div>
 
           <motion.div
-            className="mb-6 sm:mb-8 md:mb-10"
+            className="mb-6 sm:mb-8 md:mb-10 hidden md:block"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -311,7 +311,7 @@ export default function UserDashboard() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     viewMode === "list"
                       ? "bg-violet-600 text-white"
-                      : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700"
+                      : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700"
                   }`}
                 >
                   List
@@ -321,7 +321,7 @@ export default function UserDashboard() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     viewMode === "calendar"
                       ? "bg-violet-600 text-white"
-                      : "rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl text-gray-700 "
+                      : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700 "
                   }`}
                 >
                   Calendar
@@ -345,13 +345,13 @@ export default function UserDashboard() {
                 />
               </div>
               <div className="flex gap-3">
-                <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700">
+                <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700">
                   <Filter size={18} />
                   Filter
                 </button>
                 <button
                   onClick={() => handleExport("csv")}
-                  className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white/20 backdrop-blur-xl shadow-2xl hover: flex items-center gap-2 font-medium text-gray-700"
+                  className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700"
                 >
                   <Download size={18} />
                   Export
@@ -381,9 +381,9 @@ export default function UserDashboard() {
 
           {/* List View */}
           {viewMode === "list" && (
-            <div className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
+            <div className=" rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
               {filteredTransactions.length > 0 ? (
-                <div className="divide-y-2 divide-white">
+                <div className="divide-y divide-gray-100">
                   {filteredTransactions.map((tx) => (
                     <motion.div
                       key={tx.id}
@@ -435,7 +435,7 @@ export default function UserDashboard() {
 
           {/* Calendar View */}
           {viewMode === "calendar" && (
-            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
               <div className="flex items-center justify-between mb-6">
                 <h4 className="text-lg font-bold text-gray-900">
                   {selectedMonth.toLocaleDateString("en-US", {
@@ -545,7 +545,7 @@ export default function UserDashboard() {
                   key={tx.id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className=" rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl text-sm border border-gray-200 p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                  className="rounded-2xl bg-white shadow-sm border border-gray-100 text-sm p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <Link href={`/groups/${tx.groupId}`}>
@@ -616,7 +616,7 @@ export default function UserDashboard() {
                 key={group.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6 hover:shadow-lg transition-shadow"
+                className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-4">
                   <Link href={`/groups/${group.id}`}>
@@ -662,7 +662,7 @@ export default function UserDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
             {/* Spending Chart */}
-            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
               <h4 className="font-semibold text-gray-900 mb-4">
                 Spending by Category
               </h4>
@@ -694,7 +694,7 @@ export default function UserDashboard() {
             </div>
 
             {/* Activity Stats */}
-            <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl p-4 sm:p-5 md:p-6">
+            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
               <h4 className="font-semibold text-gray-900 mb-4">
                 Activity Summary
               </h4>

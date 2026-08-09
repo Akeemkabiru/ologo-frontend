@@ -4,60 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Bell,
-  User,
-  Settings,
-  LogOut,
-  Heart,
-  Handshake,
-  Lock,
-  MessageCircle,
-  Users,
-} from "lucide-react";
-
-const notifications = [
-  {
-    id: "n1",
-    icon: Heart,
-    color: "bg-violet-100 text-violet-600",
-    title: "You received a $250 donation on “Ohayo Animal Shelter”.",
-    time: "2m ago",
-    unread: true,
-  },
-  {
-    id: "n2",
-    icon: Lock,
-    color: "bg-amber-100 text-amber-600",
-    title: "Frank released $2,000 from the escrow to Paulo & Shaggy.",
-    time: "1h ago",
-    unread: true,
-  },
-  {
-    id: "n3",
-    icon: MessageCircle,
-    color: "bg-emerald-100 text-emerald-600",
-    title: "New message in “Premium Donors Circle”.",
-    time: "3h ago",
-    unread: true,
-  },
-  {
-    id: "n4",
-    icon: Users,
-    color: "bg-sky-100 text-sky-600",
-    title: "Grace joined your “Monthly Giving Circle” membership.",
-    time: "Yesterday",
-    unread: false,
-  },
-  {
-    id: "n5",
-    icon: Handshake,
-    color: "bg-rose-100 text-rose-600",
-    title: "Your pledge to “Clean Water Project” was fulfilled.",
-    time: "2 days ago",
-    unread: false,
-  },
-];
+import { Bell, User, Settings, LogOut } from "lucide-react";
+import { notifications } from "@/data/notifications";
 
 const panelTransition = { duration: 0.16, ease: [0.16, 1, 0.3, 1] as const };
 
