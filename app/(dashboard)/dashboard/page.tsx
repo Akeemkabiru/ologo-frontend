@@ -20,6 +20,7 @@ import MobileHeader from "@/components/ui/MobileHeader";
 export default function UserDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [historyTab, setHistoryTab] = useState<"history" | "future">("history");
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
   const [selectedMonth, setSelectedMonth] = useState(new Date(2026, 4)); // May 2026
 
@@ -300,36 +301,55 @@ export default function UserDashboard() {
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
               <div className="flex items-center gap-x-6">
-                <h3 className="text-lg font-semibold text-gray-900">
+                <button
+                  onClick={() => setHistoryTab("history")}
+                  className={`text-lg font-semibold pb-1 border-b-2 transition-colors ${
+                    historyTab === "history"
+                      ? "text-violet-600 border-violet-600"
+                      : "text-gray-400 border-transparent hover:text-gray-600"
+                  }`}
+                >
                   Transaction History
-                </h3>
-                <h3 className="text-lg font-semibold text-gray-900">Future</h3>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    viewMode === "list"
-                      ? "bg-violet-600 text-white"
-                      : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700"
-                  }`}
-                >
-                  List
                 </button>
                 <button
-                  onClick={() => setViewMode("calendar")}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    viewMode === "calendar"
-                      ? "bg-violet-600 text-white"
-                      : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700 "
+                  onClick={() => setHistoryTab("future")}
+                  className={`text-lg font-semibold pb-1 border-b-2 transition-colors ${
+                    historyTab === "future"
+                      ? "text-violet-600 border-violet-600"
+                      : "text-gray-400 border-transparent hover:text-gray-600"
                   }`}
                 >
-                  Calendar
+                  Future
                 </button>
               </div>
+              {historyTab === "history" && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      viewMode === "list"
+                        ? "bg-violet-600 text-white"
+                        : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700"
+                    }`}
+                  >
+                    List
+                  </button>
+                  <button
+                    onClick={() => setViewMode("calendar")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      viewMode === "calendar"
+                        ? "bg-violet-600 text-white"
+                        : "rounded-lg bg-white shadow-sm border border-gray-100 text-gray-700 "
+                    }`}
+                  >
+                    Calendar
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Search & Filter */}
+            {historyTab === "history" && (
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
               <div className="flex-1 relative">
                 <Search
@@ -358,9 +378,10 @@ export default function UserDashboard() {
                 </button>
               </div>
             </div>
+            )}
 
             {/* Tabs */}
-            {viewMode === "list" && (
+            {historyTab === "history" && viewMode === "list" && (
               <div className="flex gap-2 mb-6 border-b border-gray-200">
                 {["all", "income", "expense"].map((tab) => (
                   <button
@@ -380,7 +401,7 @@ export default function UserDashboard() {
           </div>
 
           {/* List View */}
-          {viewMode === "list" && (
+          {historyTab === "history" && viewMode === "list" && (
             <div className=" rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
               {filteredTransactions.length > 0 ? (
                 <div className="divide-y divide-gray-100">
@@ -434,7 +455,7 @@ export default function UserDashboard() {
           )}
 
           {/* Calendar View */}
-          {viewMode === "calendar" && (
+          {historyTab === "history" && viewMode === "calendar" && (
             <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
               <div className="flex items-center justify-between mb-6">
                 <h4 className="text-lg font-bold text-gray-900">
@@ -526,79 +547,66 @@ export default function UserDashboard() {
               </div>
             </div>
           )}
-        </motion.div>
 
-        {/* Future Transactions Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <h3 className="text-xl font-bold text-gray-900 mb-6">
-            Upcoming Transactions
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-            {futureTransactions.length > 0 ? (
-              futureTransactions.map((tx) => (
-                <motion.div
-                  key={tx.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="rounded-2xl bg-white shadow-sm border border-gray-100 text-sm p-4 sm:p-5 md:p-6 cursor-pointer hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <Link href={`/groups/${tx.groupId}`}>
-                      <div className="flex-1">
-                        <p className="text-sm text-gray-600 font-medium mb-1">
-                          {tx.type === "membership"
-                            ? "Membership"
-                            : tx.type === "escrow"
-                              ? "Escrow"
-                              : "Recurring Payment"}
-                        </p>
-                        <p className="font-semibold text-gray-900 hover:text-violet-600">
+          {/* Future table */}
+          {historyTab === "future" && (
+            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-x-auto">
+              {futureTransactions.length > 0 ? (
+                <table className="w-full text-left text-sm min-w-160">
+                  <thead>
+                    <tr className="text-xs text-gray-400 border-b border-gray-100">
+                      <th className="font-medium pb-3 pr-4">Type</th>
+                      <th className="font-medium pb-3 pr-4">Description</th>
+                      <th className="font-medium pb-3 pr-4">Group</th>
+                      <th className="font-medium pb-3 pr-4">Frequency</th>
+                      <th className="font-medium pb-3 pr-4">Next Date</th>
+                      <th className="font-medium pb-3 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {futureTransactions.map((tx) => (
+                      <tr
+                        key={tx.id}
+                        className="border-b border-gray-50 last:border-0 hover:bg-gray-50/60 transition-colors"
+                      >
+                        <td className="py-3.5 pr-4">
+                          <span className="inline-block bg-violet-50 text-violet-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                            {tx.type === "membership"
+                              ? "Membership"
+                              : tx.type === "escrow"
+                                ? "Escrow"
+                                : "Recurring"}
+                          </span>
+                        </td>
+                        <td className="py-3.5 pr-4 font-medium text-gray-900">
                           {tx.description}
-                        </p>
-                      </div>
-                    </Link>
-                    <span className="text-xs font-semibold px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
-                      {tx.frequency}
-                    </span>
-                  </div>
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Amount</span>
-                      <span className="font-bold text-gray-900">
-                        {tx.amount} {tx.currency}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-gray-600 flex items-center gap-2">
-                        Date
-                      </span>
-                      <span className="font-semibold text-gray-900">
-                        {tx.nextDate}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-gray-600">Group</span>
-                      <span className="font-semibold text-violet-600">
-                        {tx.groupName}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="md:col-span-2 bg-white rounded-2xl border border-gray-200 p-12 text-center">
-                <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-600 font-medium">
-                  No upcoming transactions
-                </p>
-              </div>
-            )}
-          </div>
+                        </td>
+                        <td className="py-3.5 pr-4 text-violet-600 font-medium whitespace-nowrap">
+                          {tx.groupName}
+                        </td>
+                        <td className="py-3.5 pr-4 text-gray-600">
+                          {tx.frequency}
+                        </td>
+                        <td className="py-3.5 pr-4 text-gray-600 whitespace-nowrap">
+                          {tx.nextDate}
+                        </td>
+                        <td className="py-3.5 text-right font-bold text-gray-900 whitespace-nowrap">
+                          {tx.amount} {tx.currency}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="p-12 text-center">
+                  <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
+                  <p className="text-gray-600 font-medium text-base">
+                    No upcoming transactions
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
 
         {/* Your Groups Section */}

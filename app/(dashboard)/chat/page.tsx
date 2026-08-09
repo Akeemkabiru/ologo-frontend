@@ -20,10 +20,7 @@ import {
   type Message,
 } from "@/data/messages";
 import LinkText from "@/components/ui/LinkText";
-import {
-  MobileMenuButton,
-  MobileHeaderActions,
-} from "@/components/ui/MobileNav";
+import MobileHeader from "@/components/ui/MobileHeader";
 
 function domainOf(url: string) {
   try {
@@ -38,9 +35,7 @@ type ChatTab = "chat" | "files" | "links";
 export default function ChatPage() {
   const [messagesByConv, setMessagesByConv] = useState<
     Record<string, Message[]>
-  >(() =>
-    Object.fromEntries(conversations.map((c) => [c.id, c.messages])),
-  );
+  >(() => Object.fromEntries(conversations.map((c) => [c.id, c.messages])));
   const [activeId, setActiveId] = useState(conversations[0].id);
   const [tab, setTab] = useState<ChatTab>("chat");
   const [showSearch, setShowSearch] = useState(false);
@@ -133,21 +128,20 @@ export default function ChatPage() {
 
   return (
     <main className="md:h-[calc(100vh-8rem)]">
-      <div className="md:flex md:gap-6 md:h-full">
+      {mobileView === "list" && (
+        <MobileHeader title="Messages" subtitle="Chats across your groups" />
+      )}
+      <div className="md:flex md:gap-6 md:h-full md:pt-0 pt-4">
         {/* Conversation list */}
         <aside
           className={`${
             mobileView === "chat" ? "hidden" : "flex"
-          } md:flex flex-col md:w-80 shrink-0 bg-white md:rounded-2xl md:border border-gray-100 md:shadow-sm overflow-hidden h-[calc(100vh-11rem)] md:h-full`}
+          } md:flex flex-col md:w-80 shrink-0 bg-white md:rounded-2xl py-4 md:border border-gray-100 md:shadow-sm md:overflow-hidden md:h-full`}
         >
-          <div className="p-4 border-b border-gray-100">
-            <div className="flex items-center gap-3 mb-3">
-              <MobileMenuButton className="md:hidden w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 shrink-0" />
-              <h1 className="font-bold text-gray-900 text-lg flex-1">Messages</h1>
-              <div className="md:hidden">
-                <MobileHeaderActions variant="plain" />
-              </div>
-            </div>
+          <div className="px-4 pb-4 md:p-4 md:border-b border-gray-100">
+            <h1 className="hidden md:block font-bold text-gray-900 text-lg mb-3">
+              Messages
+            </h1>
             <div className="relative">
               <Search
                 size={15}

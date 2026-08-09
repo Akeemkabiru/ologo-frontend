@@ -143,7 +143,7 @@ export default function ProfileView({
                 }`}
               >
                 {copied ? <Check size={15} /> : <Copy size={15} />}
-                {copied ? "Link copied" : "Share profile"}
+                {copied ? "Copied" : "Share"}
               </button>
               {!publicView && (
                 <Link href="/profile/edit">
