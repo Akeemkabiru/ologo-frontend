@@ -1,3 +1,5 @@
+import { CURRENT_USER } from "@/lib/currentUser";
+
 export interface ProfileUser {
   id: string;
   fullName: string;
@@ -15,16 +17,16 @@ export interface ProfileUser {
 
 export const profileUser: ProfileUser = {
   id: "USR-1042",
-  fullName: "Akbar Hafsyah",
-  username: "akbarhafsyah",
-  avatar: "https://i.pravatar.cc/160?img=12",
+  fullName: CURRENT_USER.name,
+  username: CURRENT_USER.username,
+  avatar: CURRENT_USER.avatar,
   cover:
     "https://images.unsplash.com/photo-1522543558187-768b6df7c25c?w=1200&h=400&fit=crop",
   verified: true,
   about:
     "Passionate about community development and social impact. I organize fundraisers, run recurring giving circles, and help causes get funded transparently.",
   tags: ["Organizer", "Donor", "Community", "Verified"],
-  email: "akbar.hafsyah@example.com",
+  email: CURRENT_USER.email,
   phone: "+1 555-010-1042",
   location: "New York, USA",
   joined: "January 2024",

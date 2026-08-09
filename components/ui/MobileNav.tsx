@@ -15,8 +15,9 @@ import {
 } from "lucide-react";
 import { mainNavItems } from "@/lib/navigation";
 import { notifications, unreadCount } from "@/data/notifications";
+import { CURRENT_USER } from "@/lib/currentUser";
 
-const USER_AVATAR = "https://i.pravatar.cc/64?img=12";
+const USER_AVATAR = CURRENT_USER.avatar;
 
 interface MobileNavCtx {
   openNav: () => void;

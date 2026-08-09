@@ -127,11 +127,11 @@ export default function ProfileView({
           />
         </div>
         <div className="px-5 sm:px-6 pb-5">
-          <div className="flex items-end justify-between -mt-12 mb-3">
+          <div className="flex items-end justify-between -mt-14 mb-3">
             <img
               src={profileUser.avatar}
               alt={profileUser.fullName}
-              className="w-24 h-24 rounded-2xl border-4 border-white object-cover shadow-sm"
+              className="relative z-10 w-28 h-28 rounded-2xl border-4 border-white object-cover shadow-md"
             />
             <div className="flex items-center gap-2 mb-1">
               <button
@@ -156,22 +156,16 @@ export default function ProfileView({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <h1 className="text-xl font-bold text-gray-900">
               {profileUser.fullName}
             </h1>
-            {profileUser.verified ? (
-              <span
-                className="inline-flex items-center gap-1 text-xs font-semibold text-violet-600"
-                title="Verified"
-              >
-                <BadgeCheck size={18} className="text-violet-600" />
-                Verified
-              </span>
-            ) : (
-              <span className="text-xs font-medium text-gray-400">
-                Not verified
-              </span>
+            {profileUser.verified && (
+              <BadgeCheck
+                size={20}
+                className="fill-violet-600 text-white shrink-0"
+                aria-label="Verified"
+              />
             )}
           </div>
           <p className="text-sm text-gray-500">@{profileUser.username}</p>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, User, Settings, LogOut } from "lucide-react";
 import { notifications } from "@/data/notifications";
+import { CURRENT_USER } from "@/lib/currentUser";
 
 const panelTransition = { duration: 0.16, ease: [0.16, 1, 0.3, 1] as const };
 
@@ -129,9 +130,9 @@ export default function DashboardHeader() {
               }`}
             >
               <img
-                src="https://i.pravatar.cc/40?img=1"
+                src={CURRENT_USER.avatar}
                 alt="Profile"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover"
               />
             </button>
 
@@ -154,16 +155,16 @@ export default function DashboardHeader() {
                   >
                     <div className="flex items-center gap-3 p-4 border-b border-gray-100">
                       <img
-                        src="https://i.pravatar.cc/40?img=1"
+                        src={CURRENT_USER.avatar}
                         alt=""
                         className="w-11 h-11 rounded-full object-cover"
                       />
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-gray-900 truncate">
-                          Akbar Hafsyah
+                          {CURRENT_USER.name}
                         </p>
                         <p className="text-xs text-gray-500 truncate">
-                          akbar.hafsyah@example.com
+                          {CURRENT_USER.email}
                         </p>
                       </div>
                     </div>

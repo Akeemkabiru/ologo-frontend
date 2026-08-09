@@ -51,13 +51,13 @@ export default function Sidebar() {
             return (
               <Link key={item.href} href={item.href}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${
+                  className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? "bg-violet-50 text-violet-600 border-l-4 border-violet-600"
-                      : "text-gray-600 hover:bg-gray-50"
+                      ? "bg-[#7f22fe] text-white border-l-4 border-violet-600"
+                      : " hover:bg-gray-50"
                   }`}
                 >
-                  <item.icon size={20} />
+                  <item.icon size={18} />
                   <span className="font-medium">{item.label}</span>
                 </div>
               </Link>
