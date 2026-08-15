@@ -1,7 +1,133 @@
 import {
   DEFAULT_COMMISSION_STRUCTURE,
   CURRENCY_CONVERSION_FEE_PERCENTAGE,
+  PAYMENT_REQUEST_GATEWAY_FEE_PERCENTAGE,
+  PAYMENT_REQUEST_ADMIN_FEE_PERCENTAGE,
+  PAYMENT_REQUEST_TAX_RATES,
+  PROCESSING_API_FEE_PERCENTAGE,
+  PROCESSING_GENERAL_FEE_PERCENTAGE,
+  PROCESSING_USER_FEE_PERCENTAGE,
+  DEFAULT_TAX_RATE_PERCENTAGE,
 } from "./constants";
+
+export interface ChargesBreakdown {
+  amount: number; // base amount charges are computed against
+  processingFee: number; // total processing fee (API + general admin + user admin)
+  taxAmount: number; // tax, shown separately from the processing fee
+  totalCharges: number; // processingFee + taxAmount
+  total: number; // amount + processingFee + taxAmount
+}
+
+/**
+ * Compute the processing fee and tax for any charged action (top-up, transfer,
+ * request, convert, withdrawal, KYC, verification, …).
+ *
+ * The processing fee is the sum of three admin/provider-controlled parts:
+ *  - the API fee (provider),
+ *  - a general admin fee (global), and
+ *  - a per-user admin fee.
+ * Users only ever see the combined total, so this returns a single
+ * `processingFee`. Tax is returned separately.
+ *
+ * `taxRate` defaults to the platform default; pass 0 for tax-exempt actions.
+ */
+export const calculateCharges = (
+  amount: number,
+  taxRate: number = DEFAULT_TAX_RATE_PERCENTAGE,
+): ChargesBreakdown => {
+  const safeAmount = Number.isFinite(amount) && amount > 0 ? amount : 0;
+  const processingRate =
+    PROCESSING_API_FEE_PERCENTAGE +
+    PROCESSING_GENERAL_FEE_PERCENTAGE +
+    PROCESSING_USER_FEE_PERCENTAGE;
+  const processingFee = (safeAmount * processingRate) / 100;
+  const taxAmount = (safeAmount * (taxRate || 0)) / 100;
+  const totalCharges = processingFee + taxAmount;
+
+  const round2 = (n: number) => Math.round(n * 100) / 100;
+  return {
+    amount: round2(safeAmount),
+    processingFee: round2(processingFee),
+    taxAmount: round2(taxAmount),
+    totalCharges: round2(totalCharges),
+    total: round2(safeAmount + totalCharges),
+  };
+};
+
+export type PaymentRequestType = "personal" | "business" | "charity";
+export type FeeResponsibility =
+  | "wallet"
+  | "bank"
+  | "requestedAmount"
+  | "payer";
+
+export interface PaymentRequestBreakdown {
+  amount: number; // the requested amount
+  gatewayFee: number; // provider portion of the processing fee
+  adminFee: number; // admin-configured portion of the processing fee
+  processingFee: number; // total processing fee shown to users (gateway + admin)
+  taxAmount: number; // tax, shown separately from the processing fee
+  totalCharges: number; // processingFee + taxAmount
+  payerPays: number; // what the payer is charged in total
+  netReceived: number; // what the receiver ends up with after any deductions
+}
+
+/**
+ * Compute the processing fee (gateway + admin), tax, and the resulting amounts
+ * for a payment request. Users only see the combined processing fee, while tax
+ * is surfaced separately.
+ *
+ * The `responsibility` determines who absorbs the charges:
+ *  - wallet / bank: requester pays charges from their own funds, so the
+ *    receiver still gets the full requested amount and the payer pays it.
+ *  - requestedAmount: charges are deducted from the amount, so the receiver
+ *    gets less; the payer still pays exactly the requested amount.
+ *  - payer: the payer pays the amount plus the charges on top.
+ */
+export const calculatePaymentRequestBreakdown = (
+  amount: number,
+  requestType: PaymentRequestType,
+  responsibility: FeeResponsibility,
+): PaymentRequestBreakdown => {
+  const safeAmount = Number.isFinite(amount) && amount > 0 ? amount : 0;
+  const gatewayFee =
+    (safeAmount * PAYMENT_REQUEST_GATEWAY_FEE_PERCENTAGE) / 100;
+  const adminFee = (safeAmount * PAYMENT_REQUEST_ADMIN_FEE_PERCENTAGE) / 100;
+  const processingFee = gatewayFee + adminFee;
+  const taxRate = PAYMENT_REQUEST_TAX_RATES[requestType] ?? 0;
+  const taxAmount = (safeAmount * taxRate) / 100;
+  const totalCharges = processingFee + taxAmount;
+
+  let payerPays = safeAmount;
+  let netReceived = safeAmount;
+
+  if (responsibility === "payer") {
+    // Payer covers the charges on top of the requested amount.
+    payerPays = safeAmount + totalCharges;
+    netReceived = safeAmount;
+  } else if (responsibility === "requestedAmount") {
+    // Charges come out of the requested amount, reducing what's received.
+    payerPays = safeAmount;
+    netReceived = safeAmount - totalCharges;
+  } else {
+    // wallet / bank: requester pre-pays charges from their own funds.
+    payerPays = safeAmount;
+    netReceived = safeAmount;
+  }
+
+  return {
+    amount: safeAmount,
+    gatewayFee: round2(gatewayFee),
+    adminFee: round2(adminFee),
+    processingFee: round2(processingFee),
+    taxAmount: round2(taxAmount),
+    totalCharges: round2(totalCharges),
+    payerPays: round2(payerPays),
+    netReceived: round2(netReceived),
+  };
+};
+
+const round2 = (n: number): number => Math.round(n * 100) / 100;
 
 // Calculate commission based on amount
 export const calculateCommission = (

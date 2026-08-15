@@ -18,6 +18,8 @@ import SelectField from "@/components/ui/selectField";
 import FileUploadField from "@/components/ui/fileUploadField";
 import ToggleSwitch from "@/components/ui/toggleSwitch";
 import { FormButton } from "@/components/forms/FormComponents";
+import ChargesSummary from "@/components/ui/ChargesSummary";
+import { VERIFIED_TICK_FEE } from "@/lib/constants";
 
 type EntityType = "individual" | "organisation";
 type Status =
@@ -235,6 +237,13 @@ export default function GetVerifiedPage() {
                   />
                 </>
               )}
+
+              <ChargesSummary
+                amount={VERIFIED_TICK_FEE}
+                currency="USD"
+                amountLabel="Verification fee"
+                totalLabel="Total to pay"
+              />
 
               <FormButton type="submit" size="lg" className="w-full mt-1">
                 Submit for verification

@@ -9,7 +9,18 @@ import SelectField from "@/components/ui/selectField";
 import TextareaField from "@/components/ui/textareaField";
 import FileUploadField from "@/components/ui/fileUploadField";
 import { FormButton } from "@/components/forms/FormComponents";
-import { CURRENCIES, TIMEZONES } from "@/lib/constants";
+import {
+  CURRENCIES,
+  TIMEZONES,
+  PAYMENT_REQUEST_TYPES,
+  FEE_PAYMENT_OPTIONS,
+} from "@/lib/constants";
+import {
+  calculatePaymentRequestBreakdown,
+  formatCurrency,
+  type PaymentRequestType,
+  type FeeResponsibility,
+} from "@/lib/utils";
 import { TAG_SUGGESTIONS, type PaymentLink } from "@/data/paymentLinks";
 
 const MAX_TAGS = 5;
@@ -35,12 +46,26 @@ export default function CreatePaymentLinkModal({
   const [alias, setAlias] = useState("");
   const [hostStatus, setHostStatus] = useState<"main" | "co-host">("main");
   const [onBehalfOf, setOnBehalfOf] = useState("");
+  const [requestType, setRequestType] =
+    useState<PaymentRequestType>("business");
+  const [feeResponsibility, setFeeResponsibility] =
+    useState<FeeResponsibility>("payer");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagQuery, setTagQuery] = useState("");
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  const breakdown = useMemo(
+    () =>
+      calculatePaymentRequestBreakdown(
+        Number(amount) || 0,
+        requestType,
+        feeResponsibility,
+      ),
+    [amount, requestType, feeResponsibility],
+  );
 
   const filteredSuggestions = useMemo(() => {
     const q = tagQuery.trim().toLowerCase();
@@ -88,6 +113,8 @@ export default function CreatePaymentLinkModal({
     setAlias("");
     setHostStatus("main");
     setOnBehalfOf("");
+    setRequestType("business");
+    setFeeResponsibility("payer");
     setImagePreview(null);
     setImageFile(null);
     setTags([]);
@@ -141,6 +168,11 @@ export default function CreatePaymentLinkModal({
         day: "numeric",
         year: "numeric",
       }),
+      requestType,
+      processingFee: breakdown.processingFee,
+      taxAmount: breakdown.taxAmount,
+      feePaymentResponsibility: feeResponsibility,
+      netAmount: breakdown.netReceived,
     };
     console.log("Payment link created:", link, { imageFile });
     await new Promise((r) => setTimeout(r, 900));
@@ -154,13 +186,13 @@ export default function CreatePaymentLinkModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Create Payment Link"
-      description="Share a link and get paid — one-time or recurring"
+      title="Create Payment Request"
+      description="Request money with a shareable link, QR code, in-app"
       maxWidthClassName="max-w-2xl"
     >
       <form onSubmit={handleSubmit} className="grid gap-5">
         <InputField
-          label="Payment Link Name"
+          label="Payment Request Name"
           placeholder="e.g., August Apartment Rent"
           value={name}
           onChange={(e) => {
@@ -367,6 +399,99 @@ export default function CreatePaymentLinkModal({
           )}
         </div>
 
+        {/* Request type — drives tax calculation */}
+        <div>
+          <SelectField
+            label="Who is this request for?"
+            value={requestType}
+            onChange={(e) =>
+              setRequestType(e.target.value as PaymentRequestType)
+            }
+            options={PAYMENT_REQUEST_TYPES.map((t) => ({
+              label: t.label,
+              value: t.value,
+            }))}
+          />
+          <p className="text-xs text-gray-500 mt-1.5">
+            We use this to automatically calculate the tax that applies.
+          </p>
+        </div>
+
+        {/* Who pays the charges & tax */}
+        <div>
+          <SelectField
+            label="Who pays the charges & tax?"
+            value={feeResponsibility}
+            onChange={(e) =>
+              setFeeResponsibility(e.target.value as FeeResponsibility)
+            }
+            options={FEE_PAYMENT_OPTIONS.map((o) => ({
+              label: o.label,
+              value: o.value,
+            }))}
+          />
+          {feeResponsibility === "payer" && (
+            <p className="text-xs text-gray-500 mt-1.5">
+              The payer has the final say — they may choose to pay the charges &
+              tax or have them deducted from the amount when they pay.
+            </p>
+          )}
+        </div>
+
+        {/* Fee & tax breakdown */}
+        <div className="rounded-xl border border-gray-200 bg-gray-50/70 p-4">
+          <p className="text-sm font-semibold text-gray-800 mb-3">
+            Charges summary
+          </p>
+          <dl className="space-y-2 text-sm">
+            <div className="flex items-center justify-between">
+              <dt className="text-gray-600">Requested amount</dt>
+              <dd className="font-medium text-gray-900">
+                {formatCurrency(breakdown.amount, currency)}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-gray-600">Processing fee</dt>
+              <dd className="font-medium text-gray-900">
+                {formatCurrency(breakdown.processingFee, currency)}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-gray-600">
+                Tax
+                {requestType === "charity" && (
+                  <span className="text-gray-400"> (exempt)</span>
+                )}
+              </dt>
+              <dd className="font-medium text-gray-900">
+                {formatCurrency(breakdown.taxAmount, currency)}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-200 pt-2">
+              <dt className="text-gray-700 font-medium">
+                {feeResponsibility === "payer"
+                  ? "Payer pays"
+                  : "Receiver gets"}
+              </dt>
+              <dd className="font-bold text-violet-700">
+                {feeResponsibility === "payer"
+                  ? formatCurrency(breakdown.payerPays, currency)
+                  : formatCurrency(breakdown.netReceived, currency)}
+              </dd>
+            </div>
+          </dl>
+          {feeResponsibility === "requestedAmount" && (
+            <p className="text-xs text-amber-600 mt-2.5">
+              Charges & tax are deducted from the requested amount — the
+              receiver ends up with{" "}
+              <span className="font-semibold">
+                {formatCurrency(breakdown.netReceived, currency)}
+              </span>
+              .
+            </p>
+          )}
+        </div>
+
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-1">
           <FormButton
             type="button"
@@ -384,7 +509,7 @@ export default function CreatePaymentLinkModal({
             loading={submitting}
             className="sm:flex-1"
           >
-            Create Link
+            Create Request
           </FormButton>
         </div>
       </form>

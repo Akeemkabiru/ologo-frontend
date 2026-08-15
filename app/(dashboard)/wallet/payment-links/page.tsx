@@ -43,15 +43,15 @@ export default function PaymentLinksPage() {
   return (
     <main className="min-h-screen pb-8">
       <MobileHeader
-        title="Payment Links"
-        subtitle="Request money with a shareable link"
+        title="Payment Requests"
+        subtitle="Request money with a shareable link, QR code, in-app"
         showBack
         backHref="/wallet"
         rightSlot={
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0"
-            aria-label="Create payment link"
+            aria-label="Create payment request"
           >
             <Plus size={18} />
           </button>
@@ -70,10 +70,10 @@ export default function PaymentLinksPage() {
               Back to Wallet
             </Link>
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-              Payment Links
+              Payment Requests
             </h1>
             <p className="text-gray-600 mt-1">
-              Request money with a shareable link
+              Request money with a shareable link, QR code, in-app
             </p>
           </div>
           <button
@@ -81,14 +81,14 @@ export default function PaymentLinksPage() {
             className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-sm"
           >
             <Plus size={16} />
-            Create Payment Link
+            Create Payment Request
           </button>
         </div>
 
         {links.length === 0 ? (
           <div className="text-center py-16">
             <Link2 size={40} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-400">No payment links yet.</p>
+            <p className="text-sm text-gray-400">No payment requests yet.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">

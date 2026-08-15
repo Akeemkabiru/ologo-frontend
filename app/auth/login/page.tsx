@@ -130,7 +130,7 @@ export default function Login() {
             <div className="w-16 h-px bg-gray-50"></div>
           </div>
 
-          <div className="flex items-center flex-row-reverse gap-x-4 justify-center">
+          <div className="flex items-center gap-x-4 justify-center">
             {/* Apple */}
             <svg
               width="32"
@@ -167,6 +167,74 @@ export default function Login() {
                 fill="#34A853"
                 d="M24 48c6.48 0 11.93-2.14 15.9-5.82l-7.19-5.6c-2 1.34-4.6 2.12-8.71 2.12-6.19 0-11.57-3.63-13.46-8.93l-7.98 6.35C6.51 42.62 14.62 48 24 48z"
               />
+            </svg>
+
+            {/* Instagram */}
+            <svg
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              role="img"
+              aria-label="Sign in with Instagram"
+            >
+              <defs>
+                <linearGradient
+                  id="instagram-gradient"
+                  x1="2"
+                  y1="22"
+                  x2="22"
+                  y2="2"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0" stopColor="#FEDA75" />
+                  <stop offset="0.25" stopColor="#FA7E1E" />
+                  <stop offset="0.5" stopColor="#D62976" />
+                  <stop offset="0.75" stopColor="#962FBF" />
+                  <stop offset="1" stopColor="#4F5BD5" />
+                </linearGradient>
+              </defs>
+              <rect
+                width={22}
+                height={22}
+                x={1}
+                y={1}
+                rx={6.5}
+                ry={6.5}
+                fill="url(#instagram-gradient)"
+              />
+              <rect
+                width={13}
+                height={13}
+                x={5.5}
+                y={5.5}
+                rx={4}
+                ry={4}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth={1.7}
+              />
+              <circle
+                cx={12}
+                cy={12}
+                r={3.2}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth={1.7}
+              />
+              <circle cx={16.2} cy={7.8} r={1.05} fill="#ffffff" />
+            </svg>
+
+            {/* Twitter (X) */}
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 24 24"
+              fill="#000000"
+              role="img"
+              aria-label="Sign in with Twitter"
+            >
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
           </div>
         </div>

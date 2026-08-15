@@ -14,6 +14,13 @@ export interface PaymentLink {
   onBehalfOf?: string;
   status: "active" | "expired" | "paid";
   createdAt: string;
+
+  // New fields for payment requests
+  requestType: "personal" | "business" | "charity";
+  processingFee: number; // Total processing fee (gateway + admin charges)
+  taxAmount: number; // Tax amount based on request type
+  feePaymentResponsibility: "wallet" | "bank" | "requestedAmount" | "payer";
+  netAmount: number; // Amount receiver gets after fees (if deducted from requested amount)
 }
 
 export const TAG_SUGGESTIONS = [
@@ -52,6 +59,11 @@ export const paymentLinks: PaymentLink[] = [
     onBehalfOf: "Skyline Properties Ltd.",
     status: "active",
     createdAt: "Aug 6, 2026",
+    requestType: "business",
+    processingFee: 60,
+    taxAmount: 90,
+    feePaymentResponsibility: "requestedAmount",
+    netAmount: 1050,
   },
   {
     id: "pl2",
@@ -69,6 +81,11 @@ export const paymentLinks: PaymentLink[] = [
     hostStatus: "main",
     status: "active",
     createdAt: "Aug 5, 2026",
+    requestType: "business",
+    processingFee: 22.5,
+    taxAmount: 33.75,
+    feePaymentResponsibility: "payer",
+    netAmount: 450,
   },
   {
     id: "pl3",
@@ -87,6 +104,11 @@ export const paymentLinks: PaymentLink[] = [
     onBehalfOf: "The Office Team",
     status: "paid",
     createdAt: "Aug 1, 2026",
+    requestType: "charity",
+    processingFee: 2,
+    taxAmount: 0,
+    feePaymentResponsibility: "wallet",
+    netAmount: 38,
   },
 ];
 

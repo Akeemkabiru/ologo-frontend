@@ -216,6 +216,20 @@ function TypeBadge({ item }: { item: MyDonation }) {
   );
 }
 
+function ViewButton({ className = '' }: { className?: string }) {
+  return (
+    <button
+      type="button"
+      className={`neon-purple flex items-center gap-1 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold px-3 py-1.5 rounded-full transition-all shrink-0 active:scale-95 ${className}`}
+    >
+      View
+      <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
+        <ChevronRight size={10} />
+      </span>
+    </button>
+  );
+}
+
 function DonationCard({ item, view }: { item: MyDonation; view: ViewMode }) {
   const amount = (
     <span className="text-base font-bold text-violet-600 whitespace-nowrap">
@@ -247,17 +261,20 @@ function DonationCard({ item, view }: { item: MyDonation; view: ViewMode }) {
               <p className="text-xs text-gray-500 mt-1 truncate">{item.note}</p>
             )}
           </div>
-          <div className="text-right shrink-0">
-            {amount}
-            <p
-              className={`text-[11px] mt-0.5 capitalize ${
-                item.status === "scheduled"
-                  ? "text-amber-600"
-                  : "text-emerald-600"
-              }`}
-            >
-              {item.status}
-            </p>
+          <div className="flex flex-col items-end gap-2 shrink-0">
+            <div className="text-right">
+              {amount}
+              <p
+                className={`text-[11px] mt-0.5 capitalize ${
+                  item.status === "scheduled"
+                    ? "text-amber-600"
+                    : "text-emerald-600"
+                }`}
+              >
+                {item.status}
+              </p>
+            </div>
+            <ViewButton />
           </div>
         </div>
       </Link>
@@ -290,10 +307,7 @@ function DonationCard({ item, view }: { item: MyDonation; view: ViewMode }) {
           </p>
           <div className="flex items-center justify-between mt-2">
             {amount}
-            <span className="text-xs text-gray-400 inline-flex items-center gap-0.5">
-              View
-              <ChevronRight size={13} />
-            </span>
+            <ViewButton className="mt-0" />
           </div>
           {item.note && (
             <p className="text-xs text-gray-500 mt-2 line-clamp-2">

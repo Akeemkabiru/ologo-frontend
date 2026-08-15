@@ -64,6 +64,51 @@ export const DEFAULT_COMMISSION_STRUCTURE = [
   { min: 500001, max: Infinity, percentage: 20 },
 ];
 
+// Platform processing fee — the total the user sees is the sum of:
+//  - API fee (charged by the payment/verification provider)
+//  - a general fee set/edited by Admins (applies to everyone)
+//  - a user-specific fee set/edited by Admins for each individual user
+// Users only ever see the combined total processing fee, never the breakdown.
+export const PROCESSING_API_FEE_PERCENTAGE = 1.5;
+export const PROCESSING_GENERAL_FEE_PERCENTAGE = 0.7; // admin-configurable, global
+export const PROCESSING_USER_FEE_PERCENTAGE = 0.3; // admin-configurable, per-user
+
+// General tax rate applied wherever tax applies (top-up, transfer, request,
+// convert, withdrawal, KYC, verification, etc.).
+export const DEFAULT_TAX_RATE_PERCENTAGE = 7.5;
+
+// Flat verification fees (the "amount" charges are calculated against) for the
+// KYC and Get Verified Tick flows.
+export const KYC_VERIFICATION_FEE = 5; // base verification fee
+export const VERIFIED_TICK_FEE = 15; // base verified-tick fee
+
+// Payment Request fees & taxes
+// Processing fee = gateway charge (fixed by provider) + admin charge (set/edited by Admin).
+// Users only ever see the combined total processing fee.
+export const PAYMENT_REQUEST_GATEWAY_FEE_PERCENTAGE = 2.9; // gateway processor charge
+export const PAYMENT_REQUEST_ADMIN_FEE_PERCENTAGE = 2.1; // admin-configurable charge
+// Tax rates applied per request type (business is taxable; charity is exempt).
+export const PAYMENT_REQUEST_TAX_RATES: Record<
+  "personal" | "business" | "charity",
+  number
+> = {
+  personal: 0,
+  business: 7.5,
+  charity: 0,
+};
+
+export const PAYMENT_REQUEST_TYPES = [
+  { label: "Business", value: "business" },
+  { label: "Charity", value: "charity" },
+] as const;
+
+export const FEE_PAYMENT_OPTIONS = [
+  { label: "Pay from my wallet", value: "wallet" },
+  { label: "Pay from my bank", value: "bank" },
+  { label: "Deduct from requested amount", value: "requestedAmount" },
+  { label: "Let the payer pay the charges", value: "payer" },
+] as const;
+
 export const VIRTUAL_CARD_CREATION_FEE = 500; // in smallest currency unit
 export const VIRTUAL_CARD_MAINTENANCE_FEE = 100; // monthly
 export const VIRTUAL_CARD_FAILED_TRANSACTION_FEE = 50;
@@ -156,6 +201,12 @@ export const NIGERIAN_BANKS = [
   "Unity Bank",
   "Wema Bank",
   "Zenith Bank",
+];
+
+export const TITLE_OPTIONS = [
+  { label: "Mr", value: "Mr" },
+  { label: "Ms", value: "Ms" },
+  { label: "Mrs", value: "Mrs" },
 ];
 
 export const NIGERIAN_STATES = [
@@ -282,6 +333,38 @@ export const COUNTRIES = [
   "Zambia",
   "Zimbabwe",
 ];
+
+// States / provinces for the countries we have data for. Countries not listed
+// here let the user type their state/province freely via the combobox.
+export const STATES_BY_COUNTRY: Record<string, string[]> = {
+  Nigeria: NIGERIAN_STATES,
+  "United States": [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+    "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+    "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
+    "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+    "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+    "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
+    "Washington", "West Virginia", "Wisconsin", "Wyoming",
+  ],
+  Canada: [
+    "Alberta", "British Columbia", "Manitoba", "New Brunswick",
+    "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia",
+    "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan",
+    "Yukon",
+  ],
+  "United Kingdom": ["England", "Scotland", "Wales", "Northern Ireland"],
+  Ghana: [
+    "Ahafo", "Ashanti", "Bono", "Bono East", "Central", "Eastern",
+    "Greater Accra", "North East", "Northern", "Oti", "Savannah", "Upper East",
+    "Upper West", "Volta", "Western", "Western North",
+  ],
+};
+
+// Minimum age (years) required to create an account.
+export const MINIMUM_SIGNUP_AGE = 18;
 
 // Persistent (localStorage) - set once during onboarding, reused by both
 // the KYC and Verified Tick flows so the user is never asked twice.

@@ -14,6 +14,7 @@ import {
   getCurrency,
 } from "@/lib/currency";
 import { walletBalances, getBalance } from "@/data/wallets";
+import { DEFAULT_TAX_RATE_PERCENTAGE } from "@/lib/constants";
 
 interface ExchangeModalProps {
   isOpen: boolean;
@@ -34,11 +35,12 @@ export default function ExchangeModal({ isOpen, onClose }: ExchangeModalProps) {
   const available = getBalance(from);
   const numericAmount = Number(amount) || 0;
 
-  const { charges, received, totalDebit } = useMemo(() => {
+  const { charges, tax, received, totalDebit } = useMemo(() => {
     const charges = conversionCharges(numericAmount);
+    const tax = (numericAmount * DEFAULT_TAX_RATE_PERCENTAGE) / 100;
     const received = convertCurrency(numericAmount, from, to);
-    const totalDebit = numericAmount + charges.total;
-    return { charges, received, totalDebit };
+    const totalDebit = numericAmount + charges.total + tax;
+    return { charges, tax, received, totalDebit };
   }, [numericAmount, from, to]);
 
   const insufficient = totalDebit > available;
@@ -172,9 +174,14 @@ export default function ExchangeModal({ isOpen, onClose }: ExchangeModalProps) {
           />
           <div className="border-t border-gray-200 pt-2">
             <Row
-              label="Total conversion charge"
+              label="Total processing fee"
               value={formatMoney(charges.total, from)}
               bold
+            />
+            <Row
+              label={`Tax (${DEFAULT_TAX_RATE_PERCENTAGE}%)`}
+              value={formatMoney(tax, from)}
+              muted
             />
           </div>
           <div className="border-t border-gray-200 pt-2">

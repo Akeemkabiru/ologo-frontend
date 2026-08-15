@@ -6,6 +6,7 @@ import SelectField from "@/components/ui/selectField";
 import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
 import { NIGERIAN_STATES, COUNTRIES } from "@/lib/constants";
+import ChargesSummary from "@/components/ui/ChargesSummary";
 
 interface AddressValues {
   streetAddress: string;
@@ -28,6 +29,9 @@ interface AddressFormProps {
   nextHref: string;
   backHref: string;
   submitLabel?: string;
+  /** When set, shows a charges & tax summary for this fee before submitting. */
+  chargeFee?: number;
+  chargeLabel?: string;
 }
 
 export default function AddressForm({
@@ -35,6 +39,8 @@ export default function AddressForm({
   nextHref,
   backHref,
   submitLabel = "Continue",
+  chargeFee,
+  chargeLabel = "Verification fee",
 }: AddressFormProps) {
   const router = useRouter();
 
@@ -126,6 +132,15 @@ export default function AddressForm({
             onChange={handleChange}
           />
         </div>
+
+        {chargeFee != null && chargeFee > 0 && (
+          <ChargesSummary
+            amount={chargeFee}
+            currency="USD"
+            amountLabel={chargeLabel}
+            totalLabel="Total to pay"
+          />
+        )}
 
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10 md:mt-12">
           <FormButton

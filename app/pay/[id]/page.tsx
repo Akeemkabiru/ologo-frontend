@@ -20,6 +20,7 @@ import {
   formatMoney,
   getCurrency,
 } from "@/lib/currency";
+import { calculatePaymentRequestBreakdown } from "@/lib/utils";
 import { getPaymentLinkById } from "@/data/paymentLinks";
 
 type Mode = "once" | "recurring";
@@ -40,6 +41,11 @@ export default function PayPage() {
   const [endAt, setEndAt] = useState("");
   const [result, setResult] = useState<Result>("pending");
   const [submitting, setSubmitting] = useState(false);
+  // The payer has the final choice on how charges & tax are settled.
+  // Default to whatever the requester chose, but the payer can override.
+  const [chargeChoice, setChargeChoice] = useState<"payCharges" | "deduct">(
+    link.feePaymentResponsibility === "payer" ? "payCharges" : "deduct",
+  );
 
   const numericAmount = Number(amount) || 0;
   const converted = useMemo(
@@ -47,6 +53,29 @@ export default function PayPage() {
     [numericAmount, link.currency, payFrom],
   );
   const hostSymbol = getCurrency(link.currency).symbol;
+
+  // Charges are only the payer's decision when the requester asked the payer to
+  // cover them. Otherwise the requester already settles the charges themselves.
+  const payerDecidesCharges = link.feePaymentResponsibility === "payer";
+  const breakdown = useMemo(
+    () =>
+      calculatePaymentRequestBreakdown(
+        numericAmount,
+        link.requestType,
+        payerDecidesCharges
+          ? chargeChoice === "payCharges"
+            ? "payer"
+            : "requestedAmount"
+          : link.feePaymentResponsibility,
+      ),
+    [
+      numericAmount,
+      link.requestType,
+      link.feePaymentResponsibility,
+      payerDecidesCharges,
+      chargeChoice,
+    ],
+  );
 
   const pay = async () => {
     if (numericAmount <= 0) return;
@@ -61,6 +90,13 @@ export default function PayPage() {
         mode === "recurring"
           ? { every: freqAmount, unit: freqUnit, endsAt: endAt }
           : null,
+      charges: {
+        processingFee: breakdown.processingFee,
+        tax: breakdown.taxAmount,
+        payerPays: breakdown.payerPays,
+        receiverGets: breakdown.netReceived,
+        chargeChoice: payerDecidesCharges ? chargeChoice : "requester-settled",
+      },
     });
     await new Promise((r) => setTimeout(r, 1000));
     setSubmitting(false);
@@ -274,6 +310,106 @@ export default function PayPage() {
               </div>
             )}
 
+            {/* Charges & tax */}
+            <div className="mt-5 rounded-xl border border-gray-200 p-4">
+              <p className="text-sm font-semibold text-gray-800 mb-3">
+                Charges & tax
+              </p>
+
+              {payerDecidesCharges && (
+                <div className="mb-4">
+                  <p className="text-xs text-gray-500 mb-2">
+                    How would you like to handle the charges & tax?
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setChargeChoice("payCharges")}
+                      className={`text-left rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+                        chargeChoice === "payCharges"
+                          ? "border-violet-500 bg-violet-50 text-violet-700"
+                          : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      <span className="font-medium block">
+                        I&apos;ll pay the charges
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        Added on top of the amount
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setChargeChoice("deduct")}
+                      className={`text-left rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+                        chargeChoice === "deduct"
+                          ? "border-violet-500 bg-violet-50 text-violet-700"
+                          : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      <span className="font-medium block">
+                        Deduct from amount
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        Taken from what you send
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <dl className="space-y-2 text-sm">
+                <div className="flex items-center justify-between">
+                  <dt className="text-gray-600">Amount</dt>
+                  <dd className="font-medium text-gray-900">
+                    {formatMoney(breakdown.amount, link.currency)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-gray-600">Processing fee</dt>
+                  <dd className="font-medium text-gray-900">
+                    {formatMoney(breakdown.processingFee, link.currency)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-gray-600">
+                    Tax
+                    {link.requestType === "charity" && (
+                      <span className="text-gray-400"> (exempt)</span>
+                    )}
+                  </dt>
+                  <dd className="font-medium text-gray-900">
+                    {formatMoney(breakdown.taxAmount, link.currency)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between border-t border-gray-200 pt-2">
+                  <dt className="font-medium text-gray-700">You pay</dt>
+                  <dd className="font-bold text-gray-900">
+                    {formatMoney(breakdown.payerPays, link.currency)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="font-medium text-gray-700">
+                    {link.requesterName} receives
+                  </dt>
+                  <dd className="font-bold text-violet-700">
+                    {formatMoney(breakdown.netReceived, link.currency)}
+                  </dd>
+                </div>
+              </dl>
+
+              {breakdown.netReceived < breakdown.amount && (
+                <p className="text-xs text-amber-600 mt-2.5">
+                  Charges & tax are deducted from the amount, so{" "}
+                  {link.requesterName} will receive{" "}
+                  <span className="font-semibold">
+                    {formatMoney(breakdown.netReceived, link.currency)}
+                  </span>
+                  .
+                </p>
+              )}
+            </div>
+
             {/* Actions */}
             <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
               <FormButton
@@ -294,7 +430,7 @@ export default function PayPage() {
                 className="sm:flex-1"
               >
                 {numericAmount > 0
-                  ? `Pay ${formatMoney(numericAmount, link.currency)}`
+                  ? `Pay ${formatMoney(breakdown.payerPays, link.currency)}`
                   : "Pay"}
               </FormButton>
             </div>

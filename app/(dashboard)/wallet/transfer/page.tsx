@@ -13,6 +13,7 @@ import { CheckCircle2 } from "lucide-react";
 import { CURRENCIES } from "@/lib/constants";
 import { useForm } from "@/hooks";
 import MobileHeader from "@/components/ui/MobileHeader";
+import ChargesSummary from "@/components/ui/ChargesSummary";
 interface TransferFormValues {
   recipientEmail: string;
   amount: string;
@@ -223,32 +224,15 @@ export default function WalletTransferPage() {
               className="min-h-24"
             />
           </div>
-          {/* Summary */}
-          {values.amount && (
-            <div className="mb-5 sm:mb-6 md:mb-8 p-4 sm:p-5 md:p-6 bg-green-50 border border-green-200 rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-3">Transfer Summary</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Amount</span>
-                  <span className="font-semibold">
-                    {values.currency} {parseFloat(values.amount).toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Fee (2.5%)</span>
-                  <span className="font-semibold">
-                    {values.currency}{" "}
-                    {(parseFloat(values.amount) * 0.025).toFixed(2)}
-                  </span>
-                </div>
-                <div className="border-t border-green-200 pt-2 flex justify-between">
-                  <span className="text-gray-900 font-bold">Total to Send</span>
-                  <span className="font-bold text-green-600">
-                    {values.currency}{" "}
-                    {(parseFloat(values.amount) * 1.025).toFixed(2)}
-                  </span>
-                </div>
-              </div>
+          {/* Charges & tax */}
+          {values.amount && parseFloat(values.amount) > 0 && (
+            <div className="mb-5 sm:mb-6 md:mb-8">
+              <ChargesSummary
+                amount={parseFloat(values.amount)}
+                currency={values.currency}
+                amountLabel="Transfer amount"
+                totalLabel="Total to send"
+              />
             </div>
           )}
           {/* Action Buttons */}

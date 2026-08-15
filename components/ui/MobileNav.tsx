@@ -16,6 +16,7 @@ import {
 import { mainNavItems } from "@/lib/navigation";
 import { notifications, unreadCount } from "@/data/notifications";
 import { CURRENT_USER } from "@/lib/currentUser";
+import LogoutConfirmModal from "@/components/ui/LogoutConfirmModal";
 
 const USER_AVATAR = CURRENT_USER.avatar;
 
@@ -43,6 +44,7 @@ export function MobileNavProvider({
 }) {
   const [open, setOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -143,7 +145,7 @@ export function MobileNavProvider({
                 <button
                   onClick={() => {
                     close();
-                    router.push("/auth/login");
+                    setLogoutOpen(true);
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                 >
@@ -217,6 +219,15 @@ export function MobileNavProvider({
           </div>
         )}
       </AnimatePresence>
+
+      <LogoutConfirmModal
+        isOpen={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={() => {
+          setLogoutOpen(false);
+          router.push("/auth/login");
+        }}
+      />
     </MobileNavContext.Provider>
   );
 }

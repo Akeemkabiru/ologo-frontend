@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Wallet,
   TrendingUp,
@@ -14,8 +14,33 @@ import {
   ChevronLeft,
   ChevronRight,
   Trash2,
+  Send,
+  TrendingDown,
+  Plus,
+  Home,
+  CreditCard,
+  ShoppingBag,
+  Coffee,
+  Plane,
+  Car,
+  Landmark,
+  ArrowUpRight,
+  ArrowDownLeft,
+  Repeat,
+  MoreHorizontal,
+  type LucideIcon,
 } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
+
+// Color-coded transaction status pills.
+const statusStyles: Record<string, string> = {
+  completed: "bg-emerald-100 text-emerald-700",
+  pending: "bg-amber-100 text-amber-700",
+  processing: "bg-blue-100 text-blue-700",
+  failed: "bg-red-100 text-red-700",
+  cancelled: "bg-gray-100 text-gray-500",
+  refunded: "bg-violet-100 text-violet-700",
+};
 
 export default function UserDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +48,58 @@ export default function UserDashboard() {
   const [historyTab, setHistoryTab] = useState<"history" | "future">("history");
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
   const [selectedMonth, setSelectedMonth] = useState(new Date(2026, 4)); // May 2026
+
+  type TxTypeEntry = {
+    icon: LucideIcon;
+    subtitle: string;
+    tagIcon: LucideIcon;
+  };
+
+  const transactionTypeMap: Record<string, TxTypeEntry> = {
+    topup: {
+      icon: Wallet,
+      subtitle: "Top-up",
+      tagIcon: Wallet,
+    },
+    donation: {
+      icon: TrendingUp,
+      subtitle: "Donation",
+      tagIcon: TrendingUp,
+    },
+    transfer: {
+      icon: Send,
+      subtitle: "Transfer",
+      tagIcon: Send,
+    },
+    receive: {
+      icon: Download,
+      subtitle: "Receive",
+      tagIcon: Download,
+    },
+  };
+
+  const futureTransactionTypeMap: Record<string, TxTypeEntry> = {
+    recurring: {
+      icon: Repeat,
+      subtitle: "Recurring",
+      tagIcon: Repeat,
+    },
+    escrow: {
+      icon: Landmark,
+      subtitle: "Escrow",
+      tagIcon: Landmark,
+    },
+    "payment-request": {
+      icon: Repeat,
+      subtitle: "Payment Request",
+      tagIcon: Repeat,
+    },
+    pledge: {
+      icon: TrendingUp,
+      subtitle: "Pledge",
+      tagIcon: TrendingUp,
+    },
+  };
 
   // Mock data
   const walletBalance = 2500.0;
@@ -72,6 +149,8 @@ export default function UserDashboard() {
     },
   ];
 
+  // Future Funds includes upcoming/recurring items plus payment requests and
+  // pledges that have not been paid yet.
   const futureTransactions = [
     {
       id: "f2",
@@ -94,6 +173,50 @@ export default function UserDashboard() {
       frequency: "One-time",
       groupId: "grp-003",
       groupName: "Tech Conference 2026",
+    },
+    {
+      id: "f4",
+      type: "payment-request",
+      description: "Payment Request — Logo Design (Unpaid)",
+      amount: 450,
+      currency: "USD",
+      nextDate: "2026-08-20",
+      frequency: "Unpaid",
+      groupId: "grp-004",
+      groupName: "Services",
+    },
+    {
+      id: "f4b",
+      type: "payment-request",
+      description: "Payment Request — August Rent (Unpaid)",
+      amount: 1200,
+      currency: "USD",
+      nextDate: "2026-09-01",
+      frequency: "Unpaid",
+      groupId: "grp-006",
+      groupName: "Rent",
+    },
+    {
+      id: "f5",
+      type: "pledge",
+      description: "Monthly Pledge to Charity (Unpaid)",
+      amount: 50,
+      currency: "USD",
+      nextDate: "2026-06-01",
+      frequency: "Unpaid",
+      groupId: "grp-005",
+      groupName: "Charity Fund",
+    },
+    {
+      id: "f5b",
+      type: "pledge",
+      description: "Community Build Pledge (Unpaid)",
+      amount: 120,
+      currency: "USD",
+      nextDate: "2026-06-18",
+      frequency: "Unpaid",
+      groupId: "grp-007",
+      groupName: "Community Fund",
     },
   ];
 
@@ -306,7 +429,7 @@ export default function UserDashboard() {
                   className={`text-lg font-semibold pb-1 border-b-2 transition-colors ${
                     historyTab === "history"
                       ? "text-violet-600 border-violet-600"
-                      : "text-gray-400 border-transparent hover:text-gray-600"
+                      : "text-black border-transparent hover:text-gray-600"
                   }`}
                 >
                   Transaction History
@@ -316,7 +439,7 @@ export default function UserDashboard() {
                   className={`text-lg font-semibold pb-1 border-b-2 transition-colors ${
                     historyTab === "future"
                       ? "text-violet-600 border-violet-600"
-                      : "text-gray-400 border-transparent hover:text-gray-600"
+                      : "text-black border-transparent hover:text-gray-600"
                   }`}
                 >
                   Future
@@ -350,34 +473,34 @@ export default function UserDashboard() {
 
             {/* Search & Filter */}
             {historyTab === "history" && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search
-                  size={18}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                />
-                <input
-                  type="text"
-                  placeholder="Search transactions, groups, users..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
-                />
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
+                <div className="flex-1 relative">
+                  <Search
+                    size={18}
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Search transactions, groups, users..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-1 focus:ring-violet-500 focus:border-transparent text-sm"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700">
+                    <Filter size={18} />
+                    Filter
+                  </button>
+                  <button
+                    onClick={() => handleExport("csv")}
+                    className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700"
+                  >
+                    <Download size={18} />
+                    Export
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-3">
-                <button className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700">
-                  <Filter size={18} />
-                  Filter
-                </button>
-                <button
-                  onClick={() => handleExport("csv")}
-                  className="flex-1 sm:flex-none justify-center px-4 py-2.5 text-sm rounded-lg bg-white shadow-sm border border-gray-100 hover: flex items-center gap-2 font-medium text-gray-700"
-                >
-                  <Download size={18} />
-                  Export
-                </button>
-              </div>
-            </div>
             )}
 
             {/* Tabs */}
@@ -400,49 +523,97 @@ export default function UserDashboard() {
             )}
           </div>
 
-          {/* List View */}
+          <AnimatePresence mode="wait">
+          {/* List View — matches the Wallet transactions design */}
           {historyTab === "history" && viewMode === "list" && (
-            <div className=" rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-hidden text-sm">
+            <motion.div
+              key="history-list"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-x-auto"
+            >
               {filteredTransactions.length > 0 ? (
-                <div className="divide-y divide-gray-100">
-                  {filteredTransactions.map((tx) => (
-                    <motion.div
-                      key={tx.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="p-5 hover: transition-colors cursor-pointer group"
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="text-xs text-gray-400 border-b border-gray-100">
+                      <th className="font-medium pb-3 pl-1">Transaction</th>
+                      <th className="font-medium pb-3">Date</th>
+                      <th className="font-medium pb-3">Status</th>
+                      <th className="font-medium pb-3 text-right pr-1">
+                        Amount
+                      </th>
+                    </tr>
+                  </thead>
+                  <AnimatePresence mode="wait">
+                    <motion.tbody
+                      key={`${activeTab}-${searchTerm}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18, ease: "easeInOut" }}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className="flex-1">
-                            <p className="font-semibold text-gray-900">
-                              {tx.description}
-                            </p>
-                            <p className="text-sm text-gray-600 mt-1">
+                      {filteredTransactions.map((tx) => {
+                        const typeMap = transactionTypeMap[tx.type] || {
+                          icon: MoreVertical,
+                          subtitle: tx.type,
+                          tagIcon: MoreVertical,
+                        };
+                        const isAmountNegative = tx.amount < 0;
+                        return (
+                          <tr
+                            key={tx.id}
+                            className="border-b border-gray-50 last:border-0 hover:bg-gray-50/60 transition-colors"
+                          >
+                            <td className="py-3.5 pl-1">
+                              <div className="flex items-center gap-3">
+                                <span className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center shrink-0">
+                                  {typeMap.icon && (
+                                    <typeMap.icon
+                                      size={16}
+                                      className="text-violet-600"
+                                    />
+                                  )}
+                                </span>
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold text-gray-900 truncate">
+                                    {tx.description}
+                                  </p>
+                                  <p className="text-xs text-gray-400">
+                                    {typeMap.subtitle}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="text-sm text-gray-500 whitespace-nowrap pr-4">
                               {tx.date}
-                            </p>
-                            {parseFloat(tx.commission) > 0 && (
-                              <p className="text-xs text-gray-500 mt-1">
-                                Commission: {tx.commission} {tx.currency}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-gray-900">
-                            -{tx.amount} {tx.currency}
-                          </p>
-                          <p className="text-xs text-violet-600 font-medium mt-1">
-                            {tx.status}
-                          </p>
-                        </div>
-                        <button className="opacity-0 group-hover:opacity-100 transition-opacity p-2 ml-2">
-                          <MoreVertical size={18} className="text-gray-400" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                            </td>
+                            <td>
+                              <span
+                                className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap capitalize ${statusStyles[tx.status] ?? "bg-gray-100 text-gray-600"}`}
+                              >
+                                {tx.status}
+                              </span>
+                            </td>
+                            <td className="text-right pr-1">
+                              <span
+                                className={`text-sm font-bold whitespace-nowrap ${
+                                  isAmountNegative
+                                    ? "text-red-500"
+                                    : "text-emerald-500"
+                                }`}
+                              >
+                                {isAmountNegative ? "-" : "+"}$
+                                {Math.abs(tx.amount).toFixed(2)} {tx.currency}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </motion.tbody>
+                  </AnimatePresence>
+                </table>
               ) : (
                 <div className="p-12 text-center">
                   <Wallet size={48} className="mx-auto text-gray-300 mb-4" />
@@ -451,12 +622,19 @@ export default function UserDashboard() {
                   </p>
                 </div>
               )}
-            </div>
+            </motion.div>
           )}
 
           {/* Calendar View */}
           {historyTab === "history" && viewMode === "calendar" && (
-            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6">
+            <motion.div
+              key="history-calendar"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6"
+            >
               <div className="flex items-center justify-between mb-6">
                 <h4 className="text-lg font-bold text-gray-900">
                   {selectedMonth.toLocaleDateString("en-US", {
@@ -545,56 +723,93 @@ export default function UserDashboard() {
                   },
                 )}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Future table */}
           {historyTab === "future" && (
-            <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-x-auto">
+            <motion.div
+              key="future-table"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              className="rounded-2xl bg-white shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 overflow-x-auto"
+            >
               {futureTransactions.length > 0 ? (
-                <table className="w-full text-left text-sm min-w-160">
+                <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="text-xs text-gray-400 border-b border-gray-100">
-                      <th className="font-medium pb-3 pr-4">Type</th>
-                      <th className="font-medium pb-3 pr-4">Description</th>
-                      <th className="font-medium pb-3 pr-4">Group</th>
-                      <th className="font-medium pb-3 pr-4">Frequency</th>
-                      <th className="font-medium pb-3 pr-4">Next Date</th>
-                      <th className="font-medium pb-3 text-right">Amount</th>
+                      <th className="font-medium pb-3 pl-1">Transaction</th>
+                      <th className="font-medium pb-3">Date</th>
+                      <th className="font-medium pb-3">Category</th>
+                      <th className="font-medium pb-3 text-right pr-1">
+                        Amount
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {futureTransactions.map((tx) => (
-                      <tr
-                        key={tx.id}
-                        className="border-b border-gray-50 last:border-0 hover:bg-gray-50/60 transition-colors"
-                      >
-                        <td className="py-3.5 pr-4">
-                          <span className="inline-block bg-violet-50 text-violet-700 text-xs font-medium px-2.5 py-1 rounded-full">
-                            {tx.type === "membership"
-                              ? "Membership"
-                              : tx.type === "escrow"
-                                ? "Escrow"
-                                : "Recurring"}
-                          </span>
-                        </td>
-                        <td className="py-3.5 pr-4 font-medium text-gray-900">
-                          {tx.description}
-                        </td>
-                        <td className="py-3.5 pr-4 text-violet-600 font-medium whitespace-nowrap">
-                          {tx.groupName}
-                        </td>
-                        <td className="py-3.5 pr-4 text-gray-600">
-                          {tx.frequency}
-                        </td>
-                        <td className="py-3.5 pr-4 text-gray-600 whitespace-nowrap">
-                          {tx.nextDate}
-                        </td>
-                        <td className="py-3.5 text-right font-bold text-gray-900 whitespace-nowrap">
-                          {tx.amount} {tx.currency}
-                        </td>
-                      </tr>
-                    ))}
+                    {futureTransactions.map((tx) => {
+                      const typeMap = futureTransactionTypeMap[tx.type] || {
+                        icon: MoreVertical,
+                        subtitle: tx.type,
+                        tagIcon: MoreVertical,
+                      };
+                      const isAmountNegative = tx.amount < 0;
+                      return (
+                        <tr
+                          key={tx.id}
+                          className="border-b border-gray-50 last:border-0 hover:bg-gray-50/60 transition-colors"
+                        >
+                          <td className="py-3.5 pl-1">
+                            <div className="flex items-center gap-3">
+                              <span className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center shrink-0">
+                                {typeMap.icon && (
+                                  <typeMap.icon
+                                    size={16}
+                                    className="text-violet-600"
+                                  />
+                                )}
+                              </span>
+                              <div className="min-w-0">
+                                <p className="text-sm font-semibold text-gray-900 truncate">
+                                  {tx.description}
+                                </p>
+                                <p className="text-xs text-gray-400">
+                                  {typeMap.subtitle}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-sm text-gray-500 whitespace-nowrap pr-4">
+                            {tx.nextDate}
+                          </td>
+                          <td>
+                            <span className="inline-flex items-center gap-1.5 bg-gray-100 rounded-full px-2.5 py-1 text-xs text-gray-600 whitespace-nowrap">
+                              {typeMap.tagIcon && (
+                                <typeMap.tagIcon
+                                  size={12}
+                                  className="text-violet-600"
+                                />
+                              )}
+                              <span className="ml-1">{tx.frequency}</span>
+                            </span>
+                          </td>
+                          <td className="text-right pr-1">
+                            <span
+                              className={`text-sm font-bold whitespace-nowrap ${
+                                isAmountNegative
+                                  ? "text-red-500"
+                                  : "text-emerald-500"
+                              }`}
+                            >
+                              {isAmountNegative ? "-" : "+"}$
+                              {Math.abs(tx.amount).toFixed(2)} {tx.currency}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               ) : (
@@ -605,8 +820,9 @@ export default function UserDashboard() {
                   </p>
                 </div>
               )}
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
         </motion.div>
 
         {/* Your Groups Section */}

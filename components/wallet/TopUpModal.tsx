@@ -11,6 +11,7 @@ import {
 } from "@/components/forms/FormComponents";
 import { CURRENCIES } from "@/lib/constants";
 import { useForm } from "@/hooks";
+import ChargesSummary from "@/components/ui/ChargesSummary";
 
 interface TopUpFormValues {
   amount: string;
@@ -211,13 +212,15 @@ export default function TopUpModal({
           )}
         </div>
 
-        {/* Note */}
-        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl">
-          <p className="text-xs text-amber-800">
-            <strong>Note:</strong> A processing fee of 2.5% will be applied to
-            your transaction.
-          </p>
-        </div>
+        {/* Charges & tax */}
+        {values.amount && parseFloat(values.amount) > 0 && (
+          <ChargesSummary
+            amount={parseFloat(values.amount)}
+            currency={values.currency}
+            amountLabel="Top-up amount"
+            totalLabel="Total to pay"
+          />
+        )}
 
         {/* Actions */}
         <div className="flex flex-col-reverse sm:flex-row gap-3 pt-1">

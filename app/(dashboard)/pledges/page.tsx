@@ -207,6 +207,20 @@ function TypeBadge({ item }: { item: MyPledge }) {
   );
 }
 
+function ViewButton({ className = '' }: { className?: string }) {
+  return (
+    <button
+      type="button"
+      className={`neon-purple flex items-center gap-1 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold px-3 py-1.5 rounded-full transition-all shrink-0 active:scale-95 ${className}`}
+    >
+      View
+      <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
+        <ChevronRight size={10} />
+      </span>
+    </button>
+  );
+}
+
 function PledgeCard({ item, view }: { item: MyPledge; view: ViewMode }) {
   const statusChip = (
     <span
@@ -236,6 +250,7 @@ function PledgeCard({ item, view }: { item: MyPledge; view: ViewMode }) {
             Performance: {item.performanceDate}
           </div>
         </div>
+        <ViewButton className="mt-3 self-end" />
       </div>
     );
   }
@@ -259,6 +274,7 @@ function PledgeCard({ item, view }: { item: MyPledge; view: ViewMode }) {
         <CalendarClock size={13} />
         {item.performanceDate}
       </div>
+      <ViewButton className="mt-4 self-end" />
     </div>
   );
 }

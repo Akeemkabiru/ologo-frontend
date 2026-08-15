@@ -54,7 +54,7 @@ export default function Sidebar() {
                   className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-lg transition-all duration-200 cursor-pointer ${
                     isActive
                       ? "bg-[#7f22fe] text-white border-l-4 border-violet-600"
-                      : " hover:bg-gray-50"
+                      : " hover:bg-gray-50 text-black"
                   }`}
                 >
                   <item.icon size={18} />

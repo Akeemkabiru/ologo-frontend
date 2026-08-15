@@ -1,23 +1,56 @@
 "use client";
 
 import InputField from "@/components/ui/inputField";
-import SelectField from "@/components/ui/selectField";
+import CustomSelectField from "@/components/ui/customSelectField";
+import ComboBoxField from "@/components/ui/comboBoxField";
 import Checkbox from "@/components/ui/checkbox";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { ACCOUNT_TYPE_KEY, ORGANISATION_SUFFIXES } from "@/lib/constants";
+import {
+  ACCOUNT_TYPE_KEY,
+  ORGANISATION_SUFFIXES,
+  TITLE_OPTIONS,
+  COUNTRIES,
+  STATES_BY_COUNTRY,
+  MINIMUM_SIGNUP_AGE,
+} from "@/lib/constants";
+
+// Returns the date (YYYY-MM-DD) exactly MINIMUM_SIGNUP_AGE years ago — the
+// latest DOB allowed for a valid account.
+const maxDobDate = () => {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - MINIMUM_SIGNUP_AGE);
+  return d.toISOString().split("T")[0];
+};
+
+// Whether a DOB string means the user is at least MINIMUM_SIGNUP_AGE.
+const isOldEnough = (dob?: string) => {
+  if (!dob) return false;
+  const birth = new Date(dob);
+  if (Number.isNaN(birth.getTime())) return false;
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  const m = now.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+  return age >= MINIMUM_SIGNUP_AGE;
+};
 
 // Validation schema - last name is only required for individuals; vendors
 // (organisations) get an optional suffix select instead.
 const getRegisterValidationSchema = (isVendor: boolean) =>
   Yup.object().shape({
+    // Title only applies to personal accounts.
+    title: isVendor
+      ? Yup.string().notRequired()
+      : Yup.string().required("Title is required"),
+
     firstName: Yup.string()
-      .min(2, "First name must be at least 2 characters")
-      .required("First name is required"),
+      .min(2, "Must be at least 2 characters")
+      .required(isVendor ? "Business name is required" : "First name is required"),
 
     lastName: isVendor
       ? Yup.string().notRequired()
@@ -36,6 +69,21 @@ const getRegisterValidationSchema = (isVendor: boolean) =>
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
+
+    // Date of birth & the 18+ rule apply to personal accounts only.
+    dateOfBirth: isVendor
+      ? Yup.string().notRequired()
+      : Yup.string()
+          .required("Date of birth is required")
+          .test(
+            "is-adult",
+            `You must be at least ${MINIMUM_SIGNUP_AGE} years old to create an account`,
+            (value) => isOldEnough(value),
+          ),
+
+    country: Yup.string().required("Country is required"),
+
+    state: Yup.string().required("State/Province is required"),
 
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -69,11 +117,15 @@ export default function Register() {
 
   const formik = useFormik({
     initialValues: {
+      title: "",
       firstName: "",
       lastName: "",
       suffix: "",
       username: "",
       email: "",
+      dateOfBirth: "",
+      country: "",
+      state: "",
       password: "",
       confirmPassword: "",
       acceptTerms: false,
@@ -89,6 +141,13 @@ export default function Register() {
       }
     },
   });
+
+  // State/Province list depends on the chosen country; unknown countries fall
+  // back to free typing via the combobox.
+  const stateOptions = useMemo(
+    () => STATES_BY_COUNTRY[formik.values.country] ?? [],
+    [formik.values.country],
+  );
 
   if (!accountTypeReady) {
     return (
@@ -114,12 +173,28 @@ export default function Register() {
           {/* Form */}
           <form onSubmit={formik.handleSubmit} className="grid gap-4">
             <div className="grid gap-5">
-              {/* First Name */}
+              {/* Title — personal accounts only */}
+              {!isVendor && (
+                <CustomSelectField
+                  placeholder="Title"
+                  name="title"
+                  options={TITLE_OPTIONS}
+                  value={formik.values.title}
+                  onChange={(val) => formik.setFieldValue("title", val)}
+                  onBlur={() => formik.setFieldTouched("title", true)}
+                  error={formik.touched.title && !!formik.errors.title}
+                  errorMessage={
+                    formik.touched.title ? formik.errors.title : undefined
+                  }
+                />
+              )}
+
+              {/* First Name (personal) / Business Name (organisation) */}
               <div className="grid gap-x-3 gap-y-5 grid-cols-1 sm:grid-cols-2">
                 {" "}
                 <InputField
                   type="text"
-                  placeholder="First Name"
+                  placeholder={isVendor ? "Business Name" : "First Name"}
                   name="firstName"
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
@@ -133,13 +208,13 @@ export default function Register() {
                 />
                 {/* Last Name (individual) / Suffix (vendor) */}
                 {isVendor ? (
-                  <SelectField
+                  <CustomSelectField
                     placeholder="Suffix"
                     name="suffix"
                     options={ORGANISATION_SUFFIXES.filter((s) => s.value)}
                     value={formik.values.suffix}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    onChange={(val) => formik.setFieldValue("suffix", val)}
+                    onBlur={() => formik.setFieldTouched("suffix", true)}
                     error={formik.touched.suffix && !!formik.errors.suffix}
                     errorMessage={
                       formik.touched.suffix ? formik.errors.suffix : undefined
@@ -190,6 +265,60 @@ export default function Register() {
                   formik.touched.email ? formik.errors.email : undefined
                 }
               />
+
+              {/* Date of Birth (personal accounts only — must be 18+) */}
+              {!isVendor && (
+                <InputField
+                  type="date"
+                  label="Date of Birth"
+                  name="dateOfBirth"
+                  max={maxDobDate()}
+                  value={formik.values.dateOfBirth}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.dateOfBirth && !!formik.errors.dateOfBirth
+                  }
+                  errorMessage={
+                    formik.touched.dateOfBirth
+                      ? formik.errors.dateOfBirth
+                      : undefined
+                  }
+                  helperText={`You must be at least ${MINIMUM_SIGNUP_AGE} years old.`}
+                />
+              )}
+
+              {/* Country & State/Province (type, search or pick) */}
+              <div className="grid gap-x-3 gap-y-5 grid-cols-1 sm:grid-cols-2">
+                <ComboBoxField
+                  placeholder="Country"
+                  name="country"
+                  options={COUNTRIES}
+                  value={formik.values.country}
+                  onChange={(val) => {
+                    formik.setFieldValue("country", val);
+                    // Reset state when the country changes.
+                    formik.setFieldValue("state", "");
+                  }}
+                  onBlur={() => formik.setFieldTouched("country", true)}
+                  error={formik.touched.country && !!formik.errors.country}
+                  errorMessage={
+                    formik.touched.country ? formik.errors.country : undefined
+                  }
+                />
+                <ComboBoxField
+                  placeholder="State/Province"
+                  name="state"
+                  options={stateOptions}
+                  value={formik.values.state}
+                  onChange={(val) => formik.setFieldValue("state", val)}
+                  onBlur={() => formik.setFieldTouched("state", true)}
+                  error={formik.touched.state && !!formik.errors.state}
+                  errorMessage={
+                    formik.touched.state ? formik.errors.state : undefined
+                  }
+                />
+              </div>
 
               {/* Password */}
               <InputField
@@ -265,6 +394,23 @@ export default function Register() {
                 }
               />
 
+              {/* Privacy Policy & Terms buttons */}
+              <div className="flex flex-wrap gap-3 -mt-1">
+                <button
+                  type="button"
+                  className="text-xs font-semibold text-violet-600 hover:text-violet-700 transition-colors"
+                >
+                  Privacy Policy
+                </button>
+                <span className="text-gray-300 text-xs">•</span>
+                <button
+                  type="button"
+                  className="text-xs font-semibold text-violet-600 hover:text-violet-700 transition-colors"
+                >
+                  Terms &amp; Conditions
+                </button>
+              </div>
+
               {/* Submit */}
               <button
                 type="submit"
@@ -283,7 +429,7 @@ export default function Register() {
             <div className="w-16 h-px bg-gray-50"></div>
           </div>
 
-          {/* Social (unchanged) */}
+          {/* Social sign-up options */}
           <div className="flex items-center flex-row-reverse gap-x-4 justify-center">
             <svg width="32" height="32" viewBox="0 0 28 28" fill="#000000">
               <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.905-.08 1.81-.78 3.02-.67 1.44.12 2.51.72 3.15 1.81-3.0 1.8-2.48 5.51.48 6.5-.59 1.38-1.38 2.24-2.63 2.93zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
@@ -306,6 +452,74 @@ export default function Register() {
                 fill="#34A853"
                 d="M24 48c6.48 0 11.93-2.14 15.9-5.82l-7.19-5.6c-2 1.34-4.6 2.12-8.71 2.12-6.19 0-11.57-3.63-13.46-8.93l-7.98 6.35C6.51 42.62 14.62 48 24 48z"
               />
+            </svg>
+
+            {/* Instagram */}
+            <svg
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              role="img"
+              aria-label="Sign up with Instagram"
+            >
+              <defs>
+                <linearGradient
+                  id="instagram-gradient-register"
+                  x1="2"
+                  y1="22"
+                  x2="22"
+                  y2="2"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0" stopColor="#FEDA75" />
+                  <stop offset="0.25" stopColor="#FA7E1E" />
+                  <stop offset="0.5" stopColor="#D62976" />
+                  <stop offset="0.75" stopColor="#962FBF" />
+                  <stop offset="1" stopColor="#4F5BD5" />
+                </linearGradient>
+              </defs>
+              <rect
+                width={22}
+                height={22}
+                x={1}
+                y={1}
+                rx={6.5}
+                ry={6.5}
+                fill="url(#instagram-gradient-register)"
+              />
+              <rect
+                width={13}
+                height={13}
+                x={5.5}
+                y={5.5}
+                rx={4}
+                ry={4}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth={1.7}
+              />
+              <circle
+                cx={12}
+                cy={12}
+                r={3.2}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth={1.7}
+              />
+              <circle cx={16.2} cy={7.8} r={1.05} fill="#ffffff" />
+            </svg>
+
+            {/* Twitter (X) */}
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 24 24"
+              fill="#000000"
+              role="img"
+              aria-label="Sign up with Twitter"
+            >
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
           </div>
         </div>

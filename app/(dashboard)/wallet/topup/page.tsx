@@ -11,6 +11,7 @@ import {
 import { CURRENCIES } from "@/lib/constants";
 import { useForm } from "@/hooks";
 import MobileHeader from "@/components/ui/MobileHeader";
+import ChargesSummary from "@/components/ui/ChargesSummary";
 interface TopUpFormValues {
   amount: string;
   currency: string;
@@ -217,13 +218,17 @@ export default function WalletTopUpPage() {
               </div>
             )}
           </div>
-          {/* Info Box */}
-          <div className="mb-5 sm:mb-6 md:mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
-              <strong>Note:</strong> A processing fee of 2.5% will be applied to
-              your transaction.
-            </p>
-          </div>
+          {/* Charges & tax */}
+          {values.amount && parseFloat(values.amount) > 0 && (
+            <div className="mb-5 sm:mb-6 md:mb-8">
+              <ChargesSummary
+                amount={parseFloat(values.amount)}
+                currency={values.currency}
+                amountLabel="Top-up amount"
+                totalLabel="Total to pay"
+              />
+            </div>
+          )}
           {/* Action Buttons */}
           <div className="border-t border-gray-200 pt-8 flex gap-4">
             <FormButton

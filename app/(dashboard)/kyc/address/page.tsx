@@ -1,7 +1,7 @@
 "use client";
 
 import AddressForm from "@/components/kyc/AddressForm";
-import { KYC_STORAGE_KEYS } from "@/lib/constants";
+import { KYC_STORAGE_KEYS, KYC_VERIFICATION_FEE } from "@/lib/constants";
 
 export default function KYCAddress() {
   return (
@@ -10,6 +10,8 @@ export default function KYCAddress() {
       nextHref="/kyc/success"
       backHref="/kyc/bvn"
       submitLabel="Submit for Review"
+      chargeFee={KYC_VERIFICATION_FEE}
+      chargeLabel="KYC verification fee"
     />
   );
 }

@@ -31,11 +31,11 @@ function ActionButton({ label }: { label: string }) {
   return (
     <button
       type="button"
-      className="flex items-center gap-1 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold pl-3 pr-2 py-1.5 rounded-full transition-colors shrink-0"
+      className="neon-purple flex items-center gap-1 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold px-4 py-2 rounded-full transition-all shrink-0 active:scale-95"
     >
       {label}
-      <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center">
-        <Plus size={10} />
+      <span className="w-5 h-5 rounded-full bg-white/25 flex items-center justify-center">
+        <Plus size={12} />
       </span>
     </button>
   );
