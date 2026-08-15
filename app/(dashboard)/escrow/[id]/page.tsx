@@ -12,6 +12,7 @@ import {
   ArrowDownRight,
 } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
+import Modal from "@/components/ui/modal";
 import { formatCurrency } from "@/lib/utils";
 import DepositModal from "@/components/escrow/DepositModal";
 import RequestReleaseModal from "@/components/escrow/RequestReleaseModal";
@@ -44,6 +45,7 @@ import {
   Plus,
   Layers,
   CalendarClock,
+  Expand,
 } from "lucide-react";
 
 const tabs = [
@@ -76,6 +78,7 @@ export default function EscrowDetailPage() {
   const [isReleaseOpen, setIsReleaseOpen] = useState(false);
   const [isDeciderOpen, setIsDeciderOpen] = useState(false);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
   const [isRaiseRequestOpen, setIsRaiseRequestOpen] = useState(false);
   const [isActivityOpen, setIsActivityOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -275,9 +278,19 @@ export default function EscrowDetailPage() {
             {/* About */}
             {activeTab === "about" && (
               <div>
-                <p className="text-gray-700 leading-relaxed mb-8">
-                  {escrow.description}
-                </p>
+                <div className="relative mb-8">
+                  <p className="text-gray-700 leading-relaxed line-clamp-3">
+                    {escrow.description}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setIsAboutExpanded(true)}
+                    className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-violet-600 hover:text-violet-700"
+                  >
+                    <Expand size={14} />
+                    Expand
+                  </button>
+                </div>
 
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-gray-900">
@@ -689,7 +702,21 @@ export default function EscrowDetailPage() {
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
         onAdd={addMember}
+        escrowId={id}
       />
+
+      {/* Expanded About description */}
+      <Modal
+        isOpen={isAboutExpanded}
+        onClose={() => setIsAboutExpanded(false)}
+        title={escrow.name}
+        description="About this escrow"
+        maxWidthClassName="max-w-2xl"
+      >
+        <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+          {escrow.description}
+        </p>
+      </Modal>
       <RaiseRequestModal
         isOpen={isRaiseRequestOpen}
         onClose={() => setIsRaiseRequestOpen(false)}

@@ -248,12 +248,16 @@ export const deciderBeneficiaries = [
     name: "Paulo Santos",
     avatar: "https://i.pravatar.cc/64?img=25",
     requestedAmount: 1000,
+    requestDescription:
+      "Requesting $1,000 to cover two months of groceries and utility bills while recovering. Receipts for the last month have been shared in the group chat, and the landlord's invoice is attached to the request form.",
   },
   {
     id: "b2",
     name: "Shaggy Bello",
     avatar: "https://i.pravatar.cc/64?img=26",
     requestedAmount: 1500,
+    requestDescription:
+      "Requesting $1,500 for emergency medical treatment and transport. The hospital estimate and referral letter are included in the submitted request form for the decider to review.",
   },
 ];
 

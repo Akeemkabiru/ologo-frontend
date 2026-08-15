@@ -14,6 +14,7 @@ export interface DeciderBeneficiary {
   name: string;
   avatar: string;
   requestedAmount: number;
+  requestDescription?: string;
 }
 
 export interface DeciderPaymentSummary {
@@ -75,10 +76,20 @@ export default function DeciderFormModal({
     (b) => (Number(payments[b.id]) || 0) > 0,
   ).length;
 
+  // Keep only digits and a single decimal point so text inputs accept numbers
+  // only (no spinner arrows, no letters/symbols).
+  const onlyNumeric = (v: string) => {
+    const cleaned = v.replace(/[^0-9.]/g, "");
+    const parts = cleaned.split(".");
+    return parts.length > 2
+      ? `${parts[0]}.${parts.slice(1).join("")}`
+      : cleaned;
+  };
+
   const setPayment = (id: string, v: string) =>
-    setPayments((p) => ({ ...p, [id]: v }));
+    setPayments((p) => ({ ...p, [id]: onlyNumeric(v) }));
   const setRequest = (id: string, v: string) =>
-    setRequests((r) => ({ ...r, [id]: v }));
+    setRequests((r) => ({ ...r, [id]: onlyNumeric(v) }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,7 +214,7 @@ export default function DeciderFormModal({
                 <div className="w-24 shrink-0">
                   <p className="text-[10px] text-gray-400 mb-1">Requested</p>
                   <InputField
-                    type="number"
+                    type="text"
                     inputMode="decimal"
                     icon={dollarIcon}
                     value={requests[b.id] ?? ""}
@@ -214,7 +225,7 @@ export default function DeciderFormModal({
                 <div className="w-24 shrink-0">
                   <p className="text-[10px] text-gray-500 mb-1">Pay</p>
                   <InputField
-                    type="number"
+                    type="text"
                     inputMode="decimal"
                     icon={dollarIcon}
                     value={payments[b.id] ?? ""}
@@ -253,7 +264,7 @@ export default function DeciderFormModal({
                   <div>
                     <p className="text-[10px] text-gray-400 mb-1">Requested</p>
                     <InputField
-                      type="number"
+                      type="text"
                       inputMode="decimal"
                       icon={dollarIcon}
                       value={requests[b.id] ?? ""}
@@ -264,7 +275,7 @@ export default function DeciderFormModal({
                   <div>
                     <p className="text-[10px] text-gray-500 mb-1">Pay</p>
                     <InputField
-                      type="number"
+                      type="text"
                       inputMode="decimal"
                       icon={dollarIcon}
                       value={payments[b.id] ?? ""}
@@ -306,10 +317,12 @@ export default function DeciderFormModal({
               <div className="grid grid-cols-2 gap-4">
                 <InputField
                   label="Every"
-                  type="number"
+                  type="text"
                   inputMode="numeric"
                   value={freqAmount}
-                  onChange={(e) => setFreqAmount(e.target.value)}
+                  onChange={(e) =>
+                    setFreqAmount(e.target.value.replace(/[^0-9]/g, ""))
+                  }
                   placeholder="1"
                 />
                 <SelectField

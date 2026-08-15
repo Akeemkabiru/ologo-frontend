@@ -26,7 +26,7 @@ export default function Toggle({
       {label && (
         <label
           onClick={() => !disabled && onChange(!checked)}
-          className={`text-sm font-medium ${
+          className={`text-sm font-medium text-black ${
             disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
           }`}
         >

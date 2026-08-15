@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { UserPlus, X } from "lucide-react";
 import Modal from "@/components/ui/modal";
 import InputField from "@/components/ui/inputField";
-import SelectField from "@/components/ui/selectField";
+import CustomSelectField from "@/components/ui/customSelectField";
 import TextareaField from "@/components/ui/textareaField";
 import ToggleSwitch from "@/components/ui/toggleSwitch";
+import ChargesSummary from "@/components/ui/ChargesSummary";
 import { FormButton } from "@/components/forms/FormComponents";
 import { useForm } from "@/hooks";
-import { CURRENCIES } from "@/lib/constants";
+import { CURRENCIES, PAYMENT_REQUEST_TAX_RATES } from "@/lib/constants";
 import { events } from "@/data/events";
 
 const ESCROW_CATEGORIES = [
@@ -24,16 +26,23 @@ const ESCROW_CATEGORIES = [
   "Milestone",
 ];
 
+type MemberRole = "Decider" | "Witness" | "Beneficiary";
+
+interface AppointedMember {
+  id: string;
+  name: string;
+  contact: string;
+  role: MemberRole;
+}
+
 interface EscrowFormValues {
   title: string;
   description: string;
-  linkType: "standalone" | "event";
   eventId: string;
+  purpose: "business" | "charity";
   category: string;
   amount: string;
   currency: string;
-  counterpartyEmail: string;
-  role: "buyer" | "seller";
   releaseDate: string;
   visibility: "public" | "private";
 }
@@ -41,13 +50,11 @@ interface EscrowFormValues {
 const initialValues: EscrowFormValues = {
   title: "",
   description: "",
-  linkType: "standalone",
   eventId: "",
+  purpose: "business",
   category: "Freelance",
   amount: "",
   currency: "USD",
-  counterpartyEmail: "",
-  role: "buyer",
   releaseDate: "",
   visibility: "private",
 };
@@ -65,7 +72,10 @@ export default function CreateEscrowModal({
   onCreated,
   presetEventId,
 }: CreateEscrowModalProps) {
-  const [releaseTerms, setReleaseTerms] = useState("both");
+  const [members, setMembers] = useState<AppointedMember[]>([]);
+  const [memberName, setMemberName] = useState("");
+  const [memberContact, setMemberContact] = useState("");
+  const [memberRole, setMemberRole] = useState<MemberRole>("Beneficiary");
 
   const {
     values,
@@ -80,10 +90,10 @@ export default function CreateEscrowModal({
   } = useForm<EscrowFormValues>({
     initialValues,
     onSubmit: async (values) => {
-      console.log("Creating escrow:", { ...values, releaseTerms });
+      console.log("Creating escrow:", { ...values, members });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       resetForm();
-      setReleaseTerms("both");
+      setMembers([]);
       onClose();
       onCreated?.();
     },
@@ -91,21 +101,47 @@ export default function CreateEscrowModal({
       const errors: Partial<EscrowFormValues> = {};
       if (!values.title) errors.title = "Escrow title is required";
       if (!values.amount) errors.amount = "Amount is required";
-      if (!values.counterpartyEmail)
-        errors.counterpartyEmail = "Counterparty email is required";
       return errors;
     },
   });
+
+  // When the escrow is created from within an event, prefill & lock the linked
+  // event so the user doesn't re-enter it.
+  const isFromEvent = Boolean(presetEventId);
+  const presetEvent = useMemo(
+    () => events.find((ev) => ev.id === presetEventId),
+    [presetEventId],
+  );
 
   useEffect(() => {
     if (isOpen && presetEventId) {
       setValues((prev) => ({
         ...prev,
-        linkType: "event",
         eventId: presetEventId,
       }));
     }
   }, [isOpen, presetEventId, setValues]);
+
+  const taxRate = PAYMENT_REQUEST_TAX_RATES[values.purpose] ?? 0;
+
+  const addMember = () => {
+    if (!memberName.trim()) return;
+    setMembers((prev) => [
+      ...prev,
+      {
+        id: `m-${Date.now()}`,
+        name: memberName.trim(),
+        contact: memberContact.trim(),
+        role: memberRole,
+      },
+    ]);
+    setMemberName("");
+    setMemberContact("");
+    setMemberRole("Beneficiary");
+  };
+
+  const removeMember = (id: string) =>
+    setMembers((prev) => prev.filter((m) => m.id !== id));
 
   const handleClose = () => {
     if (isSubmitting) return;
@@ -143,34 +179,43 @@ export default function CreateEscrowModal({
           rows={4}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <SelectField
-            label="Escrow type"
-            name="linkType"
-            options={[
-              { label: "Standalone group", value: "standalone" },
-              { label: "Part of an event", value: "event" },
-            ]}
-            value={values.linkType}
-            onChange={handleChange}
+        {/* Linked event — only shown when creating from an event; prefilled &
+            disabled so it can't be changed. */}
+        {isFromEvent && (
+          <InputField
+            label="Linked event"
+            name="eventName"
+            value={presetEvent?.name ?? "Linked event"}
+            readOnly
+            disabled
+            helperText="This escrow is part of the event above."
           />
-          {values.linkType === "event" && (
-            <SelectField
-              label="Linked event"
-              name="eventId"
-              options={events.map((ev) => ({ label: ev.name, value: ev.id }))}
-              value={values.eventId}
-              onChange={handleChange}
-            />
-          )}
-        </div>
+        )}
 
-        <SelectField
+        {/* Who the escrow is for — drives tax calculation */}
+        <CustomSelectField
+          label="Who is this escrow for?"
+          name="purpose"
+          options={[
+            { label: "Business", value: "business" },
+            { label: "Charity", value: "charity" },
+          ]}
+          value={values.purpose}
+          onChange={(val) =>
+            setValues((prev) => ({
+              ...prev,
+              purpose: val as EscrowFormValues["purpose"],
+            }))
+          }
+          helperText="We use this to automatically calculate the tax that applies."
+        />
+
+        <CustomSelectField
           label="Category"
           name="category"
           options={ESCROW_CATEGORIES.map((c) => ({ label: c, value: c }))}
           value={values.category}
-          onChange={handleChange}
+          onChange={(val) => setValues((prev) => ({ ...prev, category: val }))}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -178,68 +223,134 @@ export default function CreateEscrowModal({
             label="Amount"
             placeholder="e.g., 5000"
             name="amount"
-            type="number"
-            inputMode="numeric"
+            type="text"
+            inputMode="decimal"
             value={values.amount}
-            onChange={handleChange}
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/[^0-9.]/g, "");
+              const parts = cleaned.split(".");
+              const next =
+                parts.length > 2
+                  ? `${parts[0]}.${parts.slice(1).join("")}`
+                  : cleaned;
+              setValues((prev) => ({ ...prev, amount: next }));
+            }}
             onBlur={handleBlur}
             error={touched.amount && !!errors.amount}
             errorMessage={errors.amount}
             required
           />
-          <SelectField
+          <CustomSelectField
             label="Currency"
             name="currency"
             options={CURRENCIES.map((curr) => ({ label: curr, value: curr }))}
             value={values.currency}
-            onChange={handleChange}
+            onChange={(val) => setValues((prev) => ({ ...prev, currency: val }))}
             required
           />
         </div>
 
-        <InputField
-          label="Counterparty"
-          placeholder="Enter counterparty email"
-          name="counterpartyEmail"
-          type="email"
-          value={values.counterpartyEmail}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.counterpartyEmail && !!errors.counterpartyEmail}
-          errorMessage={errors.counterpartyEmail}
-          required
-        />
+        {/* Charges & tax */}
+        {values.amount && Number(values.amount) > 0 && (
+          <ChargesSummary
+            amount={Number(values.amount)}
+            currency={values.currency}
+            taxRate={taxRate}
+            amountLabel="Escrow amount"
+            totalLabel="Total to fund"
+          />
+        )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <SelectField
-            label="Your Role"
-            name="role"
+        {/* Members & roles — appoint members and choose their role */}
+        <div className="rounded-xl border border-gray-200 p-4 grid gap-4">
+          <div>
+            <p className="text-sm font-semibold text-gray-800">
+              Members &amp; roles
+            </p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Appoint members and choose a role for each — Decider, Witness or
+              Beneficiary.
+            </p>
+          </div>
+
+          {members.length > 0 && (
+            <div className="grid gap-2">
+              {members.map((m) => (
+                <div
+                  key={m.id}
+                  className="flex items-center gap-3 rounded-lg bg-gray-50 border border-gray-100 px-3 py-2"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {m.name}
+                    </p>
+                    {m.contact && (
+                      <p className="text-xs text-gray-500 truncate">
+                        {m.contact}
+                      </p>
+                    )}
+                  </div>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700">
+                    {m.role}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => removeMember(m.id)}
+                    aria-label={`Remove ${m.name}`}
+                    className="w-6 h-6 rounded-full hover:bg-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700"
+                  >
+                    <X size={13} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <InputField
+              label="Member name"
+              placeholder="e.g., Frank Adeyemi"
+              value={memberName}
+              onChange={(e) => setMemberName(e.target.value)}
+            />
+            <InputField
+              label="Email or username"
+              placeholder="Search by email or @username"
+              value={memberContact}
+              onChange={(e) => setMemberContact(e.target.value)}
+            />
+          </div>
+          <CustomSelectField
+            label="Role"
+            value={memberRole}
+            onChange={(val) => setMemberRole(val as MemberRole)}
             options={[
-              { label: "Buyer (I pay into escrow)", value: "buyer" },
-              { label: "Seller (I deliver, then get paid)", value: "seller" },
+              { label: "Decider — approves & distributes funds", value: "Decider" },
+              { label: "Witness — observes & verifies", value: "Witness" },
+              { label: "Beneficiary — receives payments", value: "Beneficiary" },
             ]}
-            value={values.role}
-            onChange={handleChange}
           />
-          <InputField
-            label="Release Deadline"
-            name="releaseDate"
-            type="date"
-            value={values.releaseDate}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
+          <FormButton
+            type="button"
+            variant="secondary"
+            size="md"
+            onClick={addMember}
+            className="w-fit"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <UserPlus size={15} />
+              Appoint member
+            </span>
+          </FormButton>
         </div>
 
-        <SelectField
-          label="Funds are released when…"
-          value={releaseTerms}
-          onChange={(e) => setReleaseTerms(e.target.value)}
-          options={[
-            { label: "Both parties approve", value: "both" },
-            { label: "Buyer approves delivery", value: "buyer" },
-            { label: "A milestone is completed", value: "milestone" },
-          ]}
+        <InputField
+          label="Release Deadline"
+          name="releaseDate"
+          type="date"
+          value={values.releaseDate}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
 
         {/* Visibility toggle */}
