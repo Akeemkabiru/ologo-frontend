@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import { Expand } from "lucide-react";
 import Modal from "@/components/ui/modal";
 import InputField from "@/components/ui/inputField";
 import SelectField from "@/components/ui/selectField";
@@ -64,6 +65,8 @@ export default function DeciderFormModal({
   const [identity, setIdentity] = useState("name");
   const [alias, setAlias] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [expandedMember, setExpandedMember] =
+    useState<DeciderBeneficiary | null>(null);
 
   const totalToPay = useMemo(
     () =>
@@ -126,6 +129,7 @@ export default function DeciderFormModal({
   const notPaid = (id: string) => (Number(payments[id]) || 0) <= 0;
 
   return (
+    <>
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
@@ -200,9 +204,22 @@ export default function DeciderFormModal({
                   className="w-10 h-10 rounded-full object-cover shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">
-                    {b.name}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {b.name}
+                    </p>
+                    {b.requestDescription && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedMember(b)}
+                        aria-label={`View ${b.name}'s request`}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-violet-600 hover:text-violet-700 shrink-0"
+                      >
+                        <Expand size={12} />
+                        Request
+                      </button>
+                    )}
+                  </div>
                   {notPaid(b.id) ? (
                     <p className="text-[11px] text-gray-400">Won&apos;t be paid</p>
                   ) : (
@@ -255,11 +272,21 @@ export default function DeciderFormModal({
                 <p className="text-sm font-semibold text-gray-900 truncate">
                   {b.name}
                 </p>
-                <p className="text-[11px] text-gray-400 mb-3">
+                <p className="text-[11px] text-gray-400 mb-1">
                   {notPaid(b.id)
                     ? "Won't be paid"
                     : `Will receive ${money(Number(payments[b.id]) || 0)}`}
                 </p>
+                {b.requestDescription && (
+                  <button
+                    type="button"
+                    onClick={() => setExpandedMember(b)}
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-violet-600 hover:text-violet-700 mb-3"
+                  >
+                    <Expand size={12} />
+                    View request
+                  </button>
+                )}
                 <div className="grid grid-cols-2 gap-2 text-left">
                   <div>
                     <p className="text-[10px] text-gray-400 mb-1">Requested</p>
@@ -396,5 +423,24 @@ export default function DeciderFormModal({
         </div>
       </form>
     </Modal>
+
+    {/* Expanded member request description */}
+    <Modal
+      isOpen={expandedMember !== null}
+      onClose={() => setExpandedMember(null)}
+      title={expandedMember ? `${expandedMember.name}'s request` : "Request"}
+      description={
+        expandedMember
+          ? `Requested ${money(expandedMember.requestedAmount)}`
+          : undefined
+      }
+      maxWidthClassName="max-w-lg"
+    >
+      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+        {expandedMember?.requestDescription ??
+          "No description was provided with this request."}
+      </p>
+    </Modal>
+    </>
   );
 }

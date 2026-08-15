@@ -203,6 +203,20 @@ export const NIGERIAN_BANKS = [
   "Zenith Bank",
 ];
 
+// Which balance cards the user wants shown on the dashboard.
+export type DashboardBalanceKey = "wallet" | "escrow" | "future";
+
+export const DASHBOARD_BALANCE_CARDS: {
+  key: DashboardBalanceKey;
+  label: string;
+}[] = [
+  { key: "wallet", label: "Wallet Balance" },
+  { key: "escrow", label: "Escrow" },
+  { key: "future", label: "Future Fund" },
+];
+
+export const DASHBOARD_BALANCE_PREF_KEY = "ologoDashboardBalances";
+
 export const TITLE_OPTIONS = [
   { label: "Mr", value: "Mr" },
   { label: "Ms", value: "Ms" },

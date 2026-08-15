@@ -1,11 +1,47 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle2, Clock, AlertCircle, BadgeCheck } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
+import {
+  DASHBOARD_BALANCE_CARDS,
+  DASHBOARD_BALANCE_PREF_KEY,
+  type DashboardBalanceKey,
+} from "@/lib/constants";
+
+const DEFAULT_BALANCE_PREFS: Record<DashboardBalanceKey, boolean> = {
+  wallet: true,
+  escrow: true,
+  future: true,
+};
+
 export default function Settings() {
   const [kycStatus, setKycStatus] = useState("pending"); // pending, completed, expired
   const [verifiedTickStatus, setVerifiedTickStatus] = useState("unverified"); // unverified, pending, completed
+  const [balancePrefs, setBalancePrefs] =
+    useState<Record<DashboardBalanceKey, boolean>>(DEFAULT_BALANCE_PREFS);
+
+  // Load saved dashboard balance preferences.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DASHBOARD_BALANCE_PREF_KEY);
+      if (raw) setBalancePrefs({ ...DEFAULT_BALANCE_PREFS, ...JSON.parse(raw) });
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const toggleBalance = (key: DashboardBalanceKey) => {
+    setBalancePrefs((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        localStorage.setItem(DASHBOARD_BALANCE_PREF_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
   return (
     <main className="min-h-screen pb-8">
       <MobileHeader
@@ -203,6 +239,32 @@ export default function Settings() {
                   />
                 </svg>
               </button>
+
+              {/* Dashboard balance visibility */}
+              <div className="px-4 py-3 rounded-lg border border-gray-100">
+                <p className="font-semibold text-gray-900">
+                  Dashboard balances
+                </p>
+                <p className="text-sm text-gray-500 mt-0.5 mb-3">
+                  Choose which balances show on your dashboard
+                </p>
+                <div className="space-y-2">
+                  {DASHBOARD_BALANCE_CARDS.map((card) => (
+                    <label
+                      key={card.key}
+                      className="flex items-center gap-3 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={balancePrefs[card.key]}
+                        onChange={() => toggleBalance(card.key)}
+                        className="w-5 h-5 rounded accent-violet-600"
+                      />
+                      <span className="text-gray-700">{card.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
           {/* Notifications */}

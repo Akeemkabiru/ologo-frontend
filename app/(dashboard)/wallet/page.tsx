@@ -352,6 +352,19 @@ const transactions = [
   },
 ];
 
+// Color-coded status pills, shared with the dashboard styling.
+const statusStyles: Record<string, string> = {
+  completed: "bg-emerald-100 text-emerald-700",
+  pending: "bg-amber-100 text-amber-700",
+  processing: "bg-blue-100 text-blue-700",
+  failed: "bg-red-100 text-red-700",
+};
+
+// Future Funds haven't settled yet, so they read as pending; everything else
+// in this history is completed.
+const statusFor = (tx: { type: string }) =>
+  tx.type === "Future Funds" ? "pending" : "completed";
+
 export default function WalletPage() {
   // Mock data
   const router = useRouter();
@@ -707,6 +720,7 @@ export default function WalletPage() {
                   <th className="font-medium pb-3 pl-1">Transaction</th>
                   <th className="font-medium pb-3">Date</th>
                   <th className="font-medium pb-3">Category</th>
+                  <th className="font-medium pb-3">Status</th>
                   <th className="font-medium pb-3 text-right pr-1">Amount</th>
                 </tr>
               </thead>
@@ -758,6 +772,13 @@ export default function WalletPage() {
                         <span className="inline-flex items-center gap-1.5 bg-gray-100 rounded-full px-2.5 py-1 text-xs text-gray-600 whitespace-nowrap">
                           <tx.tagIcon size={12} />
                           {tx.tag}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap capitalize ${statusStyles[statusFor(tx)]}`}
+                        >
+                          {statusFor(tx)}
                         </span>
                       </td>
                       <td className="text-right pr-1">

@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  DASHBOARD_BALANCE_PREF_KEY,
+  type DashboardBalanceKey,
+} from "@/lib/constants";
 import {
   Wallet,
   TrendingUp,
@@ -28,6 +32,8 @@ import {
   ArrowDownLeft,
   Repeat,
   MoreHorizontal,
+  Eye,
+  EyeOff,
   type LucideIcon,
 } from "lucide-react";
 import MobileHeader from "@/components/ui/MobileHeader";
@@ -48,6 +54,35 @@ export default function UserDashboard() {
   const [historyTab, setHistoryTab] = useState<"history" | "future">("history");
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
   const [selectedMonth, setSelectedMonth] = useState(new Date(2026, 4)); // May 2026
+
+  // Which balance cards to show — controlled from Settings.
+  const [balancePrefs, setBalancePrefs] = useState<
+    Record<DashboardBalanceKey, boolean>
+  >({ wallet: true, escrow: true, future: true });
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DASHBOARD_BALANCE_PREF_KEY);
+      if (raw) {
+        setBalancePrefs((prev) => ({ ...prev, ...JSON.parse(raw) }));
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  // Toggle a balance's visibility and persist it to localStorage.
+  const toggleBalance = (key: DashboardBalanceKey) => {
+    setBalancePrefs((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        localStorage.setItem(DASHBOARD_BALANCE_PREF_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
 
   type TxTypeEntry = {
     icon: LucideIcon;
@@ -113,7 +148,9 @@ export default function UserDashboard() {
       description: "Wallet Top-up",
       amount: 500,
       currency: "USD",
-      date: "2026-05-31 10:30 AM",
+      date: "May 31 2026, 10:30 AM",
+      isoDate: "2026-05-31",
+      category: "Main Balance",
       status: "completed",
       commission: ((500 * commissionRate) / 100).toFixed(2),
     },
@@ -123,7 +160,9 @@ export default function UserDashboard() {
       description: "Donated to School Fundraiser",
       amount: 100,
       currency: "USD",
-      date: "2026-05-30 02:15 PM",
+      date: "May 30 2026, 02:15 PM",
+      isoDate: "2026-05-30",
+      category: "Donations",
       status: "completed",
       commission: "0.00",
     },
@@ -133,8 +172,10 @@ export default function UserDashboard() {
       description: "Transfer to John Doe",
       amount: 250,
       currency: "USD",
-      date: "2026-05-29 09:45 AM",
-      status: "completed",
+      date: "May 29 2026, 09:45 AM",
+      isoDate: "2026-05-29",
+      category: "Main Balance",
+      status: "pending",
       commission: ((250 * commissionRate) / 100).toFixed(2),
     },
     {
@@ -143,7 +184,9 @@ export default function UserDashboard() {
       description: "Transfer from Jane Smith",
       amount: 150,
       currency: "USD",
-      date: "2026-05-28 03:20 PM",
+      date: "May 28 2026, 03:20 PM",
+      isoDate: "2026-05-28",
+      category: "Main Balance",
       status: "completed",
       commission: "0.00",
     },
@@ -256,7 +299,7 @@ export default function UserDashboard() {
 
   const getTransactionsByDate = (date: Date) => {
     const dateStr = date.toISOString().split("T")[0];
-    return transactions.filter((tx) => tx.date.startsWith(dateStr));
+    return transactions.filter((tx) => tx.isoDate === dateStr);
   };
 
   const handleExport = (format: "pdf" | "csv") => {
@@ -347,13 +390,31 @@ export default function UserDashboard() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-              <p className="text-violet-100 text-sm font-medium mb-2">
-                Wallet Balance
-              </p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-violet-100 text-sm font-medium">
+                  Wallet Balance
+                </p>
+                <button
+                  type="button"
+                  onClick={() => toggleBalance("wallet")}
+                  aria-label={
+                    balancePrefs.wallet ? "Hide balance" : "Show balance"
+                  }
+                  className="text-violet-100 hover:text-white transition-colors"
+                >
+                  {balancePrefs.wallet ? (
+                    <Eye size={16} />
+                  ) : (
+                    <EyeOff size={16} />
+                  )}
+                </button>
+              </div>
               <div className="flex items-end justify-between">
                 <div>
                   <h2 className="text-2xl font-bold mb-1">
-                    ${walletBalance.toFixed(2)}
+                    {balancePrefs.wallet
+                      ? `$${walletBalance.toFixed(2)}`
+                      : "••••••"}
                   </h2>
                   <p className="text-violet-100">{walletCurrency}</p>
                 </div>
@@ -372,11 +433,29 @@ export default function UserDashboard() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-              <p className="text-violet-100 text-sm font-medium mb-2">Escrow</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-violet-100 text-sm font-medium">Escrow</p>
+                <button
+                  type="button"
+                  onClick={() => toggleBalance("escrow")}
+                  aria-label={
+                    balancePrefs.escrow ? "Hide balance" : "Show balance"
+                  }
+                  className="text-violet-100 hover:text-white transition-colors"
+                >
+                  {balancePrefs.escrow ? (
+                    <Eye size={16} />
+                  ) : (
+                    <EyeOff size={16} />
+                  )}
+                </button>
+              </div>
               <div className="flex items-end justify-between">
                 <div>
                   <h2 className="text-2xl font-bold mb-1">
-                    ${walletBalance.toFixed(2)}
+                    {balancePrefs.escrow
+                      ? `$${walletBalance.toFixed(2)}`
+                      : "••••••"}
                   </h2>
                   <p className="text-violet-100">{walletCurrency}</p>
                 </div>
@@ -395,13 +474,31 @@ export default function UserDashboard() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="bg-violet-600 w-full rounded-2xl text-white p-5 shadow-lg">
-              <p className="text-violet-100 text-sm font-medium mb-2">
-                Future Fund
-              </p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-violet-100 text-sm font-medium">
+                  Future Fund
+                </p>
+                <button
+                  type="button"
+                  onClick={() => toggleBalance("future")}
+                  aria-label={
+                    balancePrefs.future ? "Hide balance" : "Show balance"
+                  }
+                  className="text-violet-100 hover:text-white transition-colors"
+                >
+                  {balancePrefs.future ? (
+                    <Eye size={16} />
+                  ) : (
+                    <EyeOff size={16} />
+                  )}
+                </button>
+              </div>
               <div className="flex items-end justify-between">
                 <div>
                   <h2 className="text-2xl font-bold mb-1">
-                    ${walletBalance.toFixed(2)}
+                    {balancePrefs.future
+                      ? `$${walletBalance.toFixed(2)}`
+                      : "••••••"}
                   </h2>
                   <p className="text-violet-100">{walletCurrency}</p>
                 </div>
@@ -506,19 +603,28 @@ export default function UserDashboard() {
             {/* Tabs */}
             {historyTab === "history" && viewMode === "list" && (
               <div className="flex gap-2 mb-6 border-b border-gray-200">
-                {["all", "income", "expense"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-3 font-medium capitalize border-b-2 transition-colors ${
-                      activeTab === tab
-                        ? "border-violet-600 text-violet-600"
-                        : "border-transparent text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
+                {["all", "income", "expense"].map((tab) => {
+                  const isActive = activeTab === tab;
+                  const activeColor =
+                    tab === "expense"
+                      ? "border-red-500 text-red-500"
+                      : tab === "income"
+                        ? "border-emerald-500 text-emerald-600"
+                        : "border-violet-600 text-violet-600";
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-4 py-3 font-medium capitalize border-b-2 transition-colors ${
+                        isActive
+                          ? activeColor
+                          : "border-transparent text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -540,6 +646,7 @@ export default function UserDashboard() {
                     <tr className="text-xs text-gray-400 border-b border-gray-100">
                       <th className="font-medium pb-3 pl-1">Transaction</th>
                       <th className="font-medium pb-3">Date</th>
+                      <th className="font-medium pb-3">Category</th>
                       <th className="font-medium pb-3">Status</th>
                       <th className="font-medium pb-3 text-right pr-1">
                         Amount
@@ -560,7 +667,11 @@ export default function UserDashboard() {
                           subtitle: tx.type,
                           tagIcon: MoreVertical,
                         };
-                        const isAmountNegative = tx.amount < 0;
+                        // Expenses (anything that isn't money coming in) are
+                        // shown in red with a minus, since they are spent.
+                        const isExpense =
+                          tx.amount < 0 ||
+                          (tx.type !== "receive" && tx.type !== "topup");
                         return (
                           <tr
                             key={tx.id}
@@ -590,6 +701,17 @@ export default function UserDashboard() {
                               {tx.date}
                             </td>
                             <td>
+                              <span className="inline-flex items-center gap-1.5 bg-gray-100 rounded-full px-2.5 py-1 text-xs text-gray-600 whitespace-nowrap">
+                                {typeMap.tagIcon && (
+                                  <typeMap.tagIcon
+                                    size={12}
+                                    className="text-violet-600"
+                                  />
+                                )}
+                                {tx.category}
+                              </span>
+                            </td>
+                            <td>
                               <span
                                 className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap capitalize ${statusStyles[tx.status] ?? "bg-gray-100 text-gray-600"}`}
                               >
@@ -599,12 +721,10 @@ export default function UserDashboard() {
                             <td className="text-right pr-1">
                               <span
                                 className={`text-sm font-bold whitespace-nowrap ${
-                                  isAmountNegative
-                                    ? "text-red-500"
-                                    : "text-emerald-500"
+                                  isExpense ? "text-red-500" : "text-emerald-500"
                                 }`}
                               >
-                                {isAmountNegative ? "-" : "+"}$
+                                {isExpense ? "-" : "+"}$
                                 {Math.abs(tx.amount).toFixed(2)} {tx.currency}
                               </span>
                             </td>
